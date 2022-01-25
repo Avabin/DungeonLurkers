@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Configurations>Debug;Release;Debug PierogiesBot;Release PierogiesBot;Debug TheDungeonGuide;Release TheDungeonGuide</Configurations>
+        <Platforms>AnyCPU</Platforms>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="Features\Remind" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Discord.Net" Version="3.2.0" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+      <PackageReference Include="TimeZoneConverter" Version="5.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Persistence\PierogiesBot.Persistence.BotMessageSubscription\PierogiesBot.Persistence.BotMessageSubscription.csproj" />
+      <ProjectReference Include="..\..\..\Persistence\PierogiesBot.Persistence.BotReactRules\PierogiesBot.Persistence.BotReactRules.csproj" />
+      <ProjectReference Include="..\..\..\Persistence\PierogiesBot.Persistence.BotResponseRules\PierogiesBot.Persistence.BotResponseRules.csproj" />
+      <ProjectReference Include="..\..\..\Persistence\PierogiesBot.Persistence.GuildSettings\PierogiesBot.Persistence.GuildSettings.csproj" />
+    </ItemGroup>
+
+</Project>

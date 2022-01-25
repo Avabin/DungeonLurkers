@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Configurations>Debug;Release;Debug PierogiesBot;Release PierogiesBot;Debug TheDungeonGuide;Release TheDungeonGuide</Configurations>
+        <Platforms>AnyCPU</Platforms>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+      <PackageReference Include="Mongo2Go" Version="3.1.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Shared.Persistence.Core\Shared.Persistence.Core.csproj" />
+    </ItemGroup>
+
+</Project>

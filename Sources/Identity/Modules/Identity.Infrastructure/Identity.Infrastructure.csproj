@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Configurations>Debug;Release;Debug PierogiesBot;Release PierogiesBot;Debug TheDungeonGuide;Release TheDungeonGuide</Configurations>
+        <Platforms>AnyCPU</Platforms>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="Features\OpenId" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
+      <PackageReference Include="IdentityServer4" Version="4.1.2" />
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.0" />
+      <PackageReference Include="Serilog.Extensions.Hosting" Version="4.2.0" />
+      <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
+      <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Shared\Persistence\Shared.Persistence.Identity\Shared.Persistence.Identity.csproj" />
+    </ItemGroup>
+
+</Project>

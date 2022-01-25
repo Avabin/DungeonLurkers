@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Configurations>Debug;Release;Debug PierogiesBot;Release PierogiesBot;Debug TheDungeonGuide;Release TheDungeonGuide</Configurations>
+        <Platforms>AnyCPU</Platforms>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Shared\Persistence\Shared.Persistence.Identity\Shared.Persistence.Identity.csproj" />
+      <ProjectReference Include="..\..\Shared\Shared.Infrastructure\Shared.Infrastructure.csproj" />
+      <ProjectReference Include="..\Modules\Identity.Infrastructure\Identity.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+      <PackageReference Include="IdentityServer4.AspNetIdentity" Version="4.1.2" />
+      <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.2.3" />
+      <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.2.3" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Configurations>Debug;Release;Debug PierogiesBot;Release PierogiesBot;Debug TheDungeonGuide;Release TheDungeonGuide</Configurations>
+        <Platforms>AnyCPU</Platforms>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Shared\Persistence\Shared.Persistence.Core\Shared.Persistence.Core.csproj" />
+      <ProjectReference Include="..\..\..\Shared\PierogiesBot\PierogiesBot.Shared\PierogiesBot.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MongoDB.Bson" Version="2.14.1" />
+    </ItemGroup>
+
+</Project>

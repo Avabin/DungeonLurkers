@@ -1,0 +1,20 @@
+﻿using PierogiesBot.Shared.Features.BotReactRules;
+using RestEase;
+using Shared.Features.Authentication;
+
+namespace PierogiesBot.Shared.Features.BotResponseRules;
+
+public interface IBotResponseRuleApi : IAuthenticatedApi
+{
+    [Get("BotResponseRule")]
+    Task<IEnumerable<BotResponseRuleDto>> GetAllAsync([Query] int? skip = null, [Query] int? limit = null);
+
+    [Get("BotResponseRule/{id}")] Task<BotResponseRuleDto> FindByIdAsync([Path] string id);
+
+    [Post("BotResponseRule")] Task<BotResponseRuleDto> CreateBotResponseRuleAsync([Body] CreateBotResponseRuleDto createDto);
+
+    [Put("BotResponseRule/{id}")]
+    Task UpdateBotResponseRuleAsync([Path] string id, [Body] UpdateBotResponseRuleDto updateDto);
+
+    [Delete("BotResponseRule/{id}")] Task DeleteBotResponseRuleAsync([Path] string id);
+}
