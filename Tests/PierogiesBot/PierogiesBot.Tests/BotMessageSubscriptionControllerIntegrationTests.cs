@@ -5,6 +5,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using NUnit.Framework;
 using PierogiesBot.Host;
+using PierogiesBot.Host.Controllers;
 using PierogiesBot.Persistence.BotMessageSubscription.Features;
 using PierogiesBot.Shared.Enums;
 using PierogiesBot.Shared.Features.BotMessageSubscriptions;
@@ -15,6 +16,10 @@ using Tests.Shared;
 
 namespace PierogiesBot.Tests;
 
+[TestFixture]
+[Category("Integration")]
+[Category("BotMessageSubscription")]
+[TestOf(typeof(BotMessageSubscriptionController))]
 public class BotMessageSubscriptionControllerIntegrationTests : AuthenticatedTestsBase
 {
     [SetUp]

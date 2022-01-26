@@ -9,6 +9,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="coverlet.msbuild" Version="3.1.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
       <ProjectReference Include="..\..\..\Sources\PierogiesBot\PierogiesBot.Host\PierogiesBot.Host.csproj" />
       <ProjectReference Include="..\..\..\Sources\Shared\PierogiesBot\PierogiesBot.Shared\PierogiesBot.Shared.csproj" />
       <ProjectReference Include="..\..\Shared\Tests.Shared\Tests.Shared.csproj" />

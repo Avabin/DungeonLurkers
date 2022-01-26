@@ -54,7 +54,7 @@ public class InsertDevUserBackgroundService : BackgroundService
     /// <param name="opts">A valid PasswordOptions object
     /// containing the password strength requirements.</param>
     /// <returns>A random password</returns>
-    public static string GenerateRandomPassword(PasswordOptions opts = null)
+    public static string GenerateRandomPassword(PasswordOptions? opts = null)
     {
         if (opts == null)
             opts = new PasswordOptions()

@@ -5,6 +5,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using NUnit.Framework;
 using PierogiesBot.Host;
+using PierogiesBot.Host.Controllers;
 using PierogiesBot.Persistence.BotCrontabRule.Features;
 using PierogiesBot.Persistence.BotReactRules.Features;
 using PierogiesBot.Persistence.BotResponseRules.Features;
@@ -19,6 +20,10 @@ using Tests.Shared;
 
 namespace PierogiesBot.Tests;
 
+[TestFixture]
+[Category("Integration")]
+[Category("BotResponseRule")]
+[TestOf(typeof(BotResponseRuleController))]
 public class BotResponseRuleControllerIntegrationTests : AuthenticatedTestsBase
 {
     [SetUp]

@@ -5,6 +5,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using NUnit.Framework;
 using PierogiesBot.Host;
+using PierogiesBot.Host.Controllers;
 using PierogiesBot.Persistence.GuildSettings.Features;
 using PierogiesBot.Shared.Features.GuidSettings;
 using RestEase;
@@ -14,6 +15,10 @@ using Tests.Shared;
 
 namespace PierogiesBot.Tests;
 
+[TestFixture]
+[Category("Integration")]
+[Category("GuildSetting")]
+[TestOf(typeof(GuildSettingController))]
 public class GuildSettingControllerIntegrationTests : AuthenticatedTestsBase
 {
     [SetUp]

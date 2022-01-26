@@ -21,8 +21,8 @@ public class ManyRolesService : ManyDocumentServiceBase<RoleDocument, FindRoleDt
 
     public Task<IEnumerable<FindRoleDto>> GetAllByPredicateAsync(
         Expression<Func<RoleDocument, bool>> predicate,
-        int?                                 skip,
-        int?                                 limit)
+        int?                                 skip = null,
+        int?                                 limit = null)
     {
         var roles = GetAllByPredicate(predicate, skip, limit, _repository.Roles);
         return Task.FromResult(roles);
