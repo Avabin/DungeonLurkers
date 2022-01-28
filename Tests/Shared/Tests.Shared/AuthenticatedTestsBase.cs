@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 using Identity.Host;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using MongoDB.Driver;
 using RestEase;
 using Shared.Features;
@@ -74,14 +78,19 @@ public abstract class AuthenticatedTestsBase : IAuthenticatedControllerTests, ID
     public async Task<(TClient, IServiceProvider)> ConfigureResourceServer<TStartup, TClient>(
         Action<HttpClient> backchannelSetter) where TStartup : class where TClient : IAuthenticatedApi
     {
+        var executingAssemblyLocation = Assembly.GetExecutingAssembly().Location;
+        var executingDirectory        = Path.GetFullPath("..", executingAssemblyLocation);
+        var fileProvider              = new PhysicalFileProvider(executingDirectory);
         // Create identity server if not exists
-        _identityWaf ??= new WebApplicationFactory<Startup>();
+        _identityWaf ??= new WebApplicationFactory<Startup>()
+           .WithWebHostBuilder(builder => builder.ConfigureAppConfiguration((_, configurationBuilder) => configurationBuilder.SetFileProvider(fileProvider)));
         var identityClient = _identityWaf.CreateClient();
         await EnsureTestUserCreatedAsync();
         // Invoke setter to set resource server HttpClient with configured identity client
         backchannelSetter?.Invoke(identityClient);
         // Create resource server
-        var resourceWaf = new WebApplicationFactory<TStartup>();
+        var resourceWaf = new WebApplicationFactory<TStartup>()
+           .WithWebHostBuilder(builder => builder.ConfigureAppConfiguration((_, configurationBuilder) => configurationBuilder.SetFileProvider(fileProvider)));
         // Store all created resource  servers for later dispose
         _disposables.Add(resourceWaf);
         // Create strongly typed clients

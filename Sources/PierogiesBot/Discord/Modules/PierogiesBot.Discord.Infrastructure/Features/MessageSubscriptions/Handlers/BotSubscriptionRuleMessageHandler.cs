@@ -2,14 +2,15 @@
 using System.Reactive.Subjects;
 using Discord.Commands;
 using Microsoft.Extensions.Logging;
+using PierogiesBot.Discord.Core.Features.MessageSubscriptions.Handlers;
 
 namespace PierogiesBot.Discord.Infrastructure.Features.MessageSubscriptions.Handlers;
 
 public class BotSubscriptionRuleMessageHandler : IRuleMessageHandler, IDisposable
 {
-    private readonly ISubject<CommandContext> _subject;
-    private readonly IDisposable? _subDisposable;
-    private readonly IEnumerable<IUserSocketMessageHandler> _messageHandlers;
+    private readonly ISubject<SocketCommandContext>             _subject;
+    private readonly IDisposable?                               _subDisposable;
+    private readonly IEnumerable<IUserSocketMessageHandler>     _messageHandlers;
     private readonly ILogger<BotSubscriptionRuleMessageHandler> _logger;
     
     public IObservable<IResult> ResultObservable { get; }
@@ -18,7 +19,7 @@ public class BotSubscriptionRuleMessageHandler : IRuleMessageHandler, IDisposabl
     {
         _logger = logger;
         _messageHandlers = messageHandlers;
-        _subject = new Subject<CommandContext>();
+        _subject = new Subject<SocketCommandContext>();
 
         ResultObservable = _subject
             .Select(async x => await HandleMessageAsync(x))
@@ -30,11 +31,11 @@ public class BotSubscriptionRuleMessageHandler : IRuleMessageHandler, IDisposabl
 
     public void OnError(Exception error) => _subject.OnError(error);
 
-    public void OnNext(CommandContext value) => _subject.OnNext(value);
+    public void OnNext(SocketCommandContext value) => _subject.OnNext(value);
 
     public void Dispose() => _subDisposable?.Dispose();
 
-    private async ValueTask<IResult> HandleMessageAsync(CommandContext messageContext)
+    private async ValueTask<IResult> HandleMessageAsync(SocketCommandContext messageContext)
     {
         try
         {

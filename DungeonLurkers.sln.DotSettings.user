@@ -1,8 +1,32 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">C:\Users\avabi\AppData\Local\JetBrains\Rider2021.3\resharper-host\temp\Rider\vAny\CoverageData\_DungeonLurkers.1733324179\Snapshot\snapshot.utdcvr</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b41308a4_002Dd305_002D43b8_002Dad63_002D081b040d8b3e/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="3" IsLocked="True" Name="All tests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Or&gt;&#xD;
+    &lt;Category&gt;BotCrontabRule&lt;/Category&gt;&#xD;
+    &lt;Category&gt;BotMessageSubscription&lt;/Category&gt;&#xD;
+    &lt;Category&gt;BotReactRule&lt;/Category&gt;&#xD;
+    &lt;Category&gt;BotResponseRule&lt;/Category&gt;&#xD;
+    &lt;Category&gt;Characters&lt;/Category&gt;&#xD;
+    &lt;Category&gt;CheckUserCommands&lt;/Category&gt;&#xD;
+    &lt;Category&gt;CoreCommands&lt;/Category&gt;&#xD;
+    &lt;Category&gt;GuildSetting&lt;/Category&gt;&#xD;
+    &lt;Category&gt;GuildSettingsCommands&lt;/Category&gt;&#xD;
+    &lt;Category&gt;Identity&lt;/Category&gt;&#xD;
+    &lt;Category&gt;Integration&lt;/Category&gt;&#xD;
+    &lt;Category&gt;ReactionCommands&lt;/Category&gt;&#xD;
+    &lt;Category&gt;Sessions&lt;/Category&gt;&#xD;
+    &lt;Category&gt;SubscribeCommands&lt;/Category&gt;&#xD;
+    &lt;Category&gt;Unit&lt;/Category&gt;&#xD;
+  &lt;/Or&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b5c80b6d_002Db897_002D45f9_002D9833_002D55aad28010b5/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="3" IsActive="True" IsLocked="True" Name="Unit Tests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Category&gt;Unit&lt;/Category&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=be49f4b3_002Dac4b_002D48d8_002Dbdee_002D2bb3052f1e59/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;Tests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Project Location="F:\repos\DungeonLurkers" Presentation="&amp;lt;Tests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
+	
 	<s:String x:Key="/Default/Housekeeping/UnitTestingMru/UnitTestRunner/SpawnedProcessesKnownList/=mongod_002Eexe/@EntryIndexedValue">DoNothing</s:String>
 	
 	

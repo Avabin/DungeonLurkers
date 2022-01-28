@@ -1,17 +1,14 @@
 ﻿using Discord;
 using Discord.Commands;
-using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 using PierogiesBot.Discord.Commands.Features.Logging;
 using PierogiesBot.Persistence.GuildSettings.Features;
-using PierogiesBot.Shared.Features.Dtos;
-using PierogiesBot.Shared.Features.GuidSettings;
 
 namespace PierogiesBot.Discord.Commands.Features.GuildSettings
 {
     [RequireUserPermission(GuildPermission.Administrator)]
     [Group("settings")]
-    public class GuildSettingsCommandModule : LoggingModuleBase
+    public class GuildSettingsCommandModule : LoggingModuleBase<ICommandContext>
     {
         private readonly IGuildSettingFacade _settingsService;
 
@@ -41,13 +38,17 @@ namespace PierogiesBot.Discord.Commands.Features.GuildSettings
             var guildId = Context.Guild.Id;
             var tzInfo = await _settingsService.GetGuildTimezoneAsync(guildId);
 
-            if (string.IsNullOrWhiteSpace(tzInfo)) return;
+            if (string.IsNullOrWhiteSpace(tzInfo))
+            {
+                await ReplyAsync("Nothing found");
+                return;
+            }
 
             await ReplyAsync($"Server timezone is {tzInfo}");
         }
 
         [Command("set_muterole")]
-        public async Task SetMuteRole(SocketRole role)
+        public async Task SetMuteRole(IRole role)
         {
             LogTrace($"Set mute role to {role}");
             var guildId = Context.Guild.Id;

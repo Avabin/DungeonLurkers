@@ -1,12 +1,14 @@
 ﻿using Discord;
+using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
+using PierogiesBot.Discord.Core.Features.MessageSubscriptions.SubscriptionServices;
 using PierogiesBot.Persistence.BotCrontabRule.Features;
 using PierogiesBot.Persistence.BotMessageSubscription.Features;
 using PierogiesBot.Persistence.GuildSettings.Features;
 using PierogiesBot.Shared.Enums;
 using PierogiesBot.Shared.Features.BotMessageSubscriptions;
-using PierogiesBot.Shared.Features.Dtos;
 using Quartz;
+using Quartz.Impl.Matchers;
 using TimeZoneConverter;
 
 namespace PierogiesBot.Discord.Infrastructure.Features.MessageSubscriptions.Crontab;
@@ -101,6 +103,12 @@ internal class CrontabSubscribeService : ICrontabSubscribeService
         _logger.LogInformation("Unsubscribing channel {Channel} in guild {Guild}", channel, guild);
         var existing = await _subscriptionService.GetSubscriptionForChannelAsync(channel.Id, guild.Id, SubscriptionType.Crontab);
 
+        var jobKeys = await _scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupContains(guild.Id.ToString()));
+
+        await _scheduler.DeleteJobs(jobKeys);
+
         if (existing is not null) await _subscriptionService.DeleteAsync(existing.Id);
+        
+        _logger.LogInformation("Unsubscribed channel {Channel} in guild {Guild}", channel, guild);
     }
 }

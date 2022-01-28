@@ -5,7 +5,6 @@ using PierogiesBot.Persistence.BotMessageSubscription.Features;
 using PierogiesBot.Shared.Enums;
 using PierogiesBot.Shared.Features.BotCrontabRules;
 using PierogiesBot.Shared.Features.BotMessageSubscriptions;
-using PierogiesBot.Shared.Features.Dtos;
 using Quartz;
 
 namespace PierogiesBot.Discord.Infrastructure.Features.MessageSubscriptions.Crontab;

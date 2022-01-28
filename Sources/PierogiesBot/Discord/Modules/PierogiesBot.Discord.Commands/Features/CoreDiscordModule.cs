@@ -4,7 +4,7 @@ using PierogiesBot.Discord.Commands.Features.Logging;
 
 namespace PierogiesBot.Discord.Commands.Features
 {
-    public class CoreDiscordModule : LoggingModuleBase
+    public class CoreDiscordModule : LoggingModuleBase<ICommandContext>
     {
         public CoreDiscordModule(ILogger<CoreDiscordModule> logger) : base(logger)
         {

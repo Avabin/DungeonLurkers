@@ -1,15 +1,9 @@
 ﻿using Discord;
 
-namespace PierogiesBot.Discord.Commands.Features.MessageSubscriptions.SubscriptionServices;
+namespace PierogiesBot.Discord.Core.Features.MessageSubscriptions.SubscriptionServices;
 
-public interface IChannelSubscribeService
+public interface IChannelSubscribeService : ILoadSubscriptions
 {
-    /// <summary>
-    /// Loads all saved subscriptions.
-    /// </summary>
-    /// <returns>A <see cref="Task"/> representing the result of the asynchronous operation.</returns>
-    Task LoadSubscriptionsAsync();
-    
     /// <summary>
     /// Subscribes to given channel.
     /// </summary>

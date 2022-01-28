@@ -4,13 +4,13 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
-using PierogiesBot.Discord.Commands.Features.MessageSubscriptions.Handlers;
+using PierogiesBot.Discord.Core.Features.MessageSubscriptions.Handlers;
+using PierogiesBot.Discord.Core.Features.MessageSubscriptions.SubscriptionServices;
 using PierogiesBot.Persistence.BotMessageSubscription.Features;
 using PierogiesBot.Shared.Enums;
 using PierogiesBot.Shared.Features.BotMessageSubscriptions;
-using PierogiesBot.Shared.Features.Dtos;
 
-namespace PierogiesBot.Discord.Commands.Features.MessageSubscriptions.SubscriptionServices;
+namespace PierogiesBot.Discord.Infrastructure.Features.MessageSubscriptions;
 
 public class ChannelSubscribeService : IChannelSubscribeService
 {

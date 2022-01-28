@@ -5,6 +5,7 @@ using Autofac;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using PierogiesBot.Discord.Infrastructure;
 using PierogiesBot.Persistence.BotCrontabRule.Features;
 using PierogiesBot.Persistence.BotMessageSubscription.Features;
 using PierogiesBot.Persistence.BotReactRules.Features;
@@ -33,6 +34,7 @@ public class Startup : StartupBase
                               ? IdentityHttpClient.BaseAddress!.ToString()
                               : Configuration.GetValue<string>("IdentityUrl");
         services.AddControllers();
+
         services.AddAutoMapper(expression =>
         {
             expression.AddProfile<PersistenceBotCrontabRulesMapperProfile>();
@@ -117,6 +119,8 @@ public class Startup : StartupBase
 
     public void ConfigureContainer(ContainerBuilder builder)
     {
+        if(Configuration["IsDiscordEnabled"] == bool.TrueString)
+            builder.AddDiscordServices();
         builder.AddPersistenceCore();
         builder.AddPersistenceMongo();
         builder.AddBotCrontabRulesMongoServices();

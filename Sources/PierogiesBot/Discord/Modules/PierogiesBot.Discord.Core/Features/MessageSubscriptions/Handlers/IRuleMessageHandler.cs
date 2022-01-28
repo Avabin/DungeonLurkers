@@ -1,6 +1,6 @@
 ﻿using Discord.Commands;
 
-namespace PierogiesBot.Discord.Commands.Features.MessageSubscriptions.Handlers;
+namespace PierogiesBot.Discord.Core.Features.MessageSubscriptions.Handlers;
 
 public interface IRuleMessageHandler : IObserver<SocketCommandContext>
 {

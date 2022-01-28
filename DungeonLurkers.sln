@@ -93,6 +93,18 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PierogiesBot.Tests", "Tests\PierogiesBot\PierogiesBot.Tests\PierogiesBot.Tests.csproj", "{7901FAEB-A3D1-43CB-BF77-04B747D00F51}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{05FDD300-B22C-49EF-B570-6DBE7AA228C6}"
+	ProjectSection(SolutionItems) = preProject
+		Build.ps1 = Build.ps1
+		Test.ps1 = Test.ps1
+		Scripts\TheDungeonGuide\TheDungeonGuide.build.ps1 = Scripts\TheDungeonGuide\TheDungeonGuide.build.ps1
+		Scripts\TheDungeonGuide\TheDungeonGuide.test.ps1 = Scripts\TheDungeonGuide\TheDungeonGuide.test.ps1
+		Scripts\PierogiesBot\PierogiesBot.build.ps1 = Scripts\PierogiesBot\PierogiesBot.build.ps1
+		Scripts\PierogiesBot\PierogiesBot.test.ps1 = Scripts\PierogiesBot\PierogiesBot.test.ps1
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PierogiesBot.Discord.Commands.Tests", "Tests\PierogiesBot\PierogiesBot.Discord.Commands.Tests\PierogiesBot.Discord.Commands.Tests.csproj", "{EFF8A774-6C20-4BFB-8B5F-2A6A0BB0BD93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PierogiesBot.Discord.Core", "Sources\PierogiesBot\Discord\Modules\PierogiesBot.Discord.Core\PierogiesBot.Discord.Core.csproj", "{7560F4BB-303F-4A7F-8257-83F8E14D02E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -148,6 +160,8 @@ Global
 		{972AE717-A794-4E7B-BD8E-5C6313B8D4D0} = {686717D6-2A03-426C-BC80-FDF31745147A}
 		{CF84B7D9-5192-4A39-BEB7-E39411A5459B} = {C2A0D960-42AF-43DF-B9A4-0925338CF268}
 		{7901FAEB-A3D1-43CB-BF77-04B747D00F51} = {D3A8F71F-B49F-4CE6-833F-E7A01D4E633A}
+		{EFF8A774-6C20-4BFB-8B5F-2A6A0BB0BD93} = {D3A8F71F-B49F-4CE6-833F-E7A01D4E633A}
+		{7560F4BB-303F-4A7F-8257-83F8E14D02E6} = {9281B308-E5F5-4A49-A5D0-765AEC0EB5DF}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{014A1370-7B33-4ABE-B77E-851962A2CD3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -438,5 +452,29 @@ Global
 		{7901FAEB-A3D1-43CB-BF77-04B747D00F51}.Release PierogiesBot|Any CPU.Build.0 = Release PierogiesBot|Any CPU
 		{7901FAEB-A3D1-43CB-BF77-04B747D00F51}.Debug TheDungeonGuide|Any CPU.ActiveCfg = Debug TheDungeonGuide|Any CPU
 		{7901FAEB-A3D1-43CB-BF77-04B747D00F51}.Release TheDungeonGuide|Any CPU.ActiveCfg = Release TheDungeonGuide|Any CPU
+		{EFF8A774-6C20-4BFB-8B5F-2A6A0BB0BD93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFF8A774-6C20-4BFB-8B5F-2A6A0BB0BD93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFF8A774-6C20-4BFB-8B5F-2A6A0BB0BD93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFF8A774-6C20-4BFB-8B5F-2A6A0BB0BD93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFF8A774-6C20-4BFB-8B5F-2A6A0BB0BD93}.Debug PierogiesBot|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFF8A774-6C20-4BFB-8B5F-2A6A0BB0BD93}.Debug PierogiesBot|Any CPU.Build.0 = Debug|Any CPU
+		{EFF8A774-6C20-4BFB-8B5F-2A6A0BB0BD93}.Release PierogiesBot|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFF8A774-6C20-4BFB-8B5F-2A6A0BB0BD93}.Release PierogiesBot|Any CPU.Build.0 = Debug|Any CPU
+		{EFF8A774-6C20-4BFB-8B5F-2A6A0BB0BD93}.Debug TheDungeonGuide|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFF8A774-6C20-4BFB-8B5F-2A6A0BB0BD93}.Debug TheDungeonGuide|Any CPU.Build.0 = Debug|Any CPU
+		{EFF8A774-6C20-4BFB-8B5F-2A6A0BB0BD93}.Release TheDungeonGuide|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFF8A774-6C20-4BFB-8B5F-2A6A0BB0BD93}.Release TheDungeonGuide|Any CPU.Build.0 = Debug|Any CPU
+		{7560F4BB-303F-4A7F-8257-83F8E14D02E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7560F4BB-303F-4A7F-8257-83F8E14D02E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7560F4BB-303F-4A7F-8257-83F8E14D02E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7560F4BB-303F-4A7F-8257-83F8E14D02E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7560F4BB-303F-4A7F-8257-83F8E14D02E6}.Debug PierogiesBot|Any CPU.ActiveCfg = Debug|Any CPU
+		{7560F4BB-303F-4A7F-8257-83F8E14D02E6}.Debug PierogiesBot|Any CPU.Build.0 = Debug|Any CPU
+		{7560F4BB-303F-4A7F-8257-83F8E14D02E6}.Release PierogiesBot|Any CPU.ActiveCfg = Debug|Any CPU
+		{7560F4BB-303F-4A7F-8257-83F8E14D02E6}.Release PierogiesBot|Any CPU.Build.0 = Debug|Any CPU
+		{7560F4BB-303F-4A7F-8257-83F8E14D02E6}.Debug TheDungeonGuide|Any CPU.ActiveCfg = Debug|Any CPU
+		{7560F4BB-303F-4A7F-8257-83F8E14D02E6}.Debug TheDungeonGuide|Any CPU.Build.0 = Debug|Any CPU
+		{7560F4BB-303F-4A7F-8257-83F8E14D02E6}.Release TheDungeonGuide|Any CPU.ActiveCfg = Debug|Any CPU
+		{7560F4BB-303F-4A7F-8257-83F8E14D02E6}.Release TheDungeonGuide|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal

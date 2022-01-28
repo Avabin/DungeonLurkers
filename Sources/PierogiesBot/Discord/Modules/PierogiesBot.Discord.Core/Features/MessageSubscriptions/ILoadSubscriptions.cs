@@ -1,4 +1,4 @@
-﻿namespace PierogiesBot.Discord.Infrastructure.Features.MessageSubscriptions;
+﻿namespace PierogiesBot.Discord.Core.Features.MessageSubscriptions;
 
 public interface ILoadSubscriptions
 {

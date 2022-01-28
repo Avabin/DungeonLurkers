@@ -26,8 +26,4 @@
       <ProjectReference Include="..\PierogiesBot.Discord.Commands\PierogiesBot.Discord.Commands.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Features\MessageSubscriptions\Extensions" />
-    </ItemGroup>
-
 </Project>

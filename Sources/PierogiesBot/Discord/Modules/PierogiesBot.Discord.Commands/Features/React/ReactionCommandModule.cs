@@ -7,7 +7,7 @@ namespace PierogiesBot.Discord.Commands.Features.React
 {
     [RequireUserPermission(GuildPermission.AddReactions)]
     [Group("react")]
-    public class ReactionCommandModule : LoggingModuleBase
+    public class ReactionCommandModule : LoggingModuleBase<ICommandContext>
     {
         public ReactionCommandModule(ILogger<ReactionCommandModule> logger) : base(logger)
         {
@@ -23,13 +23,22 @@ namespace PierogiesBot.Discord.Commands.Features.React
                 .FlattenAsync();
 
             var messageBefore = messagesBefore?.FirstOrDefault();
-            if (messageBefore is null) return;
+
+            if (messageBefore is null)
+            {
+                LogTrace($"Message before {Context.Message} not found");
+                return;
+            }
 
             var emote = Context
                 .Guild.Emotes
                 .FirstOrDefault(e => e.Name.Equals(reactionName, StringComparison.InvariantCultureIgnoreCase));
 
-            if (emote is null) return;
+            if (emote is null)
+            {
+                LogTrace($"Emote {reactionName} not found");
+                return;
+            }
 
             await messageBefore.AddReactionAsync(emote);
         }
@@ -46,7 +55,11 @@ namespace PierogiesBot.Discord.Commands.Features.React
                 .Guild.Emotes
                 .FirstOrDefault(e => e.Name.Equals(reactionName, StringComparison.InvariantCultureIgnoreCase));
 
-            if (emote is null) return;
+            if (emote is null)
+            {
+                LogTrace($"Emote {reactionName} not found");
+                return;
+            }
 
             await message.AddReactionAsync(emote);
         }

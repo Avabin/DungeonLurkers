@@ -23,6 +23,7 @@
       <ProjectReference Include="..\..\..\Persistence\PierogiesBot.Persistence.BotReactRules\PierogiesBot.Persistence.BotReactRules.csproj" />
       <ProjectReference Include="..\..\..\Persistence\PierogiesBot.Persistence.BotResponseRules\PierogiesBot.Persistence.BotResponseRules.csproj" />
       <ProjectReference Include="..\..\..\Persistence\PierogiesBot.Persistence.GuildSettings\PierogiesBot.Persistence.GuildSettings.csproj" />
+      <ProjectReference Include="..\PierogiesBot.Discord.Core\PierogiesBot.Discord.Core.csproj" />
     </ItemGroup>
 
 </Project>

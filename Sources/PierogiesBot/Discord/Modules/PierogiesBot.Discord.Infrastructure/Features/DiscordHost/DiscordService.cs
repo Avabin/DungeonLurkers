@@ -5,8 +5,9 @@ using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using PierogiesBot.Discord.Infrastructure.Features.MessageSubscriptions;
-using PierogiesBot.Discord.Infrastructure.Features.TimeZoneTypeConverter;
+using PierogiesBot.Discord.Commands.Features;
+using PierogiesBot.Discord.Core.Features.MessageSubscriptions;
+using PierogiesBot.Discord.Core.Features.TimeZoneTypeConverter;
 
 // ReSharper disable TemplateIsNotCompileTimeConstantProblem
 

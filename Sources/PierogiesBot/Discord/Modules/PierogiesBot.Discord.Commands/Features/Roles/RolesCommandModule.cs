@@ -1,6 +1,5 @@
 ﻿using Discord;
 using Discord.Commands;
-using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 using PierogiesBot.Discord.Commands.Features.Logging;
 
@@ -8,7 +7,7 @@ namespace PierogiesBot.Discord.Commands.Features.Roles
 {
     [RequireUserPermission(GuildPermission.ManageRoles)]
     [Group("role")]
-    public class RolesCommandModule : LoggingModuleBase
+    public class RolesCommandModule : LoggingModuleBase<ICommandContext>
     {
         public RolesCommandModule(ILogger<RolesCommandModule> logger)
             : base(logger)
@@ -16,7 +15,7 @@ namespace PierogiesBot.Discord.Commands.Features.Roles
         }
 
         [Command("add")]
-        public async Task AddRoleToUser(SocketRole role, SocketGuildUser user)
+        public async Task AddRoleToUser(IRole role, IGuildUser user)
         {
             LogTrace($"Add role {role} to user {user}");
             await user.AddRoleAsync(role);
@@ -24,7 +23,7 @@ namespace PierogiesBot.Discord.Commands.Features.Roles
         }
 
         [Command("remove")]
-        public async Task RemoveRoleToUser(SocketRole role, SocketGuildUser user)
+        public async Task RemoveRoleToUser(IRole role, IGuildUser user)
         {
             LogTrace($"Add role {role} to user {user}");
             await user.RemoveRoleAsync(role);

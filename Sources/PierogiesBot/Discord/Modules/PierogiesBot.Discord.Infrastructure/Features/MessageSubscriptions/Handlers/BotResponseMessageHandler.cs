@@ -1,4 +1,5 @@
 using Discord.Commands;
+using PierogiesBot.Discord.Core.Features.MessageSubscriptions.Handlers;
 using PierogiesBot.Persistence.BotResponseRules.Features;
 using PierogiesBot.Shared.Enums;
 using PierogiesBot.Shared.Features.BotResponseRules;
@@ -17,7 +18,7 @@ internal class BotResponseMessageHandler : IUserSocketMessageHandler
     }
 
 
-    public async Task<IResult> HandleAsync(CommandContext messageContext)
+    public async Task<IResult> HandleAsync(SocketCommandContext messageContext)
     {
         var rules = await _repository.GetAllAsync();
         var rule = rules.FirstOrDefault(r => r.CanExecuteRule(messageContext.Message.Content));

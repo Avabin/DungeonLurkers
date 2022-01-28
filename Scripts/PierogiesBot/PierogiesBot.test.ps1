@@ -23,4 +23,8 @@ task TestGuildSettings {
     exec {dotnet test $SolutionFile --no-build --filter "GuildSettings" /p:CollectCoverage=true /p:CoverletOutput="$SolutionPath\TestResults\GuildSettings.opencover.xml" /p:CoverletOutputFormat=opencover}
 }
 
-task .  TestBotCrontabRules, TestBotMessageSubscriptions, TestBotReactRules, TestBotResponseRules, TestGuildSettings
+task RunUnitTests {
+    exec {dotnet test $SolutionFile --no-build --filter "cat=Unit" /p:CollectCoverage=true /p:CoverletOutput="$SolutionPath\TestResults\PierogiesBotUnit.opencover.xml" /p:CoverletOutputFormat=opencover}
+}
+
+task .  TestBotCrontabRules, TestBotMessageSubscriptions, TestBotReactRules, TestBotResponseRules, TestGuildSettings, RunUnitTests

@@ -26,7 +26,7 @@ public class Startup
     {
         Configuration = configuration;
         Environment   = environment;
-        _validIssuer  = Configuration["JWT:ValidIssuer"];
+        _validIssuer  = Configuration["JWT:ValidIssuer"] ?? "https://localhost";
     }
 
     public IConfiguration   Configuration { get; }
@@ -182,7 +182,8 @@ public class Startup
                     Version = "v1",
                 });
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+                var xmlFilePath = Path.Combine(AppContext.BaseDirectory, xmlFilename);
+                c.IncludeXmlComments(xmlFilePath);
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",

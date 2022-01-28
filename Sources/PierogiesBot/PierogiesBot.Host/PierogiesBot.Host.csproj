@@ -12,6 +12,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Shared\Persistence\Shared.Persistence.Mongo\Shared.Persistence.Mongo.csproj" />
       <ProjectReference Include="..\..\Shared\Shared.Infrastructure\Shared.Infrastructure.csproj" />
+      <ProjectReference Include="..\Discord\Modules\PierogiesBot.Discord.Infrastructure\PierogiesBot.Discord.Infrastructure.csproj" />
       <ProjectReference Include="..\Persistence\PierogiesBot.Persistence.BotCrontabRule\PierogiesBot.Persistence.BotCrontabRule.csproj" />
       <ProjectReference Include="..\Persistence\PierogiesBot.Persistence.BotMessageSubscription\PierogiesBot.Persistence.BotMessageSubscription.csproj" />
       <ProjectReference Include="..\Persistence\PierogiesBot.Persistence.BotReactRules\PierogiesBot.Persistence.BotReactRules.csproj" />

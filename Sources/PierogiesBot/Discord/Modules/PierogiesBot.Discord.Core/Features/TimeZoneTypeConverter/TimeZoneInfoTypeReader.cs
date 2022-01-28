@@ -1,7 +1,7 @@
 ﻿using Discord.Commands;
 using TimeZoneConverter;
 
-namespace PierogiesBot.Discord.Commands.Features.TimeZoneTypeConverter
+namespace PierogiesBot.Discord.Core.Features.TimeZoneTypeConverter
 {
     public class TimeZoneInfoTypeReader : TypeReader
     {
