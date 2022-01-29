@@ -13,6 +13,7 @@ using Shared.Persistence.Identity.Features.Users;
 using Shared.Persistence.Mongo.Features.Database.Repository;
 using Tests.Shared;
 using TheDungeonGuide.Characters.Host;
+using TheDungeonGuide.Characters.Host.Controllers;
 using TheDungeonGuide.Persistence.Characters;
 using TheDungeonGuide.Shared.Features.Characters;
 
@@ -21,6 +22,7 @@ namespace TheDungeonGuide.Characters.Tests;
 [TestFixture]
 [Category(nameof(Characters))]
 [Category("Integration")]
+[TestOf(typeof(CharacterController))]
 [SuppressMessage("Style", "CC0061", MessageId = "Asynchronous method can be terminated with the \'Async\' keyword.")]
 public class CharacterControllerTests : AuthenticatedTestsBase
 {

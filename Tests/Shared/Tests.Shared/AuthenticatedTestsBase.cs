@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using Identity.Host;
 using Microsoft.AspNetCore.Identity;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Mongo2Go;
 using MongoDB.Driver;
 using RestEase;
 using Shared.Features;
@@ -18,6 +20,7 @@ using Shared.Features.Authentication;
 using Shared.Features.Users;
 using Shared.Persistence.Core.Features.Documents;
 using Shared.Persistence.Identity.Features.Users;
+using Shared.Persistence.Mongo.Features.Database;
 using Shared.Persistence.Mongo.Features.Database.Documents;
 
 namespace Tests.Shared;
@@ -27,13 +30,15 @@ public abstract class AuthenticatedTestsBase : IAuthenticatedControllerTests, ID
 {
     protected        Guid                            TestUserSuffix = Guid.NewGuid();
     private readonly List<IDisposable>               _disposables   = new();
+    private readonly List<MongoDbRunner>             _mongos        = new();
     private          WebApplicationFactory<Startup>? _identityWaf;
 
-    public abstract string       ClientId { get; }
+    public abstract string       ClientId     { get; }
     public abstract string       ClientSecret { get; }
-    public virtual  string       Scope    { get; } = "users.*";
-    public abstract UserDocument TestUser { get; }
-    public abstract string       Password { get; }
+    public virtual  string       Scope        { get; } = "users.*";
+    public abstract UserDocument TestUser     { get; }
+    public abstract string       Password     { get; }
+
     public async Task ClearCollection<T>(IMongoClient client) where T : IDocument<string>
     {
         var collectionName = MongoDbHelper.GetCollectionName<T>();
@@ -68,29 +73,72 @@ public abstract class AuthenticatedTestsBase : IAuthenticatedControllerTests, ID
 
     public async Task<IUsersApi> GetIdentityRestClient()
     {
-        _identityWaf ??= new WebApplicationFactory<Startup>();
+        if (_identityWaf is null)
+        {
+            var mongo = MongoDbRunner.Start();
+            _mongos.Add(mongo);
+            _identityWaf =
+                new WebApplicationFactory<Startup>()
+                   .WithWebHostBuilder(builder => builder.ConfigureAppConfiguration((_, configurationBuilder) =>
+                                           configurationBuilder
+                                              .AddInMemoryCollection(new List<KeyValuePair<string, string>>
+                                               {
+                                                   new("ConnectionStrings:MongoDb",
+                                                       mongo
+                                                          .ConnectionString)
+                                               })));
+        }
+
         var usersClient = _identityWaf.CreateClient();
         await EnsureTestUserCreatedAsync();
         var usersRestClient = RestClient.For<IUsersApi>(usersClient);
         await usersRestClient.AuthorizeWithPasswordAsync(TestUser.UserName, Password, Scope, ClientId, ClientSecret);
         return usersRestClient;
     }
+
     public async Task<(TClient, IServiceProvider)> ConfigureResourceServer<TStartup, TClient>(
         Action<HttpClient> backchannelSetter) where TStartup : class where TClient : IAuthenticatedApi
     {
         var executingAssemblyLocation = Assembly.GetExecutingAssembly().Location;
         var executingDirectory        = Path.GetFullPath("..", executingAssemblyLocation);
         var fileProvider              = new PhysicalFileProvider(executingDirectory);
+
         // Create identity server if not exists
-        _identityWaf ??= new WebApplicationFactory<Startup>()
-           .WithWebHostBuilder(builder => builder.ConfigureAppConfiguration((_, configurationBuilder) => configurationBuilder.SetFileProvider(fileProvider)));
+        if (_identityWaf is null)
+        {
+            var mongo = MongoDbRunner.Start();
+            _mongos.Add(mongo);
+            _identityWaf =
+                new WebApplicationFactory<Startup>()
+                   .WithWebHostBuilder(builder => builder.ConfigureAppConfiguration((_, configurationBuilder) =>
+                                           configurationBuilder
+                                              .AddInMemoryCollection(new List<KeyValuePair<string, string>>
+                                               {
+                                                   new("ConnectionStrings:MongoDb",
+                                                       mongo
+                                                          .ConnectionString)
+                                               })
+                                              .SetFileProvider(fileProvider)));
+        }
+
         var identityClient = _identityWaf.CreateClient();
         await EnsureTestUserCreatedAsync();
         // Invoke setter to set resource server HttpClient with configured identity client
         backchannelSetter?.Invoke(identityClient);
         // Create resource server
+        var resourceMongo = MongoDbRunner.Start();
+        _mongos.Add(resourceMongo);
         var resourceWaf = new WebApplicationFactory<TStartup>()
-           .WithWebHostBuilder(builder => builder.ConfigureAppConfiguration((_, configurationBuilder) => configurationBuilder.SetFileProvider(fileProvider)));
+           .WithWebHostBuilder(builder => builder
+                                  .ConfigureAppConfiguration((_, configurationBuilder) => configurationBuilder
+                                                                .AddInMemoryCollection(new List<KeyValuePair<string,
+                                                                     string>>
+                                                                 {
+                                                                     new("ConnectionStrings:MongoDb",
+                                                                         resourceMongo
+                                                                            .ConnectionString)
+                                                                 })
+                                                                .SetFileProvider(fileProvider)));
         // Store all created resource  servers for later dispose
         _disposables.Add(resourceWaf);
         // Create strongly typed clients
@@ -98,7 +146,9 @@ public abstract class AuthenticatedTestsBase : IAuthenticatedControllerTests, ID
         var resourceClient  = RestClient.For<TClient>(resourceWaf.CreateClient());
 
         // Try to authorize as TestUser
-        var result = await usersRestClient.AuthorizeWithPasswordAsync(TestUser.UserName, Password, Scope, ClientId, ClientSecret);
+        var result =
+            await usersRestClient.AuthorizeWithPasswordAsync(TestUser.UserName, Password, Scope, ClientId,
+                                                             ClientSecret);
         // Set received bearer token to resource client to be able to call protected resources
         resourceClient.SetBearer(result.AccessToken);
 
@@ -110,6 +160,7 @@ public abstract class AuthenticatedTestsBase : IAuthenticatedControllerTests, ID
         Dispose(true);
         GC.SuppressFinalize(this);
     }
+
     protected T GetIdentityHostService<T>() where T : notnull => _identityWaf!.Services.GetRequiredService<T>();
 
     private async Task EnsureTestUserCreatedAsync()
@@ -136,9 +187,15 @@ public abstract class AuthenticatedTestsBase : IAuthenticatedControllerTests, ID
             await _identityWaf.DisposeAsync();
             _identityWaf = null;
         }
+
         foreach (var disposable in _disposables)
         {
             disposable.Dispose();
+        }
+
+        foreach (var mongoDbRunner in _mongos)
+        {
+            mongoDbRunner.Dispose();
         }
     }
 

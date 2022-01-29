@@ -15,6 +15,7 @@ using Shared.Persistence.Mongo.Features.Database.Repository;
 using Tests.Shared;
 using TheDungeonGuide.Persistence.Sessions;
 using TheDungeonGuide.Sessions.Host;
+using TheDungeonGuide.Sessions.Host.Controllers;
 using TheDungeonGuide.Shared.Features.Sessions;
 #pragma warning disable CS1591
 
@@ -23,6 +24,7 @@ namespace TheDungeonGuide.Sessions.Tests;
 [TestFixture]
 [Category(nameof(Sessions))]
 [Category("Integration")]
+[TestOf(typeof(SessionController))]
 [SuppressMessage("Style", "CC0061", MessageId = "Asynchronous method can be terminated with the \'Async\' keyword.")]
 public class SessionControllerTests : AuthenticatedTestsBase
 {

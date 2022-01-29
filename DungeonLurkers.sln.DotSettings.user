@@ -1,6 +1,36 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=Characters_002ECube_003B_002A_003BCharacters_002ECube_002EProgram_003B_002A/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=Characters_002ECube_003B_002A_003BCharacters_002ECube_002EProgram_003B_002A/@EntryIndexRemoved">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=Characters_002ETests_003B_002A_003B_002A_003B_002A/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=Characters_002ETests_003B_002A_003B_002A_003B_002A/@EntryIndexRemoved">True</s:Boolean>
+	
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=Identity_002ETests_003B_002A_003B_002A_003B_002A/@EntryIndexRemoved">True</s:Boolean>
+	
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=PierogiesBot_002EDiscord_002ECommands_002ETests_003B_002A_003B_002A_003B_002A/@EntryIndexRemoved">True</s:Boolean>
+	
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=PierogiesBot_002ETests_003B_002A_003B_002A_003B_002A/@EntryIndexRemoved">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=Sessions_002ECube_003B_002A_003BSessions_002ECube_002EProgram_003B_002A/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=Sessions_002ECube_003B_002A_003BSessions_002ECube_002EProgram_003B_002A/@EntryIndexRemoved">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=Sessions_002ETests_003B_002A_003B_002A_003B_002A/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=Sessions_002ETests_003B_002A_003B_002A_003B_002A/@EntryIndexRemoved">True</s:Boolean>
+	
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=Tests_002EShared_003B_002A_003B_002A_003B_002A/@EntryIndexRemoved">True</s:Boolean>
+	
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=TheDungeonGuide_002ECharacters_002ETests_003B_002A_003B_002A_003B_002A/@EntryIndexRemoved">True</s:Boolean>
+	
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=TheDungeonGuide_002ESessions_002ETests_003B_002A_003B_002A_003B_002A/@EntryIndexRemoved">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=Users_002ECube_003B_002A_003BUsers_002ECube_002EProgram_003B_002A/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=Users_002ECube_003B_002A_003BUsers_002ECube_002EProgram_003B_002A/@EntryIndexRemoved">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=Users_002ETests_003B_002A_003B_002A_003B_002A/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=Users_002ETests_003B_002A_003B_002A_003B_002A/@EntryIndexRemoved">True</s:Boolean>
 	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">C:\Users\avabi\AppData\Local\JetBrains\Rider2021.3\resharper-host\temp\Rider\vAny\CoverageData\_DungeonLurkers.1733324179\Snapshot\snapshot.utdcvr</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b41308a4_002Dd305_002D43b8_002Dad63_002D081b040d8b3e/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="3" IsLocked="True" Name="All tests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=65a30abb_002D268c_002D4a5a_002D9c3d_002D56758be421c7/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CharacterControllerTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::21E5B9F4-F568-4384-84F9-3776CC6224B9::net6.0::TheDungeonGuide.Characters.Tests.CharacterControllerTests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b41308a4_002Dd305_002D43b8_002Dad63_002D081b040d8b3e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="3" IsActive="True" IsLocked="True" Name="All tests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Or&gt;&#xD;
     &lt;Category&gt;BotCrontabRule&lt;/Category&gt;&#xD;
     &lt;Category&gt;BotMessageSubscription&lt;/Category&gt;&#xD;
@@ -19,11 +49,11 @@
     &lt;Category&gt;Unit&lt;/Category&gt;&#xD;
   &lt;/Or&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b5c80b6d_002Db897_002D45f9_002D9833_002D55aad28010b5/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="3" IsActive="True" IsLocked="True" Name="Unit Tests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b5c80b6d_002Db897_002D45f9_002D9833_002D55aad28010b5/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="3" IsLocked="True" Name="Unit Tests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Category&gt;Unit&lt;/Category&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=be49f4b3_002Dac4b_002D48d8_002Dbdee_002D2bb3052f1e59/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;Tests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=be49f4b3_002Dac4b_002D48d8_002Dbdee_002D2bb3052f1e59/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from &amp;lt;Tests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Project Location="F:\repos\DungeonLurkers" Presentation="&amp;lt;Tests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	

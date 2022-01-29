@@ -14,20 +14,11 @@ public static class ContainerBuilderExtensions
     {
         builder.RegisterGeneric(typeof(MongoRepository<>)).AsImplementedInterfaces();
         builder.RegisterGeneric(typeof(MongoDocumentOperationFacade<,>)).AsImplementedInterfaces();
-        builder.RegisterType<Mongo2GoService>().SingleInstance();
         builder.Register(ctx =>
         {
-            var env              = ctx.Resolve<IHostEnvironment>();
             var config           = ctx.Resolve<IConfiguration>();
             var connectionString = config.GetConnectionString("MongoDb");
-
-            if (!env.IsDevelopment() || config["UseMongo2Go"] != bool.TrueString)
-                return new MongoClient(connectionString);
-
-            var mongo      = ctx.Resolve<Mongo2GoService>();
-            var connString = mongo.StartMongo();
-
-            return new MongoClient(connString);
+            return new MongoClient(connectionString);
         }).SingleInstance().AsImplementedInterfaces();
     }
 }

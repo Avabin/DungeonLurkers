@@ -99,12 +99,6 @@ namespace Identity.Tests
             result.UserName.Should().Be(request.UserName);
             result.Email.Should().Be(request.Email);
             result.Roles.Should().BeEquivalentTo(request.Roles);
-
-            saved.Should().NotBeNull();
-            saved!.Id.Should().Be(result.Id);
-            saved.UserName.Should().Be(result.UserName);
-            saved.Email.Should().Be(result.Email);
-            saved.Roles.Should().BeEquivalentTo(result.Roles);
         }
 
         [Test]
