@@ -25,11 +25,7 @@
 	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=Users_002ETests_003B_002A_003B_002A_003B_002A/@EntryIndexRemoved">True</s:Boolean>
 	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">C:\Users\avabi\AppData\Local\JetBrains\Rider2021.3\resharper-host\temp\Rider\vAny\CoverageData\_DungeonLurkers.1733324179\Snapshot\snapshot.utdcvr</s:String>
 	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=65a30abb_002D268c_002D4a5a_002D9c3d_002D56758be421c7/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CharacterControllerTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::21E5B9F4-F568-4384-84F9-3776CC6224B9::net6.0::TheDungeonGuide.Characters.Tests.CharacterControllerTests&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
+	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b41308a4_002Dd305_002D43b8_002Dad63_002D081b040d8b3e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="3" IsActive="True" IsLocked="True" Name="All tests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Or&gt;&#xD;
     &lt;Category&gt;BotCrontabRule&lt;/Category&gt;&#xD;

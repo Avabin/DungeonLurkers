@@ -1,10 +1,10 @@
 param (
-    [ValidateSet("PierogiesBot", "TheDungeonGuide", "All")]
+    [ValidateSet("PierogiesBot", "TheDungeonGuide", "Identity", "All")]
     $Project = "All"
 )
 
 if($Project -eq "All") {
-    $projects = @("PierogiesBot", "TheDungeonGuide");
+    $projects = @("PierogiesBot", "TheDungeonGuide", "Identity");
 } else {
     $projects = @($Project);
 }

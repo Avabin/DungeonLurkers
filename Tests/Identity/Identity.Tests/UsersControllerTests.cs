@@ -92,7 +92,6 @@ namespace Identity.Tests
 
             // Act
             var result = await _client.CreateUserAsync(request);
-            var saved  = await mongoRepository.GetByIdAsync(result.Id);
 
             // Assert
             result.Id.Should().NotBeEmpty();
