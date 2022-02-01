@@ -11,7 +11,7 @@ if($Project -eq "All") {
 
 $solutionPath = $PSScriptRoot
 
-Remove-Item .\TestResults\* -Recurse -Force
+Remove-Item .\TestResults\* -Recurse -Force -ErrorAction SilentlyContinue
 
 foreach ($project in $projects) {
     Write-Host "Running tests for $project"
