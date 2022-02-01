@@ -33,11 +33,11 @@ task BuildSessions {
 }
 
 task TestCharacters {
-    exec { dotnet test $SolutionFile.FullName --no-build --filter "Characters" /p:CollectCoverage=true /p:CoverletOutput="$SolutionPath\TestResults\Characters.cobertura.xml" /p:CoverletOutputFormat=cobertura }
+    exec { dotnet test $SolutionFile.FullName --no-build --filter "Characters" /p:CollectCoverage=true /p:CoverletOutput="$SolutionPath\TestResults\Characters.opencover.xml" /p:CoverletOutputFormat=opencover }
 }
 
 task TestSessions {
-    exec { dotnet test $SolutionFile.FullName --no-build --filter "Sessions" /p:CollectCoverage=true /p:CoverletOutput="$SolutionPath\TestResults\Sessions.cobertura.xml" /p:CoverletOutputFormat=cobertura }
+    exec { dotnet test $SolutionFile.FullName --no-build --filter "Sessions" /p:CollectCoverage=true /p:CoverletOutput="$SolutionPath\TestResults\Sessions.opencover.xml" /p:CoverletOutputFormat=opencover }
 }
 
 task Build CleanCharacters, CleanSessions, BuildCharacters, BuildSessions

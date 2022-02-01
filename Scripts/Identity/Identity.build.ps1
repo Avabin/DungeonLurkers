@@ -20,7 +20,7 @@ task BuildHost {
 
 Write-Host "Solution file: $SolutionFile"
 task TestIdentity {
-    exec {dotnet test $SolutionFile.FullName --no-build --filter "cat=Identity" /p:CollectCoverage=true /p:CoverletOutput="$SolutionPath\TestResults\Identity.cobertura.xml" /p:CoverletOutputFormat=cobertura}
+    exec {dotnet test $SolutionFile.FullName --no-build --filter "cat=Identity" /p:CollectCoverage=true /p:CoverletOutput="$SolutionPath\TestResults\Identity.opencover.xml" /p:CoverletOutputFormat=opencover}
 }
 
 task Test TestIdentity
