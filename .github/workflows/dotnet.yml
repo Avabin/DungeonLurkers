@@ -35,16 +35,8 @@ jobs:
         run: |
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
-      - name: Cache global tools
-        id: cache-global-tools
-        uses: actions/cache@v1
-        with:
-          path: %USERPROFILE%\.dotnet\tools
-          key: ${{ runner.os }}-global-tools
-          restore-keys: ${{ runner.os }}-global-tools
       - name: Install Invoke-Build
         shell: powershell
-        if: steps.cache-global-tools.outputs.cache-hit != 'true'
         run: |
           dotnet tool install --global ib
       - name: Begin analyze
