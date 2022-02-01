@@ -21,6 +21,7 @@ namespace PierogiesBot.Tests;
 [TestFixture]
 [Category("Integration")]
 [Category("BotReactRule")]
+[Category("PierogiesBot")]
 [TestOf(typeof(BotReactRuleController))]
 public class BotReactRuleControllerIntegrationTests : AuthenticatedTestsBase
 {

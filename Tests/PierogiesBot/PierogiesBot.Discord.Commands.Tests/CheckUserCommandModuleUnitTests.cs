@@ -12,6 +12,7 @@ namespace PierogiesBot.Discord.Commands.Tests;
 [TestFixture]
 [Category("Unit")]
 [Category("CheckUserCommands")]
+[Category("PierogiesBot")]
 [TestOf(typeof(CheckUserCommandModule))]
 public class CheckUserCommandModuleUnitTests
 {

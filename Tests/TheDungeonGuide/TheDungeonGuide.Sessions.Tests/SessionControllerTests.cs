@@ -24,6 +24,7 @@ namespace TheDungeonGuide.Sessions.Tests;
 [TestFixture]
 [Category(nameof(Sessions))]
 [Category("Integration")]
+[Category("TheDungeonGuide")]
 [TestOf(typeof(SessionController))]
 [SuppressMessage("Style", "CC0061", MessageId = "Asynchronous method can be terminated with the \'Async\' keyword.")]
 public class SessionControllerTests : AuthenticatedTestsBase

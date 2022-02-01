@@ -15,6 +15,7 @@ namespace PierogiesBot.Discord.Commands.Tests;
 [TestFixture]
 [Category("Unit")]
 [Category("GuildSettingsCommands")]
+[Category("PierogiesBot")]
 [TestOf(typeof(GuildSettingsCommandModule))]
 public class GuildSettingsCommandModuleUnitTests
 {

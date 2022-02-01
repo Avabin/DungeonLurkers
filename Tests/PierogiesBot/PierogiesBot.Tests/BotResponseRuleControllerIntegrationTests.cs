@@ -23,6 +23,7 @@ namespace PierogiesBot.Tests;
 [TestFixture]
 [Category("Integration")]
 [Category("BotResponseRule")]
+[Category("PierogiesBot")]
 [TestOf(typeof(BotResponseRuleController))]
 public class BotResponseRuleControllerIntegrationTests : AuthenticatedTestsBase
 {

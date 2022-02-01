@@ -19,6 +19,7 @@ namespace PierogiesBot.Tests;
 [TestFixture]
 [Category("Integration")]
 [Category("BotMessageSubscription")]
+[Category("PierogiesBot")]
 [TestOf(typeof(BotMessageSubscriptionController))]
 public class BotMessageSubscriptionControllerIntegrationTests : AuthenticatedTestsBase
 {

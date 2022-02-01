@@ -13,6 +13,7 @@ namespace PierogiesBot.Discord.Commands.Tests;
 [TestFixture]
 [Category("Unit")]
 [Category("SubscribeCommands")]
+[Category("PierogiesBot")]
 [TestOf(typeof(SubscribeCommandModule))]
 public class SubscribeCommandModuleUnitTests
 {

@@ -22,6 +22,7 @@ namespace TheDungeonGuide.Characters.Tests;
 [TestFixture]
 [Category(nameof(Characters))]
 [Category("Integration")]
+[Category("TheDungeonGuide")]
 [TestOf(typeof(CharacterController))]
 [SuppressMessage("Style", "CC0061", MessageId = "Asynchronous method can be terminated with the \'Async\' keyword.")]
 public class CharacterControllerTests : AuthenticatedTestsBase

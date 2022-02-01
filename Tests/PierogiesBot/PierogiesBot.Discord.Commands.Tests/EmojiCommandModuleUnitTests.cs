@@ -16,6 +16,7 @@ namespace PierogiesBot.Discord.Commands.Tests;
 [TestFixture]
 [Category("Unit")]
 [Category("EmojiCommands")]
+[Category("PierogiesBot")]
 [TestOf(typeof(EmojiCommandModule))]
 public class EmojiCommandModuleUnitTests
 {

@@ -19,6 +19,7 @@ namespace PierogiesBot.Tests;
 [TestFixture]
 [Category("Integration")]
 [Category("BotCrontabRule")]
+[Category("PierogiesBot")]
 [TestOf(typeof(BotCrontabRuleController))]
 public class BotCrontabRuleControllerIntegrationTests : AuthenticatedTestsBase
 {

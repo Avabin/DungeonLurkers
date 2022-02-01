@@ -18,6 +18,7 @@ namespace PierogiesBot.Tests;
 [TestFixture]
 [Category("Integration")]
 [Category("GuildSetting")]
+[Category("PierogiesBot")]
 [TestOf(typeof(GuildSettingController))]
 public class GuildSettingControllerIntegrationTests : AuthenticatedTestsBase
 {
