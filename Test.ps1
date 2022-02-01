@@ -11,8 +11,10 @@ if($Project -eq "All") {
 
 $solutionPath = $PSScriptRoot
 
+Remove-Item .\TestResults\* -Recurse -Force
+
 foreach ($project in $projects) {
     Write-Host "Running tests for $project"
-    $projectBuildScriptPath = (Get-ChildItem -Path $solutionPath -Recurse -Filter "$project.test.ps1").FullName
-    ib -File $projectBuildScriptPath -SolutionPath $solutionPath
+    $projectBuildScriptPath = (Get-ChildItem -Path $solutionPath -Recurse -Filter "$project.build.ps1").FullName
+    ib Test -File $projectBuildScriptPath -SolutionPath $solutionPath
 }

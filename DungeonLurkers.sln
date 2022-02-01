@@ -97,9 +97,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{05FD
 		Build.ps1 = Build.ps1
 		Test.ps1 = Test.ps1
 		Scripts\TheDungeonGuide\TheDungeonGuide.build.ps1 = Scripts\TheDungeonGuide\TheDungeonGuide.build.ps1
-		Scripts\TheDungeonGuide\TheDungeonGuide.test.ps1 = Scripts\TheDungeonGuide\TheDungeonGuide.test.ps1
 		Scripts\PierogiesBot\PierogiesBot.build.ps1 = Scripts\PierogiesBot\PierogiesBot.build.ps1
-		Scripts\PierogiesBot\PierogiesBot.test.ps1 = Scripts\PierogiesBot\PierogiesBot.test.ps1
+		Scripts\Identity\Identity.build.ps1 = Scripts\Identity\Identity.build.ps1
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PierogiesBot.Discord.Commands.Tests", "Tests\PierogiesBot\PierogiesBot.Discord.Commands.Tests\PierogiesBot.Discord.Commands.Tests.csproj", "{EFF8A774-6C20-4BFB-8B5F-2A6A0BB0BD93}"

@@ -1,13 +1,16 @@
 param (
+    [ValidateSet("Debug", "Release", "Debug TheDungeonGuide", "Release TheDungeonGuide")]
     $Configuration = "Debug",
     $SolutionDirectory = (Join-Path $PSScriptRoot "..\..\"),
-    $SolutionPath = (Get-ChildItem $SolutionDirectory -Filter "*.sln").Directory,
+    $SolutionFile = (Get-ChildItem $SolutionDirectory -Filter "*.sln"),
+    $SolutionPath = $SolutionFile.Directory,
     $CharactersCsProj = (Get-ChildItem $SolutionPath -Recurse -Filter "*.csproj" | Where-Object {$_.BaseName -Contains "TheDungeonGuide.Characters.Host"}),
     $SessionsCsProj = (Get-ChildItem $SolutionPath -Recurse -Filter "*.csproj" | Where-Object {$_.BaseName -Contains "TheDungeonGuide.Sessions.Host"})
 )
 
 $projectName = "TheDungeonGuide"
 $buildConfiguration = "$Configuration $projectName"
+Write-Host "Solution file: $SolutionFile"
 
 task CleanCharacters {
     Write-Host "Cleaning $CharactersCsProj"
@@ -29,4 +32,15 @@ task BuildSessions {
     exec {dotnet build $SessionsCsProj.FullName -c $buildConfiguration}
 }
 
-task . CleanCharacters, CleanSessions, BuildCharacters, BuildSessions
+task TestCharacters {
+    exec { dotnet test $SolutionFile.FullName --no-build --filter "Characters" /p:CollectCoverage=true /p:CoverletOutput="$SolutionPath\TestResults\Characters.cobertura.xml" /p:CoverletOutputFormat=cobertura }
+}
+
+task TestSessions {
+    exec { dotnet test $SolutionFile.FullName --no-build --filter "Sessions" /p:CollectCoverage=true /p:CoverletOutput="$SolutionPath\TestResults\Sessions.cobertura.xml" /p:CoverletOutputFormat=cobertura }
+}
+
+task Build CleanCharacters, CleanSessions, BuildCharacters, BuildSessions
+task Test TestCharacters, TestSessions
+
+task . Build, Test
