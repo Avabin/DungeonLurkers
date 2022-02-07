@@ -3,6 +3,9 @@ on:
   push:
     paths:
       - Sources/TheDungeonGuide/**
+      - Tests/TheDungeonGuide/**
+      - Sources/Shared/**
+      - Tests/Shared/**
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 jobs:
@@ -32,4 +35,4 @@ jobs:
           DOTNET_ROLL_FORWARD: Major
         shell: powershell
         run: |
-          dotnet test --no-build --filter "cat==Unit&cat==TheDungeonGuide"
+          dotnet test --no-build --filter "cat=Unit&cat=TheDungeonGuide"

@@ -40,6 +40,22 @@ task TestSessions {
     exec { dotnet test $SolutionFile.FullName --no-build --filter "Sessions" /p:CollectCoverage=true /p:CoverletOutput="$SolutionPath\TestResults\Sessions.opencover.xml" /p:CoverletOutputFormat=opencover }
 }
 
+task BuildDockerImage {
+    Write-Host "Building Docker image for $projectName"
+    $dockerfile = Join-Path $SessionsCsProj.FullName "Dockerfile"
+    exec {dotnet clean $SolutionFile.FullName}
+
+    Write-Host "Building Docker image for sessions host"
+
+    $dockerfile = Join-Path $SessionsCsProj.Directory.FullName "Dockerfile"
+    exec {docker build -f $dockerfile -t tdg-sessions:latest $SolutionFile.Directory.FullName}
+
+    Write-Host "Building Docker image for characters host"
+
+    $dockerfile = Join-Path $CharactersCsProj.Directory.FullName "Dockerfile"
+    exec {docker build -f $dockerfile -t tdg-characters:latest $SolutionFile.Directory.FullName}
+}
+
 task Build CleanCharacters, CleanSessions, BuildCharacters, BuildSessions
 task Test TestCharacters, TestSessions
 

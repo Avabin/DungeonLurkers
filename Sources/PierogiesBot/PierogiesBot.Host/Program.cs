@@ -10,6 +10,7 @@ app.Run();
 const string outputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{SourceContext}] [{Level:u4}] {Message:lj}{NewLine} {Exception}";
 static IHostBuilder CreateDefaultHostBuilder(string[] args) =>
     Host.CreateDefaultBuilder(args)
+        .ConfigureAppConfiguration((context, builder) => builder.AddEnvironmentVariables(prefix: "PierogiesBot_"))
         .UseSerilog((context, c) =>
                         c.MinimumLevel.Verbose()
                          .WriteTo.Console(outputTemplate: outputTemplate).Enrich.FromLogContext()

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PierogiesBot.Discord.Infrastructure;
+using PierogiesBot.Discord.Infrastructure.Features.DiscordHost;
 using PierogiesBot.Persistence.BotCrontabRule.Features;
 using PierogiesBot.Persistence.BotMessageSubscription.Features;
 using PierogiesBot.Persistence.BotReactRules.Features;
@@ -36,6 +37,8 @@ public class Startup : StartupBase
         services.AddControllers();
         services.AddOptions()
                 .Configure<MongoSettings>(Configuration.GetSection("MongoSettings"));
+        
+        services.AddDiscord(Configuration.GetSection(DiscordSettings.SectionName));
 
         services.AddAutoMapper(expression =>
         {
@@ -108,11 +111,7 @@ public class Startup : StartupBase
         {
             options.AddPolicy("AnyOrigin", o =>
             {
-                o.WithOrigins("https://localhost:5001",
-                              "https://localhost:5003",
-                              "https://localhost:5005",
-                              "https://localhost:5007")
-                 .AllowAnyOrigin()
+                o.WithOrigins("https://identity.pierogiesbot.tk", "https://api.pierogiesbot.tk")
                  .AllowAnyHeader()
                  .AllowAnyMethod();
             });

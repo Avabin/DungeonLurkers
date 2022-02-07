@@ -27,7 +27,7 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
 
         if (options.Value is { DatabaseName: not null or "" } settings)
         {
-            _logger.LogInformation("Using custom database name: {DatabaseName}", settings.DatabaseName);
+            _logger.LogDebug("Using custom database name: {DatabaseName}", settings.DatabaseName);
             DatabaseName = options.Value.DatabaseName;
         }
         else

@@ -2,7 +2,8 @@ param (
     $Configuration = "Debug",
     $SolutionFile = (Get-ChildItem -Path $SolutionPath -Filter *.sln -Recurse),
     $SolutionPath = $SolutionFile.Directory,
-    $CsProj = (Get-ChildItem $SolutionPath -Recurse -Filter "*.csproj" | Where-Object {$_.BaseName -Contains "PierogiesBot.Host"})
+    $CsProj = (Get-ChildItem $SolutionPath -Recurse -Filter "*.csproj" | Where-Object {$_.BaseName -Contains "PierogiesBot.Host"}),
+    $ProjectDirectory = $CsProj.Directory
 )
 
 $projectName = "PierogiesBot"
@@ -41,6 +42,14 @@ task TestGuildSettings {
 
 task RunUnitTests {
     exec {dotnet test $SolutionFile.FullName --no-build --filter "cat=Unit" /p:CollectCoverage=true /p:CoverletOutput="$SolutionPath\TestResults\PierogiesBotUnit.opencover.xml" /p:CoverletOutputFormat=opencover}
+}
+
+task BuildDockerImage {
+    Write-Host "Building Docker image for $projectName"
+    $dockerfile = Join-Path $ProjectDirectory.FullName "Dockerfile"
+    exec {dotnet clean $SolutionFile.FullName}
+
+    exec {docker build -f $dockerfile -t pierogiesbot:latest $SolutionFile.Directory.FullName}
 }
 
 task Build Clean, BuildHost

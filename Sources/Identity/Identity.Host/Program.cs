@@ -12,5 +12,6 @@ public static class Program
     public static IHostBuilder CreateHostBuilder(string[] args) =>
         IdentityHost
            .CreateDefaultHostBuilder(args)
+           .ConfigureAppConfiguration((context, builder) => builder.AddEnvironmentVariables(prefix:"Identity_"))
            .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
 }

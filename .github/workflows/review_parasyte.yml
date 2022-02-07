@@ -1,11 +1,9 @@
-name: Review Identity
+name: Review Parasyte
 on:
   push:
     paths:
-      - Sources/Identity/**
-      - Tests/Identity/**
-      - Sources/Shared/**
-      - Tests/Shared/**
+      - Sources/Parasyte/**
+      - Tests/Parasyte/**
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 jobs:
@@ -25,10 +23,10 @@ jobs:
           DOTNET_ROLL_FORWARD: Major
         shell: powershell
         run: |
-          dotnet build -c "Debug PierogiesBot"
+          dotnet build -c "Debug Parasyte"
       - name: Run unit tests
         env:
           DOTNET_ROLL_FORWARD: Major
         shell: powershell
         run: |
-          dotnet test --no-build --filter "cat=Unit&cat=Identity"
+          dotnet test --no-build --filter "cat=Unit&cat=Parasyte"
