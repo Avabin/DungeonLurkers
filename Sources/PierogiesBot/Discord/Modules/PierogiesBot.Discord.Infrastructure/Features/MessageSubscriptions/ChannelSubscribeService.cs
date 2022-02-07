@@ -49,7 +49,7 @@ public class ChannelSubscribeService : IChannelSubscribeService
             var guildId = sub.GuildId;
             var channelId = sub.ChannelId;
 
-            var guild = _client.Guilds.SingleOrDefault(x => x.Id == guildId);
+            var guild = _client.GetGuild(guildId);
             if (guild is null)
             {
                 _logger.LogWarning("Guild with Id {0} not found!", guildId);
@@ -78,7 +78,6 @@ public class ChannelSubscribeService : IChannelSubscribeService
         var channelS = channel.ToString();
         _logger.LogTrace("Subscribing to channel {0} in guild {1}", channelS, guildS);
         var existing = await _dataService.GetSubscriptionForChannelAsync(channel.Id, guild.Id, SubscriptionType.Responses);
-        
 
         if (existing is null)
         {

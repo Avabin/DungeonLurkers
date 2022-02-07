@@ -111,7 +111,7 @@ public class Startup : StartupBase
         {
             options.AddPolicy("AnyOrigin", o =>
             {
-                o.WithOrigins("https://identity.pierogiesbot.tk", "https://api.pierogiesbot.tk")
+                o.WithOrigins("https://identity.pierogiesbot.tk", "https://api.pierogiesbot.tk", "https://localhost:5001", "https://localhost:5003", "https://localhost:5005", "https://localhost:5007")
                  .AllowAnyHeader()
                  .AllowAnyMethod();
             });
