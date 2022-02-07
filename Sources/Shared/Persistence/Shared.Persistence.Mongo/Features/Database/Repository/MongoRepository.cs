@@ -14,7 +14,7 @@ namespace Shared.Persistence.Mongo.Features.Database.Repository;
 
 internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocument<string>
 {
-    protected string       Database = MongoDbHelper.DatabaseName;
+    public virtual   string       DatabaseName { get; private set; } = MongoDbHelper.DatabaseName;
     private readonly IMongoClient _client;
 
     private readonly string                      _collection = MongoDbHelper.GetCollectionName<T>();
@@ -28,19 +28,19 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
         if (options.Value is { DatabaseName: not null or "" } settings)
         {
             _logger.LogInformation("Using custom database name: {DatabaseName}", settings.DatabaseName);
-            Database = options.Value.DatabaseName;
+            DatabaseName = options.Value.DatabaseName;
         }
         else
         {
             _logger.LogWarning("Using default database name: {DatabaseName}", MongoDbHelper.DatabaseName);
         }
 
-        if (!_client.GetDatabase(Database).ListCollectionNames().ToList().Contains(_collection))
-            _client.GetDatabase(Database).CreateCollection(_collection);
+        if (!_client.GetDatabase(DatabaseName).ListCollectionNames().ToList().Contains(_collection))
+            _client.GetDatabase(DatabaseName).CreateCollection(_collection);
     }
 
     protected IMongoCollection<T> Collection =>
-        _client.GetDatabase(Database).GetCollection<T>(_collection);
+        _client.GetDatabase(DatabaseName).GetCollection<T>(_collection);
 
     public async Task<TField?> GetFieldAsync<TField>(
         Expression<Func<T, bool>>   predicate,

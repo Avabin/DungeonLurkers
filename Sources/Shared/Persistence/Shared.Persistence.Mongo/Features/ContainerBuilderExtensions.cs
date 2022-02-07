@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using MongoDB.Driver;
-using Shared.Persistence.Mongo.Features.Database;
 using Shared.Persistence.Mongo.Features.Database.Documents;
 using Shared.Persistence.Mongo.Features.Database.Repository;
 

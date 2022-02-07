@@ -34,6 +34,8 @@ public class Startup : StartupBase
                               ? IdentityHttpClient.BaseAddress!.ToString()
                               : Configuration.GetValue<string>("IdentityUrl");
         services.AddControllers();
+        services.AddOptions()
+                .Configure<MongoSettings>(Configuration.GetSection("MongoSettings"));
 
         services.AddAutoMapper(expression =>
         {
