@@ -30,13 +30,13 @@ public static class ServiceCollectionExtensions
     public static ContainerBuilder AddDiscordServices(this ContainerBuilder services)
     {
         services.RegisterType<DiscordService>().AsSelf().AsImplementedInterfaces().SingleInstance();
-        services.RegisterType<DiscordHostedService>().As<IHostedService>();
+        services.RegisterType<DiscordHostedService>().As<IHostedService>().SingleInstance();
         services.RegisterType<DiscordSocketClient>().AsSelf().AsImplementedInterfaces().SingleInstance();
-        services.RegisterType<ChannelSubscribeService>().AsImplementedInterfaces();
-        services.RegisterType<CrontabSubscribeService>().AsImplementedInterfaces();
-        services.RegisterType<BotSubscriptionRuleMessageHandler>().AsImplementedInterfaces();
-        services.RegisterType<BotReactionsMessageHandler>().AsImplementedInterfaces();
-        services.RegisterType<BotResponseMessageHandler>().AsImplementedInterfaces();
+        services.RegisterType<ChannelSubscribeService>().AsImplementedInterfaces().SingleInstance();
+        services.RegisterType<CrontabSubscribeService>().AsImplementedInterfaces().SingleInstance();
+        services.RegisterType<BotSubscriptionRuleMessageHandler>().AsImplementedInterfaces().SingleInstance();
+        services.RegisterType<BotReactionsMessageHandler>().AsImplementedInterfaces().SingleInstance();
+        services.RegisterType<BotResponseMessageHandler>().AsImplementedInterfaces().SingleInstance();
 
         return services;
     }

@@ -35,7 +35,7 @@ namespace PierogiesBot.Discord.Commands.Features.MessageSubscriptions
                 _logger.LogInformation("New response subscription on channel {Channel} guild {Guild}", Context.Channel,
                                        Context.Guild);
 
-                foreach (var guildChannel in await Context.Guild.GetChannelsAsync())
+                foreach (var guildChannel in await Context.Guild.GetTextChannelsAsync())
                     await _channelSubscribeService.SubscribeAsync(guildChannel);
 
                 await ReplyAsync("I will watch ALL channels from now on...");
@@ -72,7 +72,7 @@ namespace PierogiesBot.Discord.Commands.Features.MessageSubscriptions
                 LogTrace("Unsubscribing all channels");
                 _logger.LogInformation("Del response subscription on guild {Guild}", Context.Guild);
 
-                foreach (var guildChannel in await Context.Guild.GetChannelsAsync())
+                foreach (var guildChannel in await Context.Guild.GetTextChannelsAsync())
                     await _channelSubscribeService.UnsubscribeAsync(guildChannel);
 
                 await ReplyAsync("I got bored watching you, bye");

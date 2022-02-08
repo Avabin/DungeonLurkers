@@ -17,88 +17,92 @@ namespace PierogiesBot.Discord.Infrastructure.Features.DiscordHost;
 
 internal class DiscordService : IDiscordService
 {
-    private readonly IServiceProvider _services;
-    private readonly DiscordSocketClient _client;
-    private readonly CommandService _commandService;
-    private readonly ILogger<CommandService> _commandLogger;
-    private readonly ILogger<DiscordSocketClient> _discordLogger;
-    private readonly IOptions<DiscordSettings> _settings;
+    private readonly IServiceProvider                _services;
+    private readonly DiscordSocketClient             _client;
+    private readonly CommandService                  _commandService;
+    private readonly ILogger<CommandService>         _commandLogger;
+    private readonly ILogger<DiscordSocketClient>    _discordLogger;
+    private readonly IOptions<DiscordSettings>       _settings;
     private readonly IEnumerable<ILoadSubscriptions> _subscriptions;
 
     public DiscordService(
-        IServiceProvider services,
-        ILogger<CommandService> commandLogger, 
-        ILogger<DiscordSocketClient> discordLogger,
-        IOptions<DiscordSettings> settings,
-        IOptions<CommandServiceConfig> commandConfig,
-        IEnumerable<ILoadSubscriptions> subscriptions)
+        IServiceProvider                services,
+        ILogger<CommandService>         commandLogger,
+        ILogger<DiscordSocketClient>    discordLogger,
+        IOptions<DiscordSettings>       settings,
+        IOptions<CommandServiceConfig>  commandConfig,
+        IEnumerable<ILoadSubscriptions> subscriptions,
+        DiscordSocketClient client)
     {
-        _services = services;
+        _services      = services;
         _commandLogger = commandLogger;
         _discordLogger = discordLogger;
-        _settings = settings;
+        _settings      = settings;
         _subscriptions = subscriptions;
 
-        _client = new DiscordSocketClient();
+        _client         = client;
         _commandService = new CommandService(commandConfig.Value);
-        
-        MessageObservable = Observable.FromEvent<Func<SocketMessage, Task>, SocketMessage>(
-            h => _client.MessageReceived += h,
-            h => _client.MessageReceived -= h);
-    }
 
-    public IObservable<SocketMessage> MessageObservable { get; }
+        MessageObservable = Observable.FromEvent<Func<SocketMessage, Task>, SocketMessage>(
+         h => _client.MessageReceived += h,
+         h => _client.MessageReceived -= h);
+    }
+    public IObservable<SocketMessage> MessageObservable                        { get; }
+
+    public SocketGuild? GetGuild(ulong guildId) => _client.Guilds.FirstOrDefault(g => g.Id == guildId);
+
+    public SocketGuildChannel? GetChannel(ulong channelId, ulong guildId) =>
+        _client.Guilds.FirstOrDefault(g => g.Id   == guildId)
+              ?.Channels.FirstOrDefault(c => c.Id == channelId);
 
     public async Task Start()
     {
         var eventAwaiter = new TaskCompletionSource<bool>(false);
 
-        _client.Log += message => Task.Run(() =>
+        _client.Log += message =>
         {
             var logLevel = message.Severity switch
             {
                 LogSeverity.Critical => LogLevel.Critical,
-                LogSeverity.Error => LogLevel.Error,
-                LogSeverity.Warning => LogLevel.Warning,
-                LogSeverity.Info => LogLevel.Information,
-                LogSeverity.Verbose => LogLevel.Debug,
-                LogSeverity.Debug => LogLevel.Trace,
-                _ => throw new ArgumentOutOfRangeException(nameof(message), "has wrong LogSeverity!")
+                LogSeverity.Error    => LogLevel.Error,
+                LogSeverity.Warning  => LogLevel.Warning,
+                LogSeverity.Info     => LogLevel.Information,
+                LogSeverity.Verbose  => LogLevel.Debug,
+                LogSeverity.Debug    => LogLevel.Trace,
+                _                    => throw new ArgumentOutOfRangeException(nameof(message), "has wrong LogSeverity!")
             };
             if (message.Exception is not null) _discordLogger.LogError(message.Exception, message.Message);
             else _discordLogger.Log(logLevel, message.Message);
-        });
-        
-        _client.LoginAsync(TokenType.Bot, _settings.Value.Token).ConfigureAwait(false).GetAwaiter().GetResult();
-        _client.StartAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            return Task.CompletedTask;
+        };
+
+        await _client.LoginAsync(TokenType.Bot, _settings.Value.Token).ConfigureAwait(false);
+        await _client.StartAsync().ConfigureAwait(false);
         _client.Ready += () =>
         {
             eventAwaiter.SetResult(true);
             return Task.CompletedTask;
         };
 
-        eventAwaiter.Task.ConfigureAwait(false).GetAwaiter().GetResult();
+        await eventAwaiter.Task.ConfigureAwait(false);
         await InstallCommandsAsync();
 
-        foreach (var task in _subscriptions.Select(s => s.LoadSubscriptionsAsync()))
-        {
-            await task;
-        }
+        await Task.WhenAll(_subscriptions.Select(s => s.LoadSubscriptionsAsync()));
     }
-    
+
     public async Task Stop()
     {
-        _client.MessageReceived -= HandleCommandAsync;
+        _client.MessageReceived         -= HandleCommandAsync;
         _commandService.CommandExecuted -= CommandServiceOnCommandExecuted;
 
-        await _client.StopAsync(); 
+        await _client.StopAsync();
         await _client.LogoutAsync();
     }
-    
+
     private async Task InstallCommandsAsync()
     {
         // Hook the MessageReceived event into our command handler
-        _client.MessageReceived += HandleCommandAsync;
+        _client.MessageReceived         += HandleCommandAsync;
         _commandService.CommandExecuted += CommandServiceOnCommandExecuted;
 
         _commandService.AddTypeReader(typeof(TimeZoneInfo), new TimeZoneInfoTypeReader());
@@ -112,19 +116,20 @@ internal class DiscordService : IDiscordService
         // If you do not use Dependency Injection, pass null.
         // See Dependency Injection guide for more information.
         await _commandService.AddModulesAsync(
-            assembly: Assembly.GetAssembly(typeof(CoreDiscordModule)),
-            services: _services);
+                                              assembly: Assembly.GetAssembly(typeof(CoreDiscordModule)),
+                                              services: _services);
     }
-    
+
     private Task CommandServiceOnCommandExecuted(Optional<CommandInfo> commandInfo, ICommandContext ctx,
-        IResult result)
+                                                 IResult               result)
     {
         if (!commandInfo.IsSpecified) return Task.CompletedTask;
 
         var cmd = commandInfo.Value!;
 
         if (result.IsSuccess)
-            _commandLogger.LogTrace("<{Guild}|>{Channel}|{User}>{CommandName}", ctx.Guild, ctx.Channel, ctx.User, cmd.Name);
+            _commandLogger.LogTrace("<{Guild}|>{Channel}|{User}>{CommandName}", ctx.Guild, ctx.Channel, ctx.User,
+                                    cmd.Name);
         else
             _commandLogger.LogError(result.ErrorReason);
 
@@ -151,8 +156,8 @@ internal class DiscordService : IDiscordService
         // Execute the command with the command context we just
         // created, along with the service provider for precondition checks.
         await _commandService.ExecuteAsync(
-            context: context,
-            argPos: argPos,
-            services: _services);
+                                           context: context,
+                                           argPos: argPos,
+                                           services: _services);
     }
 }

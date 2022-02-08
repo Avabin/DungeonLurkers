@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="AutoMapper" Version="11.0.0" />
+      <PackageReference Include="AutoMapper" Version="11.0.1" />
       <PackageReference Include="RestEase" Version="1.5.5" />
     </ItemGroup>
 
