@@ -68,6 +68,7 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
 
         await Collection.InsertManyAsync(docsList);
 
+        _logger.LogTrace("Inserted {Count} docs of type {DocumentType}", docsList.Count, typeof(T).Name);
         return docsIds;
     }
 
@@ -88,6 +89,7 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
         var filter = Builders<T>.Filter.Eq(x => x.Id, id);
 
         await Collection.ReplaceOneAsync(filter, castedDoc);
+        _logger.LogTrace("Updated doc Id = {DocumentId} of type {DocumentType}", doc.Id, typeof(T).Name);
     }
 
     private async Task ThrowIfDocWithIdNotFound(string id)
@@ -103,7 +105,9 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
     {
         var update = Builders<T>.Update.Set(field, value);
 
-        await Collection.UpdateManyAsync(predicate, update);
+        var updateResult = await Collection.UpdateManyAsync(predicate, update);
+        
+        _logger.LogTrace("{Action}: Update result {@UpdateResult} docs of type {DocumentType}", updateResult, typeof(T).Name);
     }
 
     public async Task UpdateSingleAsync<TField>(
@@ -113,7 +117,9 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
     {
         var update = Builders<T>.Update.Set(field, value);
 
-        await Collection.UpdateOneAsync(predicate, update);
+        var result = await Collection.UpdateOneAsync(predicate, update);
+        
+        _logger.LogTrace("{Action}: Update result {@UpdateResult} field of doc of type {DocumentType}", result, typeof(T).Name);
     }
 
     public async Task DeleteAsync(string id)
@@ -121,7 +127,9 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
         _logger.LogTrace("{Action}: Doc Id = {DocumentId} of type {DocumentType}", nameof(InsertAsync), id,
                          typeof(T).Name);
         await ThrowIfDocWithIdNotFound(id);
-        await Collection.DeleteOneAsync(f => Equals(f.Id, id));
+        var result = await Collection.DeleteOneAsync(f => Equals(f.Id, id));
+        
+        _logger.LogTrace("{Action}: Delete result {@DeleteResult} doc of type {DocumentType}", result, typeof(T).Name);
     }
 
     public async Task<T?> GetByIdAsync(string id)
@@ -185,12 +193,16 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
     public async Task<IReadOnlyCollection<T>> GetAllAsync(int? skip = null, int? limit = null)
     {
         _logger.LogTrace("{Action} of {DocumentType} ({Skip}, {Limit})", nameof(GetAllAsync), typeof(T).Name, skip,
-                           limit);
-        return await Collection
-                    .Find(FilterDefinition<T>.Empty)
-                    .Skip(skip)
-                    .Limit(limit)
-                    .ToListAsync();
+                         limit);
+        var result = await Collection
+                             .Find(FilterDefinition<T>.Empty)
+                             .Skip(skip)
+                             .Limit(limit)
+                             .ToListAsync();
+        
+        _logger.LogTrace("Found {Count} documents of type {DocumentType}", result.Count, typeof(T).Name);
+
+        return result;
     }
 
     public async Task<IEnumerable<TField>> GetFieldsAsync<TField>(
@@ -200,12 +212,15 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
     {
         _logger.LogTrace("{Action} of {DocumentType} ({Skip}, {Limit})", nameof(GetAllAsync), typeof(T).Name, skip,
                            limit);
-        return await Collection
+        var result =await Collection
                     .Find(FilterDefinition<T>.Empty)
                     .Project(field)
                     .Skip(skip)
                     .Limit(limit)
                     .ToListAsync();
+        
+        _logger.LogTrace("Found {Count} fields of documents of type {DocumentType}", result.Count, typeof(T).Name);
+        return result;
     }
 
     public async Task<IEnumerable<TField>> GetFieldsByPredicateAsync<TField>(
@@ -216,19 +231,25 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
     {
         _logger.LogTrace("{Action} of {DocumentType} ({Skip}, {Limit})", nameof(GetAllAsync), typeof(T).Name, skip,
                            limit);
-        return await Collection
+        var result = await Collection
                     .Find(predicate)
                     .Project(field)
                     .Skip(skip)
                     .Limit(limit)
                     .ToListAsync();
+        
+        _logger.LogTrace("{Action}: Found {Count} fields of documents of type {DocumentType}", nameof(GetFieldsByPredicateAsync), result.Count, typeof(T).Name);
+        return result;
     }
 
-    public Task DeleteManyAsync(IEnumerable<string> ids)
+    public async Task DeleteManyAsync(IEnumerable<string> ids)
     {
         var idsList = ids.ToList();
         _logger.LogTrace("{Action} of {DocumentType} ({Ids})", nameof(DeleteManyAsync), typeof(T).Name,
                            string.Join(", ", idsList));
-        return Collection.DeleteManyAsync(Builders<T>.Filter.In(x => x.Id, idsList));
+        var result = await Collection.DeleteManyAsync(Builders<T>.Filter.In(x => x.Id, idsList));
+        
+        _logger.LogTrace("{Action} of {DocumentType} ({Ids}). Modified {Count}", nameof(DeleteManyAsync), typeof(T).Name,
+                           string.Join(", ", idsList), result.DeletedCount);
     }
 }

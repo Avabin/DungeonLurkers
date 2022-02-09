@@ -11,9 +11,17 @@ public static class IdentityHost
     {
         return Host.CreateDefaultBuilder(args)
                    .UseSerilog((context, c) =>
-                                   c.MinimumLevel.Verbose()
-                                    .WriteTo.Console(outputTemplate: OutputTemplate).Enrich.FromLogContext()
-                                    .WriteTo.File("logs/identity.log", outputTemplate: OutputTemplate).Enrich.FromLogContext())
+                    {
+                        var serverUrl = context.Configuration["Seq:Url"];
+                        var apiKey    = context.Configuration["Seq:ApiKey"];
+                        c.MinimumLevel.Verbose();
+                        if (!string.IsNullOrEmpty(serverUrl) && !string.IsNullOrEmpty(apiKey))
+                        {
+                            c.WriteTo.Seq(serverUrl, apiKey: apiKey).Enrich.FromLogContext().Enrich.WithProperty("Service", "Identity");
+                        }
+                        c.WriteTo.Console(outputTemplate: OutputTemplate).Enrich.FromLogContext()
+                         .WriteTo.File("logs/identity.log", outputTemplate: OutputTemplate).Enrich.FromLogContext();
+                    })
                    .UseServiceProviderFactory(new AutofacServiceProviderFactory());
     }
 }

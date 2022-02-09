@@ -12,7 +12,15 @@ static IHostBuilder CreateDefaultHostBuilder(string[] args) =>
     Host.CreateDefaultBuilder(args)
         .ConfigureAppConfiguration((context, builder) => builder.AddEnvironmentVariables(prefix: "PierogiesBot_"))
         .UseSerilog((context, c) =>
-                        c.MinimumLevel.Verbose()
-                         .WriteTo.Console(outputTemplate: outputTemplate).Enrich.FromLogContext()
-                         .WriteTo.File("logs/pierogiesbot.log", outputTemplate: outputTemplate).Enrich.FromLogContext())
+         {
+             var serverUrl = context.Configuration["Seq:Url"];
+             var apiKey    = context.Configuration["Seq:ApiKey"];
+             c.MinimumLevel.Verbose();
+             if (!string.IsNullOrEmpty(serverUrl) && !string.IsNullOrEmpty(apiKey))
+             {
+                 c.WriteTo.Seq(serverUrl, apiKey: apiKey).Enrich.FromLogContext().Enrich.WithProperty("Service", "PierogiesBot");
+             }
+             c.WriteTo.Console(outputTemplate: outputTemplate).Enrich.FromLogContext()
+              .WriteTo.File("logs/pierogiesbot.log", outputTemplate: outputTemplate).Enrich.FromLogContext();
+         })
         .UseServiceProviderFactory(new AutofacServiceProviderFactory());
