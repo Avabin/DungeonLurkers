@@ -17,8 +17,7 @@ RUN python3 -m pip install -U pip
 RUN pip3 install projector-installer --user
 RUN source ~/.profile
 # Install Rider 2021.3.3 using Projector
-RUN echo "y" | ~/.local/bin/projector autoinstall --config-name Rider --ide-name "Rider 2021.3.3" --port 9999
+RUN echo "y" | ~/.local/bin/projector autoinstall --config-name Rider --ide-name "Rider 2021.3.3" --port 9999 && rm -rf ~/.projector/cache/**
 RUN ~/.local/bin/projector install-certificate 
 EXPOSE 9999
-COPY . /home/dev/source
 CMD ["/bin/bash", "/usr/local/bin/start.sh"]
