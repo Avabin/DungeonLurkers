@@ -37,6 +37,7 @@ public static class ServiceCollectionExtensions
         services.RegisterType<BotSubscriptionRuleMessageHandler>().AsImplementedInterfaces().SingleInstance();
         services.RegisterType<BotReactionsMessageHandler>().AsImplementedInterfaces().SingleInstance();
         services.RegisterType<BotResponseMessageHandler>().AsImplementedInterfaces().SingleInstance();
+        services.RegisterType<SendCrontabMessageToChannelsJob>().AsImplementedInterfaces();
 
         return services;
     }

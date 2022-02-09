@@ -1,4 +1,5 @@
-﻿using Quartz;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Quartz;
 using Quartz.Simpl;
 using Quartz.Spi;
 
@@ -15,9 +16,7 @@ internal class DependencyInjectionJobFactory : PropertySettingJobFactory
 
     public override IJob NewJob(TriggerFiredBundle bundle, IScheduler scheduler)
     {
-        var job = _serviceProvider.GetService(bundle.JobDetail.JobType);
-        if (ReferenceEquals(job, null))
-            return base.NewJob(bundle, scheduler);
+        var job = _serviceProvider.GetRequiredService(bundle.JobDetail.JobType);
         SetObjectProperties(job, bundle.JobDetail.JobDataMap);
         return (IJob) job;
     }
