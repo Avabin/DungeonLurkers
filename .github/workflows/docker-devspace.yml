@@ -25,7 +25,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build docker images
         run: |
-          docker build -f Dockerfile -t ${{ env.REGISTRY }}/avabin/devspace:master .
+          docker build -f Dockerfiles/DevSpace/Dockerfile -t ${{ env.REGISTRY }}/avabin/devspace:master Dockerfiles/DevSpace/
       - name: Push docker image
         run: |
           docker push ${{ env.REGISTRY }}/avabin/devspace:master
