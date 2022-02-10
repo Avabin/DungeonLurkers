@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using PierogiesBot.Persistence.BotResponseRules.Features;
 using PierogiesBot.Shared.Features.BotResponseRules;
+using RestEase;
 using Shared.Persistence.Core.Features.Exceptions;
 
 namespace PierogiesBot.Host.Controllers;
@@ -95,6 +96,56 @@ public class BotResponseRuleController : ControllerBase
         try
         {
             await _botResponseRuleFacade.UpdateAsync(id, dto);
+            return NoContent();
+        }
+        catch (DocumentNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+    }
+    
+    /// <summary>
+    ///     Add response to rule
+    /// </summary>
+    /// <param name="id">ID of bot response rule</param>
+    /// <param name="response">Response value to add</param>
+    /// <returns>No content</returns>
+    /// <response code="204">Returns no content</response>
+    /// <response code="404">If the bot response rule is not found</response>
+    [Post("{id}/responses")]
+    public async Task<IActionResult> AddResponseToRule(string id, string response)
+    {
+        if (!ObjectId.TryParse(id, out _))
+            return BadRequest();
+
+        try
+        {
+            await _botResponseRuleFacade.AddResponseToRuleAsync(id, response);
+            return NoContent();
+        }
+        catch (DocumentNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+    }
+
+    /// <summary>
+    ///     Delete response from rule
+    /// </summary>
+    /// <param name="id">ID of bot response rule</param>
+    /// <param name="response">Response value to delete</param>
+    /// <returns>No content</returns>
+    /// <response code="204">Returns no content</response>
+    /// <response code="404">If the bot response rule is not found</response>
+    [HttpDelete("{id}/responses")]
+    public async Task<IActionResult> RemoveResponseFromRule(string id, string response)
+    {
+        if (!ObjectId.TryParse(id, out _))
+            return BadRequest();
+
+        try
+        {
+            await _botResponseRuleFacade.RemoveResponseFromRuleAsync(id, response);
             return NoContent();
         }
         catch (DocumentNotFoundException e)

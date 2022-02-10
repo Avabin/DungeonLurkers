@@ -8,7 +8,6 @@ using Discord.Commands;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NUnit.Framework;
-using PierogiesBot.Discord.Commands.Features.React;
 using PierogiesBot.Discord.Commands.Features.SendEmoji;
 
 namespace PierogiesBot.Discord.Commands.Tests;

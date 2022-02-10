@@ -11,6 +11,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Shared\MessageBroker\Shared.MessageBroker.RabbitMQ\Shared.MessageBroker.RabbitMQ.csproj" />
       <ProjectReference Include="..\..\Shared\Persistence\Shared.Persistence.Mongo\Shared.Persistence.Mongo.csproj" />
       <ProjectReference Include="..\..\Shared\Shared.Infrastructure\Shared.Infrastructure.csproj" />
       <ProjectReference Include="..\Discord\Modules\PierogiesBot.Discord.Infrastructure\PierogiesBot.Discord.Infrastructure.csproj" />

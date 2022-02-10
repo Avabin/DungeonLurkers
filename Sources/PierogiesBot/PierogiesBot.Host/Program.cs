@@ -1,5 +1,4 @@
 using Autofac.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 using PierogiesBot.Host;
 using Serilog;
 

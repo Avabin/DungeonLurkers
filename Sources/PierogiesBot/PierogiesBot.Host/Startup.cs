@@ -13,6 +13,7 @@ using PierogiesBot.Persistence.BotReactRules.Features;
 using PierogiesBot.Persistence.BotResponseRules.Features;
 using PierogiesBot.Persistence.GuildSettings.Features;
 using Shared.Infrastructure;
+using Shared.MessageBroker.RabbitMQ;
 using Shared.Persistence.Core.Features;
 using Shared.Persistence.Mongo.Features;
 using StartupBase = Shared.Infrastructure.StartupBase;
@@ -36,7 +37,8 @@ public class Startup : StartupBase
                               : Configuration.GetValue<string>("IdentityUrl");
         services.AddControllers();
         services.AddOptions()
-                .Configure<MongoSettings>(Configuration.GetSection("MongoSettings"));
+                .Configure<MongoSettings>(Configuration.GetSection("MongoSettings"))
+                .ConfigureRabbit(Configuration.GetSection("Rabbit"));
         
         services.AddDiscord(Configuration.GetSection(DiscordSettings.SectionName));
 
@@ -124,6 +126,10 @@ public class Startup : StartupBase
             builder.AddDiscordServices();
         builder.AddPersistenceCore();
         builder.AddPersistenceMongo();
+        if (Configuration["Rabbit:IsEnabled"] == bool.TrueString)
+            builder.AddRabbitMessageBroker();
+        else 
+            builder.AddDummyMessageBroker();
         builder.AddBotCrontabRulesMongoServices();
         builder.AddBotReactRulesMongoServices();
         builder.AddBotMessageSubscriptionsMongoServices();

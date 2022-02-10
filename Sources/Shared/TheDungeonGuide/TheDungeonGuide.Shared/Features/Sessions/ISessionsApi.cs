@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using RestEase;
-using Shared.Features;
+﻿using RestEase;
 using Shared.Features.Authentication;
 
 namespace TheDungeonGuide.Shared.Features.Sessions;

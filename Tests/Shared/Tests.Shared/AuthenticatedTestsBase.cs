@@ -14,6 +14,7 @@ using Microsoft.Extensions.FileProviders;
 using Mongo2Go;
 using MongoDB.Driver;
 using RestEase;
+using Shared.Features;
 using Shared.Features.Authentication;
 using Shared.Features.Users;
 using Shared.Persistence.Core.Features.Documents;

@@ -9,6 +9,7 @@ using IdentityServer4.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
 using Shared.Infrastructure;
+using Shared.MessageBroker.RabbitMQ;
 using Shared.Persistence.Core.Features;
 using Shared.Persistence.Identity;
 using Shared.Persistence.Identity.Features.Roles;
@@ -38,7 +39,8 @@ public class Startup
         if (Environment.IsDevelopment()) services.AddHostedService<InsertDevUserBackgroundService>();
         services.AddControllers();
         services.AddOptions()
-                .Configure<MongoSettings>(Configuration.GetSection("MongoSettings"));
+                .Configure<MongoSettings>(Configuration.GetSection("MongoSettings"))
+                .ConfigureRabbit(Configuration.GetSection("Rabbit"));
         services.AddAutoMapper(
             expression =>
             {
@@ -237,6 +239,7 @@ public class Startup
     {
         builder.AddPersistenceCore();
         builder.AddPersistenceMongo();
+        builder.AddRabbitMessageBroker();
         builder.AddIdentityMongoServices();
     }
 

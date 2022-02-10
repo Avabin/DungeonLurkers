@@ -1,4 +1,6 @@
-﻿namespace Shared.Persistence.Core.Features.Documents;
+﻿using Shared.Features;
+
+namespace Shared.Persistence.Core.Features.Documents;
 
 public abstract record DocumentBase<T>(T Id) : IDocument<T>
 {

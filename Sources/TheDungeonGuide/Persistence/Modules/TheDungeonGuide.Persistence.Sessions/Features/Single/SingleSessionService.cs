@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Shared.MessageBroker.Core;
 using Shared.Persistence.Core.Features.Repository;
 using Shared.Persistence.Mongo.Features.Database.Documents.Single;
 using TheDungeonGuide.Persistence.Sessions.Features.Exceptions;
@@ -10,8 +11,8 @@ public class SingleSessionService : MongoSingleDocumentService<SessionDocument, 
 {
     private readonly IRepository<SessionDocument, string> _repository;
 
-    public SingleSessionService(IRepository<SessionDocument, string> repository, IMapper mapper) : base(repository,
-        mapper) => _repository = repository;
+    public SingleSessionService(IRepository<SessionDocument, string> repository, IMapper mapper, IMessageBroker broker) : base(repository,
+        mapper, broker) => _repository = repository;
 
     public async Task RemoveMemberAsync(string id, string memberId)
     {

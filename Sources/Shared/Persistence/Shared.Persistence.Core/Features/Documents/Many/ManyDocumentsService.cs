@@ -7,7 +7,7 @@ namespace Shared.Persistence.Core.Features.Documents.Many;
 
 public class ManyDocumentsService<TDocument, TId, TFindDocumentDto>
     : DocumentServiceBase<TDocument, TId>, IManyDocumentsService<TDocument, TId, TFindDocumentDto>
-    where TFindDocumentDto : IDocumentDto<TId> where TDocument : IDocument<TId>
+    where TFindDocumentDto : IDocumentDto<TId> where TDocument : class, IDocument<TId>
 {
     protected ManyDocumentsService(IRepository<TDocument, TId> repository, IMapper mapper) : base(repository, mapper)
     {

@@ -10,12 +10,16 @@ public interface ISingleDocumentService<TDocument, in TId, TFindDocumentDto>
     where TFindDocumentDto : IDocumentDto<TId>
 {
     Task<TFindDocumentDto> CreateAsync<TCreateDocDto>(TCreateDocDto request);
+
     Task<TField?> GetFieldAsync<TField>(
         Expression<Func<TDocument, bool>>   predicate,
         Expression<Func<TDocument, TField>> field);
+
     Task<TFindDocumentDto?> GetByIdAsync(TId id);
+
     Task<TFindDocumentDto?> GetByFieldAsync<TField>(
         Expression<Func<TDocument, TField>> field,
         TField                              value);
+
     Task<TFindDocumentDto?> GetByPredicateAsync(Expression<Func<TDocument, bool>> predicate);
 }

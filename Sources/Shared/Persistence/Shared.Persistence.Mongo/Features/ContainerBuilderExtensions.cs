@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 using MongoDB.Driver;
 using Shared.Persistence.Mongo.Features.Database.Documents;
 using Shared.Persistence.Mongo.Features.Database.Repository;
@@ -11,7 +10,7 @@ public static class ContainerBuilderExtensions
 {
     public static void AddPersistenceMongo(this ContainerBuilder builder)
     {
-        builder.RegisterGeneric(typeof(MongoRepository<>)).AsImplementedInterfaces();
+        builder.RegisterGeneric(typeof(MongoRepositoryWithMessageBroker<>)).SingleInstance().AsImplementedInterfaces();
         builder.RegisterGeneric(typeof(MongoDocumentOperationFacade<,>)).AsImplementedInterfaces();
         builder.Register(ctx =>
         {

@@ -1,5 +1,4 @@
 using PierogiesBot.Shared.Enums;
-using PierogiesBot.Shared.Features.Dtos;
 using Shared.Features;
 
 namespace PierogiesBot.Shared.Features.BotReactRules

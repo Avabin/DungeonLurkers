@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using Shared.Persistence.Core.Features.Documents.Many;
 using TheDungeonGuide.Persistence.Characters.Features.Many;
 using TheDungeonGuide.Persistence.Characters.Features.Single;
 

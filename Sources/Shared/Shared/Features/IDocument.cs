@@ -1,4 +1,4 @@
-﻿namespace Shared.Persistence.Core.Features.Documents;
+﻿namespace Shared.Features;
 
 /// <summary>
 ///     Generic document interface with only Id

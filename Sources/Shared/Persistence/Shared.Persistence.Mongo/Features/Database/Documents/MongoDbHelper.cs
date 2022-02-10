@@ -1,4 +1,5 @@
-﻿using Shared.Persistence.Core.Features.Documents;
+﻿using Shared.Features;
+using Shared.Persistence.Core.Features.Documents;
 
 namespace Shared.Persistence.Mongo.Features.Database.Documents;
 

@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using Shared.Features;
 
 namespace Shared.Persistence.Core.Features.Documents.Single;
 

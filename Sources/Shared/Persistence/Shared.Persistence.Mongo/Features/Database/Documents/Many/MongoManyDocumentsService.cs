@@ -8,7 +8,7 @@ namespace Shared.Persistence.Mongo.Features.Database.Documents.Many;
 
 public class MongoManyDocumentsService<TDocument, TFindDocumentDto>
     : ManyDocumentsService<TDocument, string, TFindDocumentDto>, IMongoManyDocumentsService<TDocument, TFindDocumentDto>
-    where TDocument : IDocument<string> where TFindDocumentDto : IDocumentDto<string>
+    where TDocument : class, IDocument<string> where TFindDocumentDto : IDocumentDto<string>
 {
     public MongoManyDocumentsService(IRepository<TDocument, string> repository, IMapper mapper) : base(repository,
         mapper)

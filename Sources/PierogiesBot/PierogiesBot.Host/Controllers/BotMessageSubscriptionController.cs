@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using PierogiesBot.Persistence.BotMessageSubscription.Features;
-using PierogiesBot.Shared.Enums;
 using PierogiesBot.Shared.Features.BotMessageSubscriptions;
 using Shared.Persistence.Core.Features.Exceptions;
 

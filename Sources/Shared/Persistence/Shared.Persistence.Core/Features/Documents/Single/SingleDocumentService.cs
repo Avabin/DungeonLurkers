@@ -10,7 +10,7 @@ public class SingleDocumentService<TDocument, TId, TFindDocumentDto>
     : DocumentServiceBase<TDocument, TId>,
       ISingleDocumentService<TDocument, TId, TFindDocumentDto>
     where TFindDocumentDto : IDocumentDto<TId>
-    where TDocument : IDocument<TId>
+    where TDocument : class, IDocument<TId>
 {
     public SingleDocumentService(IRepository<TDocument, TId> repository, IMapper mapper) : base(repository, mapper)
     {

@@ -6,12 +6,8 @@ using MongoDB.Driver;
 using NUnit.Framework;
 using PierogiesBot.Host;
 using PierogiesBot.Host.Controllers;
-using PierogiesBot.Persistence.BotCrontabRule.Features;
-using PierogiesBot.Persistence.BotReactRules.Features;
 using PierogiesBot.Persistence.BotResponseRules.Features;
 using PierogiesBot.Shared.Enums;
-using PierogiesBot.Shared.Features.BotCrontabRules;
-using PierogiesBot.Shared.Features.BotReactRules;
 using PierogiesBot.Shared.Features.BotResponseRules;
 using RestEase;
 using Shared.Persistence.Identity.Features.Users;
@@ -154,6 +150,33 @@ public class BotResponseRuleControllerIntegrationTests : AuthenticatedTestsBase
         // Assert
         result.Id.Should().NotBeEmpty();
         result.Responses.Should().BeEquivalentTo(rule.Responses);
+        result.TriggerText.Should().Be(rule.TriggerText);
+        result.ResponseMode.Should().Be(rule.ResponseMode);
+        result.IsTriggerTextRegex.Should().Be(rule.IsTriggerTextRegex);
+        result.ShouldTriggerOnContains.Should().Be(rule.ShouldTriggerOnContains);
+        result.StringComparison.Should().Be(rule.StringComparison);
+    }
+    
+    [Test]
+    public async Task RemoveResponseFromRule_Success()
+    {
+        // Arrange
+        var id        = ObjectId.GenerateNewId().ToString();
+        var responses = new List<string> {"response1", "response2"};
+        var expected  = responses.ToList();
+        expected.Remove(responses.First());
+        var rule     = new BotResponseRuleDocument(id, ResponseMode.First, responses, "trigger", StringComparison.InvariantCultureIgnoreCase, false, false);
+
+        await GetServiceFromPierogiesBotHost<IMongoRepository<BotResponseRuleDocument>>()
+           .InsertAsync(rule);
+
+        // Act
+        await _rulesClient.RemoveResponseFromRule(id, responses.First());
+        var result = await _rulesClient.FindByIdAsync(id);
+
+        // Assert
+        result.Id.Should().NotBeEmpty();
+        result.Responses.Should().BeEquivalentTo(expected);
         result.TriggerText.Should().Be(rule.TriggerText);
         result.ResponseMode.Should().Be(rule.ResponseMode);
         result.IsTriggerTextRegex.Should().Be(rule.IsTriggerTextRegex);

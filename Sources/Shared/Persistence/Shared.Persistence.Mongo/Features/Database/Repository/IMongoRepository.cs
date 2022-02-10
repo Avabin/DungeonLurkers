@@ -1,10 +1,11 @@
 ﻿using System.Linq.Expressions;
+using Shared.Features;
 using Shared.Persistence.Core.Features.Documents;
 using Shared.Persistence.Core.Features.Repository;
 
 namespace Shared.Persistence.Mongo.Features.Database.Repository;
 
-public interface IMongoRepository<T> : IRepository<T, string> where T : IDocument<string>
+public interface IMongoRepository<T> : IRepository<T, string> where T : class, IDocument<string>
 {
     Task<IEnumerable<TField>> GetFieldsAsync<TField>(
         Expression<Func<T, TField>> field,

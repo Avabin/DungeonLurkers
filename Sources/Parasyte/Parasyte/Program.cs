@@ -5,7 +5,6 @@ using Microsoft.Extensions.Hosting;
 using Parasyte;
 using Parasyte.Features.GameSettings;
 using Parasyte.Features.GameSetup;
-using Parasyte.Features.Players;
 using Parasyte.Features.Voting;
 
 var b = Host.CreateDefaultBuilder();

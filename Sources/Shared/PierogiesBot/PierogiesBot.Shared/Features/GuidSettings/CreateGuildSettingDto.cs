@@ -1,5 +1,4 @@
-﻿using PierogiesBot.Shared.Features.Dtos;
-using Shared.Features;
+﻿using Shared.Features;
 
 namespace PierogiesBot.Shared.Features.GuidSettings
 {

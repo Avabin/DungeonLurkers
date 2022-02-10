@@ -1,5 +1,4 @@
 ﻿using Discord;
-using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 using PierogiesBot.Discord.Core.Features.MessageSubscriptions.SubscriptionServices;
 using PierogiesBot.Persistence.BotCrontabRule.Features;

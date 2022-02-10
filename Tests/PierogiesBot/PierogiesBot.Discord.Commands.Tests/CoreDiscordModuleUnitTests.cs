@@ -6,7 +6,6 @@ using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NUnit.Framework;
 using PierogiesBot.Discord.Commands.Features;
-using PierogiesBot.Discord.Infrastructure.Features;
 
 namespace PierogiesBot.Discord.Commands.Tests;
 

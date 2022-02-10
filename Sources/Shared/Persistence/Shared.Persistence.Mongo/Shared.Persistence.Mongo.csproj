@@ -16,6 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\MessageBroker\Shared.MessageBroker.Persistence\Shared.MessageBroker.Persistence.csproj" />
       <ProjectReference Include="..\Shared.Persistence.Core\Shared.Persistence.Core.csproj" />
     </ItemGroup>
 

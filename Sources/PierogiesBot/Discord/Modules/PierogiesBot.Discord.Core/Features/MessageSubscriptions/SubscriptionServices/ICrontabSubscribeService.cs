@@ -1,5 +1,4 @@
 ﻿using Discord;
-using Discord.WebSocket;
 
 namespace PierogiesBot.Discord.Core.Features.MessageSubscriptions.SubscriptionServices;
 

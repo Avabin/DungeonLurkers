@@ -1,11 +1,8 @@
 ﻿using Autofac;
-using Discord;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using PierogiesBot.Discord.Core.Features.MessageSubscriptions.Handlers;
-using PierogiesBot.Discord.Core.Features.MessageSubscriptions.SubscriptionServices;
 using PierogiesBot.Discord.Infrastructure.Features.DiscordHost;
 using PierogiesBot.Discord.Infrastructure.Features.MessageSubscriptions;
 using PierogiesBot.Discord.Infrastructure.Features.MessageSubscriptions.Crontab;

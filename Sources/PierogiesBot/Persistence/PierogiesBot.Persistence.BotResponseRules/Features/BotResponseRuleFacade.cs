@@ -7,10 +7,19 @@ namespace PierogiesBot.Persistence.BotResponseRules.Features;
 
 public class BotResponseRuleFacade : DocumentOperationFacade<BotResponseRuleDocument, string, BotResponseRuleDto>, IBotResponseRuleFacade
 {
+    private readonly ISingleBotResponseRuleService _singleDocumentService;
+
     public BotResponseRuleFacade(
         ISingleBotResponseRuleService singleDocumentService,
         IManyBotResponseRulesService  manyDocumentsService) :
         base(singleDocumentService, manyDocumentsService)
     {
+        _singleDocumentService     = singleDocumentService;
     }
+
+    public Task RemoveResponseFromRuleAsync(string id, string response) => 
+        _singleDocumentService.RemoveResponseFromRuleAsync(id, response);
+
+    public Task AddResponseToRuleAsync(string id, string response) => 
+        _singleDocumentService.AddResponseToRuleAsync(id, response);
 }

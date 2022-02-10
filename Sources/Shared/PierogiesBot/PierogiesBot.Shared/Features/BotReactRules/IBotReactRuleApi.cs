@@ -1,5 +1,4 @@
-﻿using PierogiesBot.Shared.Features.BotMessageSubscriptions;
-using RestEase;
+﻿using RestEase;
 using Shared.Features.Authentication;
 
 namespace PierogiesBot.Shared.Features.BotReactRules;
