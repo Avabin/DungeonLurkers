@@ -12,6 +12,7 @@ using PierogiesBot.Persistence.BotCrontabRule.Features;
 using PierogiesBot.Persistence.BotMessageSubscription.Features;
 using PierogiesBot.Persistence.BotReactRules.Features;
 using PierogiesBot.Persistence.BotResponseRules.Features;
+using PierogiesBot.Persistence.Guild;
 using PierogiesBot.Persistence.GuildSettings.Features;
 using Shared.Infrastructure;
 using Shared.MessageBroker.RabbitMQ;
@@ -50,6 +51,7 @@ public class Startup : StartupBase
             expression.AddProfile<PersistenceBotMessageSubscriptionsMapperProfile>();
             expression.AddProfile<PersistenceBotResponseRulesMapperProfile>();
             expression.AddProfile<PersistenceGuildSettingsMapperProfile>();
+            expression.AddProfile<PersistenceGuildsMapperProfile>();
         });
 
         services.AddAuthentication(options =>

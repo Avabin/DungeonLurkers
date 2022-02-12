@@ -5,12 +5,12 @@ using Shared.Persistence.Identity.Features.Roles.Single;
 
 namespace Shared.Persistence.Identity.Features.Roles;
 
-public class RoleFacade : DocumentOperationFacade<RoleDocument, string, FindRoleDto>
+public class RoleFacade : DocumentFacade<RoleDocument, string, FindRoleDto>
 {
     public RoleFacade(
-        ISingleRoleService singleSingleDocumentService,
-        IManyRolesService  manyManyDocumentsService) :
-        base(singleSingleDocumentService, manyManyDocumentsService)
+        ISingleRoleService singleDocumentService,
+        IManyRolesService  manyDocumentsService) :
+        base(singleDocumentService, manyDocumentsService)
     {
     }
 }

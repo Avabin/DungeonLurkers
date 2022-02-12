@@ -5,12 +5,12 @@ using Shared.Persistence.Core.Features.Documents.Many;
 
 namespace PierogiesBot.Persistence.BotCrontabRule.Features;
 
-internal class BotCrontabRuleFacade : DocumentOperationFacade<BotCrontabRuleDocument, string, BotCrontabRuleDto>, IBotCrontabRuleFacade
+internal class BotCrontabRuleFacade : DocumentFacade<BotCrontabRuleDocument, string, BotCrontabRuleDto>, IBotCrontabRuleFacade
 {
     public BotCrontabRuleFacade(
-        ISingleBotCrontabRuleService singleSingleDocumentService,
-        IManyBotCrontabRulesService  manyManyDocumentsService) :
-        base(singleSingleDocumentService, manyManyDocumentsService)
+        ISingleBotCrontabRuleService singleDocumentService,
+        IManyBotCrontabRulesService  manyDocumentsService) :
+        base(singleDocumentService, manyDocumentsService)
     {
     }
 

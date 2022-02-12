@@ -3,7 +3,7 @@ using Shared.Persistence.Core.Features.Documents.Many;
 
 namespace PierogiesBot.Persistence.GuildSettings.Features;
 
-public interface IGuildSettingFacade : IDocumentOperationFacade<GuildSettingDocument, string, GuildSettingDto>
+public interface IGuildSettingFacade : IDocumentFacade<GuildSettingDocument, string, GuildSettingDto>
 {
     Task          SetGuildTimezoneAsync(string tzInfoId, ulong guildId);
     Task<string?> GetGuildTimezoneAsync(ulong  guildId);

@@ -11,7 +11,7 @@ public static class ContainerBuilderExtensions
     public static void AddPersistenceMongo(this ContainerBuilder builder)
     {
         builder.RegisterGeneric(typeof(MongoRepositoryWithMessageBroker<>)).SingleInstance().AsImplementedInterfaces();
-        builder.RegisterGeneric(typeof(MongoDocumentOperationFacade<,>)).AsImplementedInterfaces();
+        builder.RegisterGeneric(typeof(MongoDocumentFacade<,>)).AsImplementedInterfaces();
         builder.Register(ctx =>
         {
             var config           = ctx.Resolve<IConfiguration>();

@@ -5,21 +5,21 @@ using Shared.Persistence.Core.Features.Documents.Many;
 
 namespace PierogiesBot.Persistence.BotResponseRules.Features;
 
-public class BotResponseRuleFacade : DocumentOperationFacade<BotResponseRuleDocument, string, BotResponseRuleDto>, IBotResponseRuleFacade
+public class BotResponseRuleFacade : DocumentFacade<BotResponseRuleDocument, string, BotResponseRuleDto>, IBotResponseRuleFacade
 {
-    private readonly ISingleBotResponseRuleService _singleSingleDocumentService;
+    private readonly ISingleBotResponseRuleService _singleDocumentService;
 
     public BotResponseRuleFacade(
-        ISingleBotResponseRuleService singleSingleDocumentService,
-        IManyBotResponseRulesService  manyManyDocumentsService) :
-        base(singleSingleDocumentService, manyManyDocumentsService)
+        ISingleBotResponseRuleService singleDocumentService,
+        IManyBotResponseRulesService  manyDocumentsService) :
+        base(singleDocumentService, manyDocumentsService)
     {
-        _singleSingleDocumentService     = singleSingleDocumentService;
+        _singleDocumentService     = singleDocumentService;
     }
 
     public Task RemoveResponseFromRuleAsync(string id, string response) => 
-        _singleSingleDocumentService.RemoveResponseFromRuleAsync(id, response);
+        _singleDocumentService.RemoveResponseFromRuleAsync(id, response);
 
     public Task AddResponseToRuleAsync(string id, string response) => 
-        _singleSingleDocumentService.AddResponseToRuleAsync(id, response);
+        _singleDocumentService.AddResponseToRuleAsync(id, response);
 }

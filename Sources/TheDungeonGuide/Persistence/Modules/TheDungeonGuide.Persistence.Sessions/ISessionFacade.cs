@@ -3,7 +3,7 @@ using TheDungeonGuide.Shared.Features.Sessions;
 
 namespace TheDungeonGuide.Persistence.Sessions;
 
-public interface ISessionFacade : IDocumentOperationFacade<SessionDocument, string, SessionDto>
+public interface ISessionFacade : IDocumentFacade<SessionDocument, string, SessionDto>
 {
     Task<IEnumerable<SessionDto>> GetAllByGameMasterIdAsync(
         string gameMasterId,

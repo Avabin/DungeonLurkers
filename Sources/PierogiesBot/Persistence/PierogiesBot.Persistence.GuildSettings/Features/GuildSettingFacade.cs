@@ -5,30 +5,30 @@ using Shared.Persistence.Core.Features.Documents.Many;
 
 namespace PierogiesBot.Persistence.GuildSettings.Features;
 
-public class GuildSettingFacade : DocumentOperationFacade<GuildSettingDocument, string, GuildSettingDto>, IGuildSettingFacade
+public class GuildSettingFacade : DocumentFacade<GuildSettingDocument, string, GuildSettingDto>, IGuildSettingFacade
 {
-    private readonly ISingleGuildSettingService _singleSingleDocumentService;
+    private readonly ISingleGuildSettingService _singleDocumentService;
 
     public GuildSettingFacade(
-        ISingleGuildSettingService singleSingleDocumentService,
-        IManyGuildSettingsService  manyManyDocumentsService) :
-        base(singleSingleDocumentService, manyManyDocumentsService)
+        ISingleGuildSettingService singleDocumentService,
+        IManyGuildSettingsService  manyDocumentsService) :
+        base(singleDocumentService, manyDocumentsService)
     {
-        _singleSingleDocumentService = singleSingleDocumentService;
+        _singleDocumentService = singleDocumentService;
     }
 
     public async Task SetGuildTimezoneAsync(string tzInfoId, ulong guildId) => 
-        await _singleSingleDocumentService.SetGuildTimezoneAsync(tzInfoId, guildId);
+        await _singleDocumentService.SetGuildTimezoneAsync(tzInfoId, guildId);
 
     public async Task<string?> GetGuildTimezoneAsync(ulong guildId) => 
-        await _singleSingleDocumentService.GetGuildTimezoneAsync(guildId);
+        await _singleDocumentService.GetGuildTimezoneAsync(guildId);
 
     public async Task SetMuteRoleAsync(ulong guildId, ulong roleId) => 
-        await _singleSingleDocumentService.SetMuteRoleAsync(guildId, roleId);
+        await _singleDocumentService.SetMuteRoleAsync(guildId, roleId);
 
     public async Task<ulong> GetMuteRoleAsync(ulong guildId) => 
-        await _singleSingleDocumentService.GetMuteRoleAsync(guildId);
+        await _singleDocumentService.GetMuteRoleAsync(guildId);
 
     public async Task<GuildSettingDto?> FindByGuildId(ulong guildId) => 
-        await _singleSingleDocumentService.FindByGuildId(guildId); 
+        await _singleDocumentService.FindByGuildId(guildId); 
 }
