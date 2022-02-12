@@ -25,10 +25,4 @@
       <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.2.3" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Reference Include="Shared.MessageBroker.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-        <HintPath>bin\Debug\net6.0\Shared.MessageBroker.Core.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
 </Project>

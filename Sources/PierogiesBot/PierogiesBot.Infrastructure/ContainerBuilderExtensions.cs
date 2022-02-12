@@ -7,7 +7,6 @@ using PierogiesBot.Persistence.BotMessageSubscription.Features;
 using PierogiesBot.Persistence.BotReactRules.Features;
 using PierogiesBot.Persistence.BotResponseRules.Features;
 using PierogiesBot.Persistence.GuildSettings.Features;
-using Shared.MessageBroker.Core;
 using Shared.MessageBroker.RabbitMQ;
 using Shared.Persistence.Core.Features;
 using Shared.Persistence.Mongo.Features;

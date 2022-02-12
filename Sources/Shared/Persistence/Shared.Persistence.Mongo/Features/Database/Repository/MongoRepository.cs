@@ -100,13 +100,13 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
 
         if (updatedDoc as T is not { } castedDoc) return;
         var filter = Builders<T>.Filter.Eq(x => x.Id, id);
-
-        var result = await Collection.ReplaceOneAsync(filter, castedDoc);
+        var oldDoc = await Collection.FindOneAndReplaceAsync(filter, castedDoc);
+        var result = await Collection.Find(filter).SingleAsync();
         
-        if (result.IsAcknowledged && result.ModifiedCount > 0)
+        if (result is not null)
         {
             _logger.LogTrace("{Action}: Publishing update change event", nameof(UpdateAsync));
-            _docChangedSubject.OnNext(DocumentChanged.Updated(castedDoc));
+            _docChangedSubject.OnNext(DocumentChanged.Updated(oldDoc, result));
         }
         _logger.LogTrace("Updated doc Id = {DocumentId} of type {DocumentType}", doc.Id, typeof(T).Name);
     }
@@ -126,11 +126,12 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
         var oldDocs = await Collection.Find(predicate).ToListAsync();
 
         var updateResult = await Collection.UpdateManyAsync(predicate, update);
+        var updated      = await Collection.Find(predicate).ToListAsync();
 
         if (updateResult.IsAcknowledged && updateResult.ModifiedCount > 0)
         {
             _logger.LogTrace("{Action}: Publishing update (many) change event", nameof(UpdateAllAsync));
-            _docChangedSubject.OnNext(DocumentsChanged.Updated(oldDocs.Take((int)updateResult.ModifiedCount)));
+            _docChangedSubject.OnNext(DocumentsChanged.Updated(oldDocs.Take((int)updateResult.ModifiedCount), updated.Take((int) updateResult.ModifiedCount)));
         }
         
         _logger.LogTrace("{Action}: Update result {@UpdateResult} docs of type {DocumentType}", updateResult, typeof(T).Name);
@@ -142,18 +143,17 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
         TField                      value)
     {
         var update = Builders<T>.Update.Set(field, value);
+        
+        var oldDoc = await Collection.FindOneAndUpdateAsync(predicate, update);
+        var updated = await Collection.Find(predicate).SingleAsync();
 
-        var oldDoc = await Collection.Find(predicate).SingleAsync();
-
-        var result = await Collection.UpdateOneAsync(predicate, update);
-
-        if (result.IsAcknowledged && result.ModifiedCount > 0)
+        if (updated is not null)
         {
             _logger.LogTrace("{Action}: Publishing update change event", nameof(UpdateSingleAsync));
-            _docChangedSubject.OnNext(DocumentChanged.Updated(oldDoc));
+            _docChangedSubject.OnNext(DocumentChanged.Updated(oldDoc, updated));
         }
         
-        _logger.LogTrace("{Action}: Update result {@UpdateResult} field of doc of type {DocumentType}", result, typeof(T).Name);
+        _logger.LogTrace("{Action}: Update result {@UpdateResult} field of doc of type {DocumentType}", updated, typeof(T).Name);
     }
 
     public async Task DeleteAsync(string id)
@@ -170,7 +170,7 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
             _docChangedSubject.OnNext(DocumentChanged.Deleted(oldDoc));
         }
         
-        _logger.LogTrace("{Action}: Delete result {@DeleteResult} doc of type {DocumentType}", result, typeof(T).Name);
+        _logger.LogTrace("{Action}: Delete result {@DeleteResult} doc of type {DocumentType}", nameof(DeleteAsync),result, typeof(T).Name);
     }
 
     public async Task<T?> GetByIdAsync(string id)
@@ -255,14 +255,14 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
         var update = Builders<T>.Update.AddToSet(field, newElement);
         var oldDoc = await Collection.Find(filter).SingleAsync();
         if(oldDoc is null) throw new DocumentNotFoundException($"Document with id {id} not found");
-        var result = await Collection.UpdateOneAsync(filter, update);
+        var result = await Collection.FindOneAndUpdateAsync(filter, update);
         
         _logger.LogTrace("{Action}: Result of update: {@Result}", nameof(AddElementToArrayFieldAsync), result);
 
-        if (result.IsAcknowledged && result.ModifiedCount > 0)
+        if (result is not null)
         {
             _logger.LogTrace("{Action}: Publishing update change event", nameof(AddElementToArrayFieldAsync));
-            _docChangedSubject.OnNext(DocumentChanged.Updated(oldDoc));
+            _docChangedSubject.OnNext(DocumentChanged.Updated(oldDoc, result));
         }
     }
     
@@ -275,14 +275,14 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
         var update = Builders<T>.Update.Pull(field, like);
         var oldDoc = await Collection.Find(filter).SingleAsync();
         if(oldDoc is null) throw new DocumentNotFoundException($"Document with id {id} not found");
-        var result = await Collection.UpdateOneAsync(filter, update);
+        var result = await Collection.FindOneAndUpdateAsync(filter, update);
         
         _logger.LogTrace("{Action}: Result of update: {@Result}", nameof(RemoveElementFromArrayFieldAsync), result);
 
-        if (result.IsAcknowledged && result.ModifiedCount > 0)
+        if (result is not null)
         {
             _logger.LogTrace("{Action}: Publishing update change event", nameof(RemoveElementFromArrayFieldAsync));
-            _docChangedSubject.OnNext(DocumentChanged.Updated(oldDoc));
+            _docChangedSubject.OnNext(DocumentChanged.Updated(oldDoc, result));
         }
     }
 
