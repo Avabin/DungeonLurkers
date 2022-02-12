@@ -5,23 +5,23 @@ using TheDungeonGuide.Shared.Features.Characters;
 
 namespace TheDungeonGuide.Persistence.Characters;
 
-public class CharacterFacade : DocumentOperationFacade<CharacterDocument, string, CharacterDto>, ICharacterFacade
+internal class CharacterFacade : DocumentOperationFacade<CharacterDocument, string, CharacterDto>, ICharacterFacade
 {
-    private readonly ISingleCharacterService _singleDocumentService;
+    private readonly ISingleCharacterService _singleSingleDocumentService;
 
     public CharacterFacade(
-        ISingleCharacterService singleDocumentService,
-        IManyCharactersService  manyDocumentsService) :
-        base(singleDocumentService, manyDocumentsService)
+        ISingleCharacterService singleSingleDocumentService,
+        IManyCharactersService  manyManyDocumentsService) :
+        base(singleSingleDocumentService, manyManyDocumentsService)
     {
-        _singleDocumentService = singleDocumentService;
+        _singleSingleDocumentService = singleSingleDocumentService;
     }
     public Task<IEnumerable<CharacterDto>> FindAllByOwnerIdAsync(
         string ownerId,
         int?   skip  = null,
         int?   limit = null) =>
-        DocumentsService.GetAllByPredicateAsync(x => x.OwnerId == ownerId, skip, limit);
+        ManyDocumentsService.GetAllByPredicateAsync(x => x.OwnerId == ownerId, skip, limit);
 
     public async Task<CharacterDto?> FindByNameAsync(string name) => 
-        await _singleDocumentService.FindByNameAsync(name);
+        await _singleSingleDocumentService.FindByNameAsync(name);
 }

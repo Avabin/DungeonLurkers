@@ -15,17 +15,13 @@ public class MongoSingleDocumentService<TDocument, TFindDocumentDto>
     where TDocument : class, IDocument<string>
     where TFindDocumentDto : IDocumentDto<string>
 {
-    private readonly IMessageBroker                                _messageBroker;
-    private readonly IObserver<DocumentChanged<TDocument, string>> _documentChangedObserver;
-    private          IDisposable                                   _sub;
+    private readonly IDisposable    _sub;
 
     public MongoSingleDocumentService(IRepository<TDocument, string> repository, IMapper mapper, IMessageBroker messageBroker) : base(repository, mapper)
     {
-        
-        _messageBroker = messageBroker;
-        _documentChangedObserver = _messageBroker.GetObserverForQueue<DocumentChanged<TDocument, string>>(typeof(TDocument).Name + "Changed");
+        var documentChangedObserver = messageBroker.GetObserverForQueue<DocumentChanged<TDocument, string>>(typeof(TDocument).Name + "Changed");
 
-        _sub = Repository.DocumentChangedObservable.Do(_documentChangedObserver).Subscribe();
+        _sub = Repository.DocumentChangedObservable.Do(documentChangedObserver).Subscribe();
     }
 
     protected virtual void Dispose(bool disposing)

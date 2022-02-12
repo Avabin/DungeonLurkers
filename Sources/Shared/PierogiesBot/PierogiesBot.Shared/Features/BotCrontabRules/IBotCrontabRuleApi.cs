@@ -6,9 +6,9 @@ namespace PierogiesBot.Shared.Features.BotCrontabRules;
 public interface IBotCrontabRuleApi : IAuthenticatedApi
 {
     [Get("BotCrontabRule")]
-    Task<IEnumerable<BotCrontabRuleDto>> GetAllAsync([Query] int? skip = null, [Query] int? limit = null);
+    Task<IEnumerable<BotCrontabRuleDto>> GetAllCrontabRulesAsync([Query] int? skip = null, [Query] int? limit = null);
 
-    [Get("BotCrontabRule/{id}")] Task<BotCrontabRuleDto> FindByIdAsync([Path] string id);
+    [Get("BotCrontabRule/{id}")] Task<BotCrontabRuleDto> FindCrontabRuleByIdAsync([Path] string id);
 
     [Post("BotCrontabRule")] Task<BotCrontabRuleDto> CreateBotCrontabRuleAsync([Body] CreateBotCrontabRuleDto createDto);
 

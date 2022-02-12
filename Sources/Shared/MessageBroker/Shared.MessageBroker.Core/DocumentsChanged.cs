@@ -6,7 +6,7 @@ public record DocumentsChanged<TDocument, TId>(IEnumerable<TDocument> OldDocumen
     : DocumentChangeBase<TDocument, TId>(null, true, OldDocuments, ChangeType)
     where TDocument : class, IDocument<TId>
 {
-    public IEnumerable<TId> Ids => OldDocuments.Select(x => x.Id);
+    public IEnumerable<TId> DocumentIds => OldDocuments.Select(x => x.Id);
 }
 
 public static class DocumentsChanged

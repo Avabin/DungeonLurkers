@@ -1,11 +1,7 @@
-﻿using System.Reactive;
-using System.Reactive.Linq;
-using System.Text;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
 using Shared.MessageBroker.Core;
 
 namespace Shared.MessageBroker.RabbitMQ;
@@ -44,12 +40,12 @@ public class RabbitMQMessageBroker : IMessageBroker
         });
     }
     
-    public IObservable<T> GetObservableForQueue<T>(string queueName) =>
+    public IObservable<T> GetObservableForQueue<T>(string queueName) where T : IMessage =>
         new ChannelObservable<T>(queueName, CreateQueueChannel, _serializerSettings);
-    
-    public IObserver<T> GetObserverForQueue<T>(string queueName) =>
+
+    public IObserver<T> GetObserverForQueue<T>(string queueName) where T : IMessage =>
         new ChannelObserver<T>(queueName, CreateQueueChannel, _serializerSettings);
-    
+
     private IModel CreateQueueChannel(string queueName)
     {
         _logger.LogTrace("Creating channel for exchange {QueueName}", queueName);

@@ -83,7 +83,7 @@ public class BotCrontabRuleControllerIntegrationTests : AuthenticatedTestsBase
            .InsertAsync(rules);
 
         // Act
-        var result = await _rulesClient.GetAllAsync(skip, limit);
+        var result = await _rulesClient.GetAllCrontabRulesAsync(skip, limit);
 
         // Assert
         var resultList = result.ToList();
@@ -144,7 +144,7 @@ public class BotCrontabRuleControllerIntegrationTests : AuthenticatedTestsBase
            .InsertAsync(rule);
 
         // Act
-        var result = await _rulesClient.FindByIdAsync(id);
+        var result = await _rulesClient.FindCrontabRuleByIdAsync(id);
 
         // Assert
         result.Id.Should().NotBeEmpty();
@@ -161,7 +161,7 @@ public class BotCrontabRuleControllerIntegrationTests : AuthenticatedTestsBase
         var id = ":)";
 
         // Act
-        var act = async () => await _rulesClient.FindByIdAsync(id);
+        var act = async () => await _rulesClient.FindCrontabRuleByIdAsync(id);
 
         // Assert
         await act.Should().ThrowExactlyAsync<ApiException>().Where(e => e.StatusCode == HttpStatusCode.BadRequest);
@@ -174,7 +174,7 @@ public class BotCrontabRuleControllerIntegrationTests : AuthenticatedTestsBase
         var id = ObjectId.GenerateNewId().ToString();
 
         // Act
-        var act = async () => await _rulesClient.FindByIdAsync(id);
+        var act = async () => await _rulesClient.FindCrontabRuleByIdAsync(id);
 
         // Assert
         await act.Should().ThrowExactlyAsync<ApiException>().Where(e => e.StatusCode == HttpStatusCode.NotFound);

@@ -21,16 +21,16 @@ public static class ContainerBuilderExtensions
 
         return services;
     }
-    public static ContainerBuilder AddRabbitMessageBroker(this ContainerBuilder builder)
+    public static ContainerBuilder AddInternalMessageBroker(this ContainerBuilder builder)
     {
-        builder.RegisterType<RabbitMQMessageBroker>().As<IMessageBroker>().SingleInstance();
+        builder.RegisterType<InternalMessageBroker>().AsImplementedInterfaces().SingleInstance();
 
         return builder;
     }
     
-    public static ContainerBuilder AddDummyMessageBroker(this ContainerBuilder builder)
+    public static ContainerBuilder AddRabbitMqMessageBroker(this ContainerBuilder builder)
     {
-        builder.RegisterType<DummyMessageBroker>().As<IMessageBroker>().SingleInstance();
+        builder.RegisterType<RabbitMQMessageBroker>().AsImplementedInterfaces().SingleInstance();
 
         return builder;
     }

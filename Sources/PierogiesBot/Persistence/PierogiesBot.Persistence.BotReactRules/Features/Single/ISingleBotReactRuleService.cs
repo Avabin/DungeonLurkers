@@ -3,6 +3,8 @@ using Shared.Persistence.Core.Features.Documents.Single;
 
 namespace PierogiesBot.Persistence.BotReactRules.Features.Single;
 
-public interface ISingleBotReactRuleService : ISingleDocumentService<BotReactRuleDocument, string, BotReactRuleDto>
+public interface ISingleBotReactRuleService : ISingleDocumentService<BotReactionRuleDocument, string, BotReactionRuleDto>
 {
+    Task AddReactionToRuleAsync(string      id, string reaction);
+    Task RemoveReactionFromRuleAsync(string id, string reaction);
 }

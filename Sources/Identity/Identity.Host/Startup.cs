@@ -9,6 +9,7 @@ using IdentityServer4.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
 using Shared.Infrastructure;
+using Shared.MessageBroker.Core;
 using Shared.MessageBroker.RabbitMQ;
 using Shared.Persistence.Core.Features;
 using Shared.Persistence.Identity;
@@ -239,7 +240,13 @@ public class Startup
     {
         builder.AddPersistenceCore();
         builder.AddPersistenceMongo();
-        builder.AddRabbitMessageBroker();
+        if(Configuration["Rabbit:IsEnabled"] == bool.TrueString)
+        {
+            builder.AddRabbitMqMessageBroker();
+        } else
+        {
+            builder.AddInternalMessageBroker();
+        }
         builder.AddIdentityMongoServices();
     }
 

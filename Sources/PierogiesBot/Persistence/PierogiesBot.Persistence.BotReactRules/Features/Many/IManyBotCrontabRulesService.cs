@@ -3,6 +3,6 @@ using Shared.Persistence.Core.Features.Documents.Many;
 
 namespace PierogiesBot.Persistence.BotReactRules.Features.Many;
 
-public interface IManyBotReactRulesService : IManyDocumentsService<BotReactRuleDocument, string, BotReactRuleDto>
+public interface IManyBotReactRulesService : IManyDocumentsService<BotReactionRuleDocument, string, BotReactionRuleDto>
 {
 }

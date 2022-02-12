@@ -11,44 +11,44 @@ public class DocumentOperationFacade<TDocument, TId, TFindDocumentDto>
 {
 
     public DocumentOperationFacade(
-        ISingleDocumentService<TDocument, TId, TFindDocumentDto> singleDocumentService,
-        IManyDocumentsService<TDocument, TId, TFindDocumentDto>  manyDocumentsService)
+        ISingleDocumentService<TDocument, TId, TFindDocumentDto> singleSingleDocumentService,
+        IManyDocumentsService<TDocument, TId, TFindDocumentDto>  manyManyDocumentsService)
     {
-        DocumentService  = singleDocumentService;
-        DocumentsService = manyDocumentsService;
+        SingleDocumentService  = singleSingleDocumentService;
+        ManyDocumentsService = manyManyDocumentsService;
     }
-    protected ISingleDocumentService<TDocument, TId, TFindDocumentDto> DocumentService  { get; }
-    protected IManyDocumentsService<TDocument, TId, TFindDocumentDto>  DocumentsService { get; }
+    protected ISingleDocumentService<TDocument, TId, TFindDocumentDto> SingleDocumentService  { get; }
+    protected IManyDocumentsService<TDocument, TId, TFindDocumentDto>  ManyDocumentsService { get; }
 
     public Task<TField?> GetFieldAsync<TField>(
         Expression<Func<TDocument, bool>>   predicate,
-        Expression<Func<TDocument, TField>> field) => DocumentService.GetFieldAsync(predicate, field);
+        Expression<Func<TDocument, TField>> field) => SingleDocumentService.GetFieldAsync(predicate, field);
 
     public Task<IEnumerable<TFindDocumentDto>> GetAllAsync(int? skip = null, int? limit = null) =>
-        DocumentsService.GetAllAsync(skip, limit);
+        ManyDocumentsService.GetAllAsync(skip, limit);
 
     public Task<TFindDocumentDto> CreateAsync<TCreateDocDto>(TCreateDocDto request) =>
-        DocumentService.CreateAsync(request);
+        SingleDocumentService.CreateAsync(request);
 
-    public Task<TFindDocumentDto?> GetByIdAsync(TId id) => DocumentService.GetByIdAsync(id);
+    public Task<TFindDocumentDto?> GetByIdAsync(TId id) => SingleDocumentService.GetByIdAsync(id);
 
     public Task<TFindDocumentDto?> GetByFieldAsync<TField>(Expression<Func<TDocument, TField>> field, TField value) =>
-        DocumentService.GetByFieldAsync(field, value);
+        SingleDocumentService.GetByFieldAsync(field, value);
 
     public Task<TFindDocumentDto?> GetByPredicateAsync(Expression<Func<TDocument, bool>> predicate) =>
-        DocumentService.GetByPredicateAsync(predicate);
+        SingleDocumentService.GetByPredicateAsync(predicate);
 
     public Task<IEnumerable<TFindDocumentDto>> GetAllByPredicateAsync(
         Expression<Func<TDocument, bool>> predicate,
         int?                              skip = null,
-        int?                              limit = null) => DocumentsService.GetAllByPredicateAsync(predicate, skip, limit);
+        int?                              limit = null) => ManyDocumentsService.GetAllByPredicateAsync(predicate, skip, limit);
 
     public Task UpdateAsync<TField>(
         Expression<Func<TDocument, bool>>   predicate,
         Expression<Func<TDocument, TField>> field,
-        TField                              value) => DocumentService.UpdateAsync(predicate, field, value);
+        TField                              value) => SingleDocumentService.UpdateAsync(predicate, field, value);
 
-    public Task UpdateAsync<TUpdateDto>(TId id, TUpdateDto dto) => DocumentService.UpdateAsync(id, dto);
+    public Task UpdateAsync<TUpdateDto>(TId id, TUpdateDto dto) => SingleDocumentService.UpdateAsync(id, dto);
 
-    public Task<TFindDocumentDto> DeleteAsync(TId id) => DocumentService.DeleteAsync(id);
+    public Task<TFindDocumentDto> DeleteAsync(TId id) => SingleDocumentService.DeleteAsync(id);
 }

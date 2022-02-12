@@ -83,7 +83,7 @@ public class BotResponseRuleControllerIntegrationTests : AuthenticatedTestsBase
            .InsertAsync(rules);
 
         // Act
-        var result = await _rulesClient.GetAllAsync(skip, limit);
+        var result = await _rulesClient.GetAllResponseRulesAsync(skip, limit);
 
         // Assert
         var resultList = result.ToList();
@@ -145,7 +145,7 @@ public class BotResponseRuleControllerIntegrationTests : AuthenticatedTestsBase
            .InsertAsync(rule);
 
         // Act
-        var result = await _rulesClient.FindByIdAsync(id);
+        var result = await _rulesClient.FindResponseRuleByIdAsync(id);
 
         // Assert
         result.Id.Should().NotBeEmpty();
@@ -172,7 +172,7 @@ public class BotResponseRuleControllerIntegrationTests : AuthenticatedTestsBase
 
         // Act
         await _rulesClient.RemoveResponseFromRule(id, responses.First());
-        var result = await _rulesClient.FindByIdAsync(id);
+        var result = await _rulesClient.FindResponseRuleByIdAsync(id);
 
         // Assert
         result.Id.Should().NotBeEmpty();
@@ -191,7 +191,7 @@ public class BotResponseRuleControllerIntegrationTests : AuthenticatedTestsBase
         var id = ":)";
 
         // Act
-        var act = async () => await _rulesClient.FindByIdAsync(id);
+        var act = async () => await _rulesClient.FindResponseRuleByIdAsync(id);
 
         // Assert
         await act.Should().ThrowExactlyAsync<ApiException>().Where(e => e.StatusCode == HttpStatusCode.BadRequest);
@@ -204,7 +204,7 @@ public class BotResponseRuleControllerIntegrationTests : AuthenticatedTestsBase
         var id = ObjectId.GenerateNewId().ToString();
 
         // Act
-        var act = async () => await _rulesClient.FindByIdAsync(id);
+        var act = async () => await _rulesClient.FindResponseRuleByIdAsync(id);
 
         // Assert
         await act.Should().ThrowExactlyAsync<ApiException>().Where(e => e.StatusCode == HttpStatusCode.NotFound);

@@ -15,9 +15,9 @@ public class MongoDocumentOperationFacade<TDocument, TFindDocumentDto>
 {
 
     public MongoDocumentOperationFacade(
-        IMongoSingleDocumentService<TDocument, TFindDocumentDto> singleDocumentService,
-        IMongoManyDocumentsService<TDocument, TFindDocumentDto>  manyDocumentsService) :
-        base(singleDocumentService, manyDocumentsService)
+        IMongoSingleDocumentService<TDocument, TFindDocumentDto> singleSingleDocumentService,
+        IMongoManyDocumentsService<TDocument, TFindDocumentDto>  manyManyDocumentsService) :
+        base(singleSingleDocumentService, manyManyDocumentsService)
     {
     }
 }

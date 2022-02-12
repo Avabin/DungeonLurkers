@@ -83,7 +83,7 @@ public class BotMessageSubscriptionControllerIntegrationTests : AuthenticatedTes
            .InsertAsync(rules);
 
         // Act
-        var result = await _subscriptionApi.GetAllAsync(skip, limit);
+        var result = await _subscriptionApi.GetAllMessageSubscriptionsAsync(skip, limit);
 
         // Assert
         var resultList = result.ToList();
@@ -117,7 +117,7 @@ public class BotMessageSubscriptionControllerIntegrationTests : AuthenticatedTes
            .InsertAsync(rules);
         
         // Act
-        var result = await _subscriptionApi.FindAllForChannelAsync(guildId, channelId);
+        var result = await _subscriptionApi.FindAllMessageSubscriptionsForChannelAsync(guildId, channelId);
         
         // Assert
         result.Count().Should().Be(channelRulesCount);
@@ -139,7 +139,7 @@ public class BotMessageSubscriptionControllerIntegrationTests : AuthenticatedTes
            .InsertAsync(rules);
         
         // Act
-        var result = await _subscriptionApi.FindAllForGuildAsync(guildId);
+        var result = await _subscriptionApi.FindAllMessageSubscriptionsForGuildAsync(guildId);
         
         // Assert
         result.Count().Should().Be(channelRulesCount);
@@ -182,7 +182,7 @@ public class BotMessageSubscriptionControllerIntegrationTests : AuthenticatedTes
            .InsertAsync(rule);
 
         // Act
-        var result = await _subscriptionApi.FindByIdAsync(id);
+        var result = await _subscriptionApi.FindMessageSubscriptionByIdAsync(id);
 
         // Assert
         result.Id.Should().NotBeEmpty();
@@ -199,7 +199,7 @@ public class BotMessageSubscriptionControllerIntegrationTests : AuthenticatedTes
         var id = ":)";
 
         // Act
-        var act = async () => await _subscriptionApi.FindByIdAsync(id);
+        var act = async () => await _subscriptionApi.FindMessageSubscriptionByIdAsync(id);
 
         // Assert
         await act.Should().ThrowExactlyAsync<ApiException>().Where(e => e.StatusCode == HttpStatusCode.BadRequest);
@@ -212,7 +212,7 @@ public class BotMessageSubscriptionControllerIntegrationTests : AuthenticatedTes
         var id = ObjectId.GenerateNewId().ToString();
 
         // Act
-        var act = async () => await _subscriptionApi.FindByIdAsync(id);
+        var act = async () => await _subscriptionApi.FindMessageSubscriptionByIdAsync(id);
 
         // Assert
         await act.Should().ThrowExactlyAsync<ApiException>().Where(e => e.StatusCode == HttpStatusCode.NotFound);

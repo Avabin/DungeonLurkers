@@ -8,9 +8,9 @@ namespace PierogiesBot.Persistence.BotCrontabRule.Features;
 internal class BotCrontabRuleFacade : DocumentOperationFacade<BotCrontabRuleDocument, string, BotCrontabRuleDto>, IBotCrontabRuleFacade
 {
     public BotCrontabRuleFacade(
-        ISingleBotCrontabRuleService singleDocumentService,
-        IManyBotCrontabRulesService  manyDocumentsService) :
-        base(singleDocumentService, manyDocumentsService)
+        ISingleBotCrontabRuleService singleSingleDocumentService,
+        IManyBotCrontabRulesService  manyManyDocumentsService) :
+        base(singleSingleDocumentService, manyManyDocumentsService)
     {
     }
 

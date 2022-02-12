@@ -24,9 +24,9 @@ public static class ServiceCollectionExtensions
            .AddCoreServices();
 
 
-    public static ContainerBuilder AddDiscordServices(this ContainerBuilder services)
+    public static ContainerBuilder AddDiscordServices<TService>(this ContainerBuilder services) where TService : IDiscordService
     {
-        services.RegisterType<DiscordService>().AsSelf().AsImplementedInterfaces().SingleInstance();
+        services.RegisterType<TService>().AsSelf().As<IDiscordService>().AsImplementedInterfaces().SingleInstance();
         services.RegisterType<DiscordHostedService>().As<IHostedService>().SingleInstance();
         services.RegisterType<DiscordSocketClient>().AsSelf().AsImplementedInterfaces().SingleInstance();
         services.RegisterType<ChannelSubscribeService>().AsImplementedInterfaces().SingleInstance();

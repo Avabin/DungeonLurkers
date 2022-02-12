@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Shared\MessageBroker\Shared.MessageBroker.Core\Shared.MessageBroker.Core.csproj" />
+      <ProjectReference Include="..\..\Shared\MessageBroker\Shared.MessageBroker.RabbitMQ\Shared.MessageBroker.RabbitMQ.csproj" />
+      <ProjectReference Include="..\..\Shared\Persistence\Shared.Persistence.Mongo\Shared.Persistence.Mongo.csproj" />
+      <ProjectReference Include="..\Discord\Modules\PierogiesBot.Discord.Infrastructure\PierogiesBot.Discord.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Autofac" Version="6.3.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Features\Discord" />
+    </ItemGroup>
+
+</Project>

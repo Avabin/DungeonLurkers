@@ -4,6 +4,6 @@ using Shared.Features;
 namespace PierogiesBot.Persistence.BotReactRules.Features;
 
 public class PersistenceBotReactRulesMapperProfile
-    : DtoMapperProfile<BotReactRuleDto, CreateBotReactRuleDto, UpdateBotReactRuleDto, BotReactRuleDocument>
+    : DtoMapperProfile<BotReactionRuleDto, CreateBotReactionRuleDto, UpdateBotReactionRuleDto, BotReactionRuleDocument>
 {
 }

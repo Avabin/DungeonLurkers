@@ -4,6 +4,6 @@ namespace PierogiesBot.Discord.Core.Features.MessageSubscriptions.SubscriptionSe
 
 public interface ICrontabSubscribeService : ILoadSubscriptions
 {
-    Task SubscribeAsync(IGuildChannel   channel);
+    Task SubscribeAsync(IGuildChannel channel);
     Task UnsubscribeAsync(IGuildChannel channel);
 }

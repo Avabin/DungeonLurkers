@@ -9,18 +9,14 @@ namespace Shared.Persistence.Mongo.Features.Database.Repository;
 
 internal class MongoRepositoryWithMessageBroker<T> : MongoRepository<T>, IDisposable where T : class, IDocument<string>
 {
-    private readonly IMessageBroker                           _messageBroker;
-    private          IObserver<DocumentChangeBase<T, string>> _docChangesObserver;
-    private          IDisposable                              _sub;
+    private readonly IDisposable    _sub;
 
     public MongoRepositoryWithMessageBroker(IMongoClient client, ILogger<MongoRepositoryWithMessageBroker<T>> logger, IOptions<MongoSettings> options, IMessageBroker messageBroker) : base(client, logger, options)
     {
-        _messageBroker = messageBroker;
-        
-        _docChangesObserver = _messageBroker.GetObserverForQueue<DocumentChangeBase<T, string>>(typeof(T).Name + "Changed");
+        var docChangesObserver = messageBroker.GetObserverForQueue<DocumentChangeBase<T, string>>(MessageBroker.Core.MessageBroker.GetQueueName<T>());
         
         _sub = DocumentChangedObservable.Cast<DocumentChangeBase<T, string>>().Concat(DocumentsChangedObservable.Cast<DocumentChangeBase<T, string>>())
-                   .Do(_docChangesObserver)
+                   .Do(docChangesObserver)
                    .Subscribe();
     }
 

@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PierogiesBot.Discord.Infrastructure;
 using PierogiesBot.Discord.Infrastructure.Features.DiscordHost;
+using PierogiesBot.Infrastructure;
 using PierogiesBot.Persistence.BotCrontabRule.Features;
 using PierogiesBot.Persistence.BotMessageSubscription.Features;
 using PierogiesBot.Persistence.BotReactRules.Features;
@@ -122,19 +123,7 @@ public class Startup : StartupBase
 
     public void ConfigureContainer(ContainerBuilder builder)
     {
-        if(Configuration["IsDiscordEnabled"] == bool.TrueString)
-            builder.AddDiscordServices();
-        builder.AddPersistenceCore();
-        builder.AddPersistenceMongo();
-        if (Configuration["Rabbit:IsEnabled"] == bool.TrueString)
-            builder.AddRabbitMessageBroker();
-        else 
-            builder.AddDummyMessageBroker();
-        builder.AddBotCrontabRulesMongoServices();
-        builder.AddBotReactRulesMongoServices();
-        builder.AddBotMessageSubscriptionsMongoServices();
-        builder.AddBotResponseRulesMongoServices();
-        builder.AddGuildSettingsMongoServices();
+        builder.AddInfrastructure(Configuration);
     }
 
 

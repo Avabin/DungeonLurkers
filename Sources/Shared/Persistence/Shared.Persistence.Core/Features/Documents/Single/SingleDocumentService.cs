@@ -1,6 +1,8 @@
 ﻿using System.Linq.Expressions;
+using Autofac.Features.AttributeFilters;
 using AutoMapper;
 using Shared.Features;
+using Shared.MessageBroker.Core;
 using Shared.Persistence.Core.Features.Exceptions;
 using Shared.Persistence.Core.Features.Repository;
 

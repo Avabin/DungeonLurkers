@@ -7,28 +7,28 @@ namespace PierogiesBot.Persistence.GuildSettings.Features;
 
 public class GuildSettingFacade : DocumentOperationFacade<GuildSettingDocument, string, GuildSettingDto>, IGuildSettingFacade
 {
-    private readonly ISingleGuildSettingService _singleDocumentService;
+    private readonly ISingleGuildSettingService _singleSingleDocumentService;
 
     public GuildSettingFacade(
-        ISingleGuildSettingService singleDocumentService,
-        IManyGuildSettingsService  manyDocumentsService) :
-        base(singleDocumentService, manyDocumentsService)
+        ISingleGuildSettingService singleSingleDocumentService,
+        IManyGuildSettingsService  manyManyDocumentsService) :
+        base(singleSingleDocumentService, manyManyDocumentsService)
     {
-        _singleDocumentService = singleDocumentService;
+        _singleSingleDocumentService = singleSingleDocumentService;
     }
 
     public async Task SetGuildTimezoneAsync(string tzInfoId, ulong guildId) => 
-        await _singleDocumentService.SetGuildTimezoneAsync(tzInfoId, guildId);
+        await _singleSingleDocumentService.SetGuildTimezoneAsync(tzInfoId, guildId);
 
     public async Task<string?> GetGuildTimezoneAsync(ulong guildId) => 
-        await _singleDocumentService.GetGuildTimezoneAsync(guildId);
+        await _singleSingleDocumentService.GetGuildTimezoneAsync(guildId);
 
     public async Task SetMuteRoleAsync(ulong guildId, ulong roleId) => 
-        await _singleDocumentService.SetMuteRoleAsync(guildId, roleId);
+        await _singleSingleDocumentService.SetMuteRoleAsync(guildId, roleId);
 
     public async Task<ulong> GetMuteRoleAsync(ulong guildId) => 
-        await _singleDocumentService.GetMuteRoleAsync(guildId);
+        await _singleSingleDocumentService.GetMuteRoleAsync(guildId);
 
     public async Task<GuildSettingDto?> FindByGuildId(ulong guildId) => 
-        await _singleDocumentService.FindByGuildId(guildId); 
+        await _singleSingleDocumentService.FindByGuildId(guildId); 
 }

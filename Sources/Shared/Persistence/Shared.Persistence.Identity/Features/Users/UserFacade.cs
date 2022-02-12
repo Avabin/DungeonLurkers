@@ -7,16 +7,16 @@ namespace Shared.Persistence.Identity.Features.Users;
 
 public class UserFacade : DocumentOperationFacade<UserDocument, string, UserDto>, IUserFacade
 {
-    private readonly ISingleUserService _singleDocumentService;
+    private readonly ISingleUserService _singleSingleDocumentService;
 
     public UserFacade(
-        ISingleUserService singleDocumentService,
-        IManyUsersService  manyDocumentsService) :
-        base(singleDocumentService, manyDocumentsService) =>
-        _singleDocumentService = singleDocumentService;
+        ISingleUserService singleSingleDocumentService,
+        IManyUsersService  manyManyDocumentsService) :
+        base(singleSingleDocumentService, manyManyDocumentsService) =>
+        _singleSingleDocumentService = singleSingleDocumentService;
 
     public Task<UserDto?> GetByUsernameAsync(string username)
     {
-        return _singleDocumentService.GetByUsernameAsync(username);
+        return _singleSingleDocumentService.GetByUsernameAsync(username);
     }
 }

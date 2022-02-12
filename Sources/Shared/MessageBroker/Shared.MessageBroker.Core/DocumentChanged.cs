@@ -6,7 +6,7 @@ public record DocumentChanged<TDocument, TId>(TDocument OldDocument, ChangeType 
     : DocumentChangeBase<TDocument, TId>(OldDocument, false, Enumerable.Empty<TDocument>(),ChangeType)
     where TDocument : class, IDocument<TId>
 {
-    public TId Id => OldDocument.Id;
+    public TId DocumentId => OldDocument.Id;
 }
 
 public static class DocumentChanged

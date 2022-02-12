@@ -27,7 +27,7 @@ public class BotReactRuleControllerIntegrationTests : AuthenticatedTestsBase
     public async Task SetUp()
     {
         (_rulesClient, Services) =
-            await ConfigureResourceServer<Startup, IBotReactRuleApi>(client => Startup.IdentityHttpClient = client);
+            await ConfigureResourceServer<Startup, IBotReactionRuleApi>(client => Startup.IdentityHttpClient = client);
     }
 
 
@@ -36,7 +36,7 @@ public class BotReactRuleControllerIntegrationTests : AuthenticatedTestsBase
     {
         await ClearCollection<UserDocument>(GetIdentityHostService<IMongoClient>());
 
-        await ClearCollection<BotReactRuleDocument>(GetServiceFromPierogiesBotHost<IMongoClient>());
+        await ClearCollection<BotReactionRuleDocument>(GetServiceFromPierogiesBotHost<IMongoClient>());
 
         _rulesClient = null;
         Services     = null;
@@ -48,7 +48,7 @@ public class BotReactRuleControllerIntegrationTests : AuthenticatedTestsBase
     public override string             ClientId     { get; } = "pierogiesbot";
     public override string             ClientSecret { get; } = "secret";
     public override string             Scope        { get; } = "pierogiesbot.*";
-    private         IBotReactRuleApi _rulesClient = null!;
+    private         IBotReactionRuleApi _rulesClient = null!;
 
 
     public override string Password { get; } = "P4$$w0RD!";
@@ -77,13 +77,13 @@ public class BotReactRuleControllerIntegrationTests : AuthenticatedTestsBase
     {
         // Arrange
         var rules = Enumerable.Range(0, limit ?? 10)
-                                   .Select(i => new BotReactRuleDocument(new []{""}, $"trigger{i}", StringComparison.InvariantCultureIgnoreCase, false, false, ResponseMode.First))
+                                   .Select(i => new BotReactionRuleDocument(new []{""}, $"trigger{i}", StringComparison.InvariantCultureIgnoreCase, false, false, ResponseMode.First))
                                    .ToList();
-        await GetServiceFromPierogiesBotHost<IMongoRepository<BotReactRuleDocument>>()
+        await GetServiceFromPierogiesBotHost<IMongoRepository<BotReactionRuleDocument>>()
            .InsertAsync(rules);
 
         // Act
-        var result = await _rulesClient.GetAllAsync(skip, limit);
+        var result = await _rulesClient.GetAllReactionRulesAsync(skip, limit);
 
         // Assert
         var resultList = result.ToList();
@@ -100,7 +100,7 @@ public class BotReactRuleControllerIntegrationTests : AuthenticatedTestsBase
     public async Task CreateBotReactRule_Success()
     {
         // Arrange
-        var request = new CreateBotReactRuleDto
+        var request = new CreateBotReactionRuleDto
         {
             Reactions = {"🍆"},
             TriggerText = "trigger",
@@ -109,10 +109,10 @@ public class BotReactRuleControllerIntegrationTests : AuthenticatedTestsBase
             ShouldTriggerOnContains = false,
             StringComparison = StringComparison.InvariantCultureIgnoreCase
         };
-        var mongoRepository = GetServiceFromPierogiesBotHost<IMongoRepository<BotReactRuleDocument>>();
+        var mongoRepository = GetServiceFromPierogiesBotHost<IMongoRepository<BotReactionRuleDocument>>();
 
         // Act
-        var result = await _rulesClient.CreateBotReactRuleAsync(request);
+        var result = await _rulesClient.CreateBotReactionRuleAsync(request);
         var saved  = await mongoRepository.GetByIdAsync(result.Id);
 
         // Assert
@@ -139,13 +139,13 @@ public class BotReactRuleControllerIntegrationTests : AuthenticatedTestsBase
     {
         // Arrange
         var id   = ObjectId.GenerateNewId().ToString();
-        var rule = new BotReactRuleDocument(id, new []{"reaction"}, "trigger", StringComparison.InvariantCultureIgnoreCase, false, false, ResponseMode.First);
+        var rule = new BotReactionRuleDocument(id, new []{"reaction"}, "trigger", StringComparison.InvariantCultureIgnoreCase, false, false, ResponseMode.First);
 
-        await GetServiceFromPierogiesBotHost<IMongoRepository<BotReactRuleDocument>>()
+        await GetServiceFromPierogiesBotHost<IMongoRepository<BotReactionRuleDocument>>()
            .InsertAsync(rule);
 
         // Act
-        var result = await _rulesClient.FindByIdAsync(id);
+        var result = await _rulesClient.FindReactionRuleByIdAsync(id);
 
         // Assert
         result.Id.Should().NotBeEmpty();
@@ -164,7 +164,7 @@ public class BotReactRuleControllerIntegrationTests : AuthenticatedTestsBase
         var id = ":)";
 
         // Act
-        var act = async () => await _rulesClient.FindByIdAsync(id);
+        var act = async () => await _rulesClient.FindReactionRuleByIdAsync(id);
 
         // Assert
         await act.Should().ThrowExactlyAsync<ApiException>().Where(e => e.StatusCode == HttpStatusCode.BadRequest);
@@ -177,7 +177,7 @@ public class BotReactRuleControllerIntegrationTests : AuthenticatedTestsBase
         var id = ObjectId.GenerateNewId().ToString();
 
         // Act
-        var act = async () => await _rulesClient.FindByIdAsync(id);
+        var act = async () => await _rulesClient.FindReactionRuleByIdAsync(id);
 
         // Assert
         await act.Should().ThrowExactlyAsync<ApiException>().Where(e => e.StatusCode == HttpStatusCode.NotFound);
@@ -188,12 +188,12 @@ public class BotReactRuleControllerIntegrationTests : AuthenticatedTestsBase
     {
         // Arrange
         var id = ObjectId.GenerateNewId().ToString();
-        var rule = new BotReactRuleDocument(id, new []{"reaction"}, "trigger", StringComparison.InvariantCultureIgnoreCase, false, false, ResponseMode.First);
+        var rule = new BotReactionRuleDocument(id, new []{"reaction"}, "trigger", StringComparison.InvariantCultureIgnoreCase, false, false, ResponseMode.First);
 
-        var repository = GetServiceFromPierogiesBotHost<IMongoRepository<BotReactRuleDocument>>();
+        var repository = GetServiceFromPierogiesBotHost<IMongoRepository<BotReactionRuleDocument>>();
         await repository.InsertAsync(rule);
 
-        var request = new UpdateBotReactRuleDto
+        var request = new UpdateBotReactionRuleDto
         {
             Reactions = {"🍆"},
             TriggerText = "trigger12",
@@ -224,7 +224,7 @@ public class BotReactRuleControllerIntegrationTests : AuthenticatedTestsBase
         // Arrange
         const string id = ":)";
 
-        var request = new UpdateBotReactRuleDto
+        var request = new UpdateBotReactionRuleDto
         {
             Reactions = {"🍆"},
             TriggerText = "trigger12",
@@ -248,7 +248,7 @@ public class BotReactRuleControllerIntegrationTests : AuthenticatedTestsBase
         // Arrange
         var id = ObjectId.GenerateNewId().ToString();
 
-        var request = new UpdateBotReactRuleDto
+        var request = new UpdateBotReactionRuleDto
         {
             Reactions = {"🍆"},
             TriggerText = "trigger12",
@@ -271,13 +271,13 @@ public class BotReactRuleControllerIntegrationTests : AuthenticatedTestsBase
     {
         // Arrange
         var id = ObjectId.GenerateNewId().ToString();
-        var rule = new BotReactRuleDocument(id, new []{"reaction"}, "trigger", StringComparison.InvariantCultureIgnoreCase, false, false, ResponseMode.First);
+        var rule = new BotReactionRuleDocument(id, new []{"reaction"}, "trigger", StringComparison.InvariantCultureIgnoreCase, false, false, ResponseMode.First);
 
-        var repository = GetServiceFromPierogiesBotHost<IMongoRepository<BotReactRuleDocument>>();
+        var repository = GetServiceFromPierogiesBotHost<IMongoRepository<BotReactionRuleDocument>>();
         await repository.InsertAsync(rule);
 
         // Act
-        await _rulesClient.DeleteBotReactRuleAsync(id);
+        await _rulesClient.DeleteBotReactionRuleAsync(id);
         var saved = await repository.GetByIdAsync(id);
 
         // Assert
@@ -291,7 +291,7 @@ public class BotReactRuleControllerIntegrationTests : AuthenticatedTestsBase
         const string id = ":)";
 
         // Act
-        var act = async () => await _rulesClient.DeleteBotReactRuleAsync(id);
+        var act = async () => await _rulesClient.DeleteBotReactionRuleAsync(id);
 
         // Assert
         await act.Should().ThrowAsync<ApiException>().Where(x => x.StatusCode == HttpStatusCode.BadRequest);

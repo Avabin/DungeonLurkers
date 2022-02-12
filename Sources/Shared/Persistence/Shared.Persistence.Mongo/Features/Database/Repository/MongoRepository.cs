@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Linq;
+using System.Linq.Expressions;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using Microsoft.Extensions.Logging;
@@ -64,6 +65,7 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
         _logger.LogTrace("{Action}: Doc Id = {DocumentId} of type {DocumentType}", nameof(InsertAsync), doc.Id,
                          typeof(T).Name);
         await Collection.InsertOneAsync(doc);
+        _logger.LogTrace("{Action}: Publishing insert change event", nameof(InsertAsync));
         _docChangedSubject.OnNext(DocumentChanged.Inserted(doc));
         return doc.Id;
     }
@@ -76,6 +78,7 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
                          string.Join(",", docsIds), typeof(T).Name);
 
         await Collection.InsertManyAsync(docsList);
+        _logger.LogTrace("{Action}: Publishing insert (many) change event", nameof(InsertAsync));
         _docChangedSubject.OnNext(DocumentsChanged.Inserted(docsList));
 
         _logger.LogTrace("Inserted {Count} docs of type {DocumentType}", docsList.Count, typeof(T).Name);
@@ -98,8 +101,13 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
         if (updatedDoc as T is not { } castedDoc) return;
         var filter = Builders<T>.Filter.Eq(x => x.Id, id);
 
-        await Collection.ReplaceOneAsync(filter, castedDoc);
-        _docChangedSubject.OnNext(DocumentChanged.Updated(doc));
+        var result = await Collection.ReplaceOneAsync(filter, castedDoc);
+        
+        if (result.IsAcknowledged && result.ModifiedCount > 0)
+        {
+            _logger.LogTrace("{Action}: Publishing update change event", nameof(UpdateAsync));
+            _docChangedSubject.OnNext(DocumentChanged.Updated(castedDoc));
+        }
         _logger.LogTrace("Updated doc Id = {DocumentId} of type {DocumentType}", doc.Id, typeof(T).Name);
     }
 
@@ -118,8 +126,12 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
         var oldDocs = await Collection.Find(predicate).ToListAsync();
 
         var updateResult = await Collection.UpdateManyAsync(predicate, update);
-        
-        _docChangedSubject.OnNext(DocumentsChanged.Updated(oldDocs));
+
+        if (updateResult.IsAcknowledged && updateResult.ModifiedCount > 0)
+        {
+            _logger.LogTrace("{Action}: Publishing update (many) change event", nameof(UpdateAllAsync));
+            _docChangedSubject.OnNext(DocumentsChanged.Updated(oldDocs.Take((int)updateResult.ModifiedCount)));
+        }
         
         _logger.LogTrace("{Action}: Update result {@UpdateResult} docs of type {DocumentType}", updateResult, typeof(T).Name);
     }
@@ -134,8 +146,12 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
         var oldDoc = await Collection.Find(predicate).SingleAsync();
 
         var result = await Collection.UpdateOneAsync(predicate, update);
-        
-        if (result.ModifiedCount > 0) _docChangedSubject.OnNext(DocumentChanged.Updated(oldDoc));
+
+        if (result.IsAcknowledged && result.ModifiedCount > 0)
+        {
+            _logger.LogTrace("{Action}: Publishing update change event", nameof(UpdateSingleAsync));
+            _docChangedSubject.OnNext(DocumentChanged.Updated(oldDoc));
+        }
         
         _logger.LogTrace("{Action}: Update result {@UpdateResult} field of doc of type {DocumentType}", result, typeof(T).Name);
     }
@@ -147,7 +163,12 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
         await ThrowIfDocWithIdNotFound(id);
         var oldDoc = await Collection.Find(x => x.Id == id).SingleAsync();
         var result = await Collection.DeleteOneAsync(f => Equals(f.Id, id));
-        if (result.DeletedCount > 0) _docChangedSubject.OnNext(DocumentChanged.Deleted(oldDoc));
+
+        if (result.IsAcknowledged && result.DeletedCount > 0)
+        {
+            _logger.LogTrace("{Action}: Publishing delete change event", nameof(DeleteAsync));
+            _docChangedSubject.OnNext(DocumentChanged.Deleted(oldDoc));
+        }
         
         _logger.LogTrace("{Action}: Delete result {@DeleteResult} doc of type {DocumentType}", result, typeof(T).Name);
     }
@@ -239,7 +260,10 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
         _logger.LogTrace("{Action}: Result of update: {@Result}", nameof(AddElementToArrayFieldAsync), result);
 
         if (result.IsAcknowledged && result.ModifiedCount > 0)
+        {
+            _logger.LogTrace("{Action}: Publishing update change event", nameof(AddElementToArrayFieldAsync));
             _docChangedSubject.OnNext(DocumentChanged.Updated(oldDoc));
+        }
     }
     
     public async Task RemoveElementFromArrayFieldAsync<TElement>(string id, Expression<Func<T, IEnumerable<TElement>>> field, TElement like)
@@ -256,7 +280,10 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
         _logger.LogTrace("{Action}: Result of update: {@Result}", nameof(RemoveElementFromArrayFieldAsync), result);
 
         if (result.IsAcknowledged && result.ModifiedCount > 0)
+        {
+            _logger.LogTrace("{Action}: Publishing update change event", nameof(RemoveElementFromArrayFieldAsync));
             _docChangedSubject.OnNext(DocumentChanged.Updated(oldDoc));
+        }
     }
 
     public async Task<IEnumerable<TField>> GetFieldsAsync<TField>(
@@ -303,7 +330,11 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
                            string.Join(", ", idsList));
         var oldDocs = await Collection.Find(Builders<T>.Filter.In(x => x.Id, idsList)).ToListAsync();
         var result = await Collection.DeleteManyAsync(Builders<T>.Filter.In(x => x.Id, idsList));
-        _docChangedSubject.OnNext(DocumentsChanged.Deleted(oldDocs));
+        if (result.IsAcknowledged && result.DeletedCount > 0)
+        {
+            _logger.LogTrace("{Action}: Publishing delete (many) change event", nameof(DeleteManyAsync));
+            _docChangedSubject.OnNext(DocumentsChanged.Deleted(oldDocs.Take((int)result.DeletedCount)));
+        }
         
         _logger.LogTrace("{Action} of {DocumentType} ({Ids}). Modified {Count}", nameof(DeleteManyAsync), typeof(T).Name,
                            string.Join(", ", idsList), result.DeletedCount);

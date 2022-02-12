@@ -179,7 +179,7 @@ public class ReactionCommandModuleUnitTests
 
     #region CreateGuildEmote
 
-    private static Type[] _constructorParamsDefinition = new[]
+    private static readonly Type[] _constructorParamsDefinition = new[]
     {
         typeof(ulong), typeof(string), typeof(bool), typeof(bool),
         typeof(bool), typeof(IReadOnlyList<ulong>), typeof(ulong?)

@@ -8,9 +8,9 @@ namespace Shared.Persistence.Identity.Features.Roles;
 public class RoleFacade : DocumentOperationFacade<RoleDocument, string, FindRoleDto>
 {
     public RoleFacade(
-        ISingleRoleService singleDocumentService,
-        IManyRolesService  manyDocumentsService) :
-        base(singleDocumentService, manyDocumentsService)
+        ISingleRoleService singleSingleDocumentService,
+        IManyRolesService  manyManyDocumentsService) :
+        base(singleSingleDocumentService, manyManyDocumentsService)
     {
     }
 }

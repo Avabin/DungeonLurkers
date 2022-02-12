@@ -4,7 +4,7 @@ using Shared.Features;
 namespace PierogiesBot.Shared.Features.BotReactRules
 {
     
-    public class UpdateBotReactRuleDto : BotReactRuleDtoBase, IUpdateDocumentDto
+    public class UpdateBotReactionRuleDto : BotReactRuleDtoBase, IUpdateDocumentDto
     {
         public          ICollection<string> Reactions               { get; set; } = new List<string>();
         public override string              TriggerText             { get; set; } = "";

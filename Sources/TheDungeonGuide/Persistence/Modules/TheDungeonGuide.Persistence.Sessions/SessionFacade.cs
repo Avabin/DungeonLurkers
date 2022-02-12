@@ -7,16 +7,16 @@ namespace TheDungeonGuide.Persistence.Sessions;
 
 public class SessionFacade : DocumentOperationFacade<SessionDocument, string, SessionDto>, ISessionFacade
 {
-    private readonly IManySessionsService  _manyDocumentsService;
-    private readonly ISingleSessionService _singleDocumentService;
+    private readonly IManySessionsService  _manyManyDocumentsService;
+    private readonly ISingleSessionService _singleSingleDocumentService;
 
     public SessionFacade(
-        ISingleSessionService singleDocumentService,
-        IManySessionsService  manyDocumentsService) :
-        base(singleDocumentService, manyDocumentsService)
+        ISingleSessionService singleSingleDocumentService,
+        IManySessionsService  manyManyDocumentsService) :
+        base(singleSingleDocumentService, manyManyDocumentsService)
     {
-        _singleDocumentService = singleDocumentService;
-        _manyDocumentsService  = manyDocumentsService;
+        _singleSingleDocumentService = singleSingleDocumentService;
+        _manyManyDocumentsService  = manyManyDocumentsService;
     }
 
 
@@ -25,19 +25,19 @@ public class SessionFacade : DocumentOperationFacade<SessionDocument, string, Se
         int?   skip = null,
         int?   take = null)
     {
-        return _manyDocumentsService.GetAllByPredicateAsync(x => x.GameMasterId == gameMasterId, skip, take);
+        return _manyManyDocumentsService.GetAllByPredicateAsync(x => x.GameMasterId == gameMasterId, skip, take);
     }
 
-    public Task RemovePlayerAsync(string id, string memberId) => _singleDocumentService.RemoveMemberAsync(id, memberId);
+    public Task RemovePlayerAsync(string id, string memberId) => _singleSingleDocumentService.RemoveMemberAsync(id, memberId);
 
     public Task RemoveCharacterAsync(string id, string characterId) =>
-        _singleDocumentService.RemoveCharacterAsync(id, characterId);
+        _singleSingleDocumentService.RemoveCharacterAsync(id, characterId);
 
     public Task<IEnumerable<SessionDto>> GetAllByCharacterIdAsync(
         string id,
         int?   skip  = null,
         int?   limit = null)
     {
-        return _manyDocumentsService.GetAllByPredicateAsync(x => x.CharactersIds.Contains(id), skip, limit);
+        return _manyManyDocumentsService.GetAllByPredicateAsync(x => x.CharactersIds.Contains(id), skip, limit);
     }
 }

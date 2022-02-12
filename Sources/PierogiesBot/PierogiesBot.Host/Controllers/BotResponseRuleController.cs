@@ -112,7 +112,7 @@ public class BotResponseRuleController : ControllerBase
     /// <returns>No content</returns>
     /// <response code="204">Returns no content</response>
     /// <response code="404">If the bot response rule is not found</response>
-    [Post("{id}/responses")]
+    [HttpPost("{id}/responses")]
     public async Task<IActionResult> AddResponseToRule(string id, string response)
     {
         if (!ObjectId.TryParse(id, out _))

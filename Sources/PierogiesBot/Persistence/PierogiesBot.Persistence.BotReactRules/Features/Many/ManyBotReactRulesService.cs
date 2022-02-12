@@ -6,9 +6,9 @@ using Shared.Persistence.Core.Features.Repository;
 namespace PierogiesBot.Persistence.BotReactRules.Features.Many;
 
 public class ManyBotReactRulesService
-    : ManyDocumentsService<BotReactRuleDocument, string, BotReactRuleDto>, IManyBotReactRulesService
+    : ManyDocumentsService<BotReactionRuleDocument, string, BotReactionRuleDto>, IManyBotReactRulesService
 {
-    public ManyBotReactRulesService(IRepository<BotReactRuleDocument, string> repository, IMapper mapper) : base(repository,
+    public ManyBotReactRulesService(IRepository<BotReactionRuleDocument, string> repository, IMapper mapper) : base(repository,
         mapper)
     {
     }

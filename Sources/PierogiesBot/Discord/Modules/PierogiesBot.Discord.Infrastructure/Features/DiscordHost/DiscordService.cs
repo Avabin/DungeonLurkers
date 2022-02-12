@@ -15,7 +15,7 @@ using PierogiesBot.Discord.Core.Features.TimeZoneTypeConverter;
 
 namespace PierogiesBot.Discord.Infrastructure.Features.DiscordHost;
 
-internal class DiscordService : IDiscordService
+public class DiscordService : IDiscordService
 {
     private readonly IServiceProvider                _services;
     private readonly DiscordSocketClient             _client;
