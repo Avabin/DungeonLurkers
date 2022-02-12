@@ -2,7 +2,7 @@
 
 namespace Shared.MessageBroker.Core;
 
-public interface IInternalMessageBroker : IMessageBroker
+public interface IDocumentMessageBroker : IMessageBroker
 {
     IObservable<DocumentChangeBase<T, string>> GetDocumentChangesObservable<T>() where T : class, IDocument<string> =>
         GetObservableForQueue<DocumentChangeBase<T, string>>(MessageBroker.GetQueueName<T>());

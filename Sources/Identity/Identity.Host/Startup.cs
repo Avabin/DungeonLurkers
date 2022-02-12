@@ -245,7 +245,7 @@ public class Startup
             builder.AddRabbitMqMessageBroker();
         } else
         {
-            builder.AddInternalMessageBroker();
+            builder.RegisterType<DocumentMessageBroker>().AsImplementedInterfaces().SingleInstance();
         }
         builder.AddIdentityMongoServices();
     }

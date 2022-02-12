@@ -1,6 +1,7 @@
 ﻿using System.Reactive.Linq;
 using System.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Bson;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -28,11 +29,10 @@ public class ChannelObservable<T> : EventingBasicConsumer, IObservable<T>
 
     private T Transform(BasicDeliverEventArgs message)
     {
-        var body       = message.Body.Span;
-        var bodyString = Encoding.UTF8.GetString(body);
-        var o          = JsonConvert.DeserializeObject<T>(bodyString, _settings);
-
-        return o;
+        using var ms         = new MemoryStream(message.Body.ToArray());
+        using var bsonReader = new BsonDataReader(ms);
+        var       serializer = JsonSerializer.CreateDefault(_settings);
+        return serializer.Deserialize<T>(bsonReader);
     }
 
     public IDisposable Subscribe(IObserver<T> observer)

@@ -5,7 +5,7 @@ using System.Reactive.Subjects;
 
 namespace Shared.MessageBroker.Core;
 
-public class InternalMessageBroker : IInternalMessageBroker
+public class DocumentMessageBroker : IDocumentMessageBroker
 {
     private readonly ConcurrentDictionary<string, object> _queues = new();
     public IObservable<T> GetObservableForQueue<T>(string queueName) where T : IMessage
@@ -20,7 +20,6 @@ public class InternalMessageBroker : IInternalMessageBroker
         {
             return sub.AsObservable();
         }
-        return Observable.Empty<T>();
     }
 
     public IObserver<T> GetObserverForQueue<T>(string queueName) where T : IMessage
@@ -35,6 +34,5 @@ public class InternalMessageBroker : IInternalMessageBroker
         {
             return sub.AsObserver();
         }
-        return Observer.Create<T>(x => { });
     }
 }

@@ -23,7 +23,7 @@ public static class ContainerBuilderExtensions
     }
     public static ContainerBuilder AddInternalMessageBroker(this ContainerBuilder builder)
     {
-        builder.RegisterType<InternalMessageBroker>().AsImplementedInterfaces().SingleInstance();
+        builder.RegisterType<DocumentMessageBroker>().AsImplementedInterfaces().SingleInstance();
 
         return builder;
     }

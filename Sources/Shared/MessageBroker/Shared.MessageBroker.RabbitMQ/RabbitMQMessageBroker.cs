@@ -7,7 +7,7 @@ using Shared.MessageBroker.Core;
 namespace Shared.MessageBroker.RabbitMQ;
 
 // ReSharper disable once InconsistentNaming
-public class RabbitMQMessageBroker : IMessageBroker
+public class RabbitMQMessageBroker : IDocumentMessageBroker
 {
     private readonly ILogger<RabbitMQMessageBroker> _logger;
     private readonly IOptions<RabbitMqSettings>     _options;
