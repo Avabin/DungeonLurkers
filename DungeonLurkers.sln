@@ -123,6 +123,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.MessageBroker.Persis
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PierogiesBot.Infrastructure", "Sources\PierogiesBot\PierogiesBot.Infrastructure\PierogiesBot.Infrastructure.csproj", "{991B04EC-E7A5-46AF-BE3F-5D9669CCC220}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PierogiesBot.Persistence.Guild", "Sources\PierogiesBot\Persistence\PierogiesBot.Persistence.Guild\PierogiesBot.Persistence.Guild.csproj", "{4E70006B-4B24-4D75-A92E-34FD7EB1459A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Characters", "Characters", "{9DF3C0A4-C0C2-4E3B-9ED4-B4DF9EFC4F9E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheDungeonGuide.Characters.Infrastructure", "Sources\TheDungeonGuide\Characters\TheDungeonGuide.Characters.Infrastructure\TheDungeonGuide.Characters.Infrastructure.csproj", "{280B22A5-DDC0-4E3F-8901-13AAF3E78AF0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -192,6 +198,9 @@ Global
 		{0AC343EA-F45B-4A28-8AF5-2D47E367A735} = {8E83563B-CB4B-4A16-B7B7-618B5ECBAA23}
 		{856B301F-8ABE-4AE8-9F60-30C3A2E08DC0} = {8E83563B-CB4B-4A16-B7B7-618B5ECBAA23}
 		{991B04EC-E7A5-46AF-BE3F-5D9669CCC220} = {F737613A-4ADE-40D0-9E42-7886B44D5C36}
+		{4E70006B-4B24-4D75-A92E-34FD7EB1459A} = {F4668998-323A-4253-A25C-D6654A33ABF5}
+		{9DF3C0A4-C0C2-4E3B-9ED4-B4DF9EFC4F9E} = {FD9C9649-7309-4DD1-9D72-39EE5E2C86BD}
+		{280B22A5-DDC0-4E3F-8901-13AAF3E78AF0} = {9DF3C0A4-C0C2-4E3B-9ED4-B4DF9EFC4F9E}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{014A1370-7B33-4ABE-B77E-851962A2CD3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -734,5 +743,45 @@ Global
 		{991B04EC-E7A5-46AF-BE3F-5D9669CCC220}.Release Identity|Any CPU.ActiveCfg = Debug|Any CPU
 		{991B04EC-E7A5-46AF-BE3F-5D9669CCC220}.Debug Parasyte|Any CPU.ActiveCfg = Debug|Any CPU
 		{991B04EC-E7A5-46AF-BE3F-5D9669CCC220}.Release Parasyte|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E70006B-4B24-4D75-A92E-34FD7EB1459A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E70006B-4B24-4D75-A92E-34FD7EB1459A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E70006B-4B24-4D75-A92E-34FD7EB1459A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E70006B-4B24-4D75-A92E-34FD7EB1459A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E70006B-4B24-4D75-A92E-34FD7EB1459A}.Debug PierogiesBot|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E70006B-4B24-4D75-A92E-34FD7EB1459A}.Debug PierogiesBot|Any CPU.Build.0 = Debug|Any CPU
+		{4E70006B-4B24-4D75-A92E-34FD7EB1459A}.Release PierogiesBot|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E70006B-4B24-4D75-A92E-34FD7EB1459A}.Release PierogiesBot|Any CPU.Build.0 = Debug|Any CPU
+		{4E70006B-4B24-4D75-A92E-34FD7EB1459A}.Debug TheDungeonGuide|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E70006B-4B24-4D75-A92E-34FD7EB1459A}.Debug TheDungeonGuide|Any CPU.Build.0 = Debug|Any CPU
+		{4E70006B-4B24-4D75-A92E-34FD7EB1459A}.Release TheDungeonGuide|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E70006B-4B24-4D75-A92E-34FD7EB1459A}.Release TheDungeonGuide|Any CPU.Build.0 = Debug|Any CPU
+		{4E70006B-4B24-4D75-A92E-34FD7EB1459A}.Debug Identity|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E70006B-4B24-4D75-A92E-34FD7EB1459A}.Debug Identity|Any CPU.Build.0 = Debug|Any CPU
+		{4E70006B-4B24-4D75-A92E-34FD7EB1459A}.Release Identity|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E70006B-4B24-4D75-A92E-34FD7EB1459A}.Release Identity|Any CPU.Build.0 = Debug|Any CPU
+		{4E70006B-4B24-4D75-A92E-34FD7EB1459A}.Debug Parasyte|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E70006B-4B24-4D75-A92E-34FD7EB1459A}.Debug Parasyte|Any CPU.Build.0 = Debug|Any CPU
+		{4E70006B-4B24-4D75-A92E-34FD7EB1459A}.Release Parasyte|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E70006B-4B24-4D75-A92E-34FD7EB1459A}.Release Parasyte|Any CPU.Build.0 = Debug|Any CPU
+		{280B22A5-DDC0-4E3F-8901-13AAF3E78AF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{280B22A5-DDC0-4E3F-8901-13AAF3E78AF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{280B22A5-DDC0-4E3F-8901-13AAF3E78AF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{280B22A5-DDC0-4E3F-8901-13AAF3E78AF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{280B22A5-DDC0-4E3F-8901-13AAF3E78AF0}.Debug PierogiesBot|Any CPU.ActiveCfg = Debug|Any CPU
+		{280B22A5-DDC0-4E3F-8901-13AAF3E78AF0}.Debug PierogiesBot|Any CPU.Build.0 = Debug|Any CPU
+		{280B22A5-DDC0-4E3F-8901-13AAF3E78AF0}.Release PierogiesBot|Any CPU.ActiveCfg = Debug|Any CPU
+		{280B22A5-DDC0-4E3F-8901-13AAF3E78AF0}.Release PierogiesBot|Any CPU.Build.0 = Debug|Any CPU
+		{280B22A5-DDC0-4E3F-8901-13AAF3E78AF0}.Debug TheDungeonGuide|Any CPU.ActiveCfg = Debug|Any CPU
+		{280B22A5-DDC0-4E3F-8901-13AAF3E78AF0}.Debug TheDungeonGuide|Any CPU.Build.0 = Debug|Any CPU
+		{280B22A5-DDC0-4E3F-8901-13AAF3E78AF0}.Release TheDungeonGuide|Any CPU.ActiveCfg = Debug|Any CPU
+		{280B22A5-DDC0-4E3F-8901-13AAF3E78AF0}.Release TheDungeonGuide|Any CPU.Build.0 = Debug|Any CPU
+		{280B22A5-DDC0-4E3F-8901-13AAF3E78AF0}.Debug Identity|Any CPU.ActiveCfg = Debug|Any CPU
+		{280B22A5-DDC0-4E3F-8901-13AAF3E78AF0}.Debug Identity|Any CPU.Build.0 = Debug|Any CPU
+		{280B22A5-DDC0-4E3F-8901-13AAF3E78AF0}.Release Identity|Any CPU.ActiveCfg = Debug|Any CPU
+		{280B22A5-DDC0-4E3F-8901-13AAF3E78AF0}.Release Identity|Any CPU.Build.0 = Debug|Any CPU
+		{280B22A5-DDC0-4E3F-8901-13AAF3E78AF0}.Debug Parasyte|Any CPU.ActiveCfg = Debug|Any CPU
+		{280B22A5-DDC0-4E3F-8901-13AAF3E78AF0}.Debug Parasyte|Any CPU.Build.0 = Debug|Any CPU
+		{280B22A5-DDC0-4E3F-8901-13AAF3E78AF0}.Release Parasyte|Any CPU.ActiveCfg = Debug|Any CPU
+		{280B22A5-DDC0-4E3F-8901-13AAF3E78AF0}.Release Parasyte|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal

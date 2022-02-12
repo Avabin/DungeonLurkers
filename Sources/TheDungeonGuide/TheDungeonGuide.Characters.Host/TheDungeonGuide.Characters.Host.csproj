@@ -28,6 +28,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Shared\Persistence\Shared.Persistence.Mongo\Shared.Persistence.Mongo.csproj" />
       <ProjectReference Include="..\..\Shared\Shared.Infrastructure\Shared.Infrastructure.csproj" />
+      <ProjectReference Include="..\Characters\TheDungeonGuide.Characters.Infrastructure\TheDungeonGuide.Characters.Infrastructure.csproj" />
       <ProjectReference Include="..\Persistence\Modules\TheDungeonGuide.Persistence.Characters\TheDungeonGuide.Persistence.Characters.csproj" />
     </ItemGroup>
 

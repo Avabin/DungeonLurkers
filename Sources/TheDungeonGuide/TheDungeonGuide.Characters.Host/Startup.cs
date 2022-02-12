@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using Shared.Infrastructure;
 using Shared.Persistence.Core.Features;
 using Shared.Persistence.Mongo.Features;
+using TheDungeonGuide.Characters.Infrastructure;
 using TheDungeonGuide.Persistence.Characters;
 
 namespace TheDungeonGuide.Characters.Host;
@@ -118,9 +119,7 @@ public class Startup
 
     public void ConfigureContainer(ContainerBuilder builder)
     {
-        builder.AddPersistenceCore();
-        builder.AddPersistenceMongo();
-        builder.AddCharactersMongoServices();
+        builder.AddCharacters();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

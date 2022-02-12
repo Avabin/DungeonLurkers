@@ -5,18 +5,18 @@ using Shared.Persistence.Identity.Features.Users.Single;
 
 namespace Shared.Persistence.Identity.Features.Users;
 
-public class UserFacade : DocumentOperationFacade<UserDocument, string, UserDto>, IUserFacade
+public class UserFacade : DocumentFacade<UserDocument, string, UserDto>, IUserFacade
 {
-    private readonly ISingleUserService _singleSingleDocumentService;
+    private readonly ISingleUserService _singleDocumentService;
 
     public UserFacade(
-        ISingleUserService singleSingleDocumentService,
-        IManyUsersService  manyManyDocumentsService) :
-        base(singleSingleDocumentService, manyManyDocumentsService) =>
-        _singleSingleDocumentService = singleSingleDocumentService;
+        ISingleUserService singleDocumentService,
+        IManyUsersService  manyDocumentsService) :
+        base(singleDocumentService, manyDocumentsService) =>
+        _singleDocumentService = singleDocumentService;
 
     public Task<UserDto?> GetByUsernameAsync(string username)
     {
-        return _singleSingleDocumentService.GetByUsernameAsync(username);
+        return _singleDocumentService.GetByUsernameAsync(username);
     }
 }

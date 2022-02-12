@@ -6,6 +6,7 @@ using PierogiesBot.Persistence.BotCrontabRule.Features;
 using PierogiesBot.Persistence.BotMessageSubscription.Features;
 using PierogiesBot.Persistence.BotReactRules.Features;
 using PierogiesBot.Persistence.BotResponseRules.Features;
+using PierogiesBot.Persistence.Guild;
 using PierogiesBot.Persistence.GuildSettings.Features;
 using Shared.MessageBroker.RabbitMQ;
 using Shared.Persistence.Core.Features;
@@ -30,6 +31,7 @@ public static class ContainerBuilderExtensions
         builder.AddBotMessageSubscriptionsMongoServices();
         builder.AddBotResponseRulesMongoServices();
         builder.AddGuildSettingsMongoServices();
+        builder.AddGuildsMongoServices();
         
         return builder;
     } 

@@ -4,18 +4,18 @@ using Shared.Persistence.Core.Features.Documents.Single;
 
 namespace Shared.Persistence.Core.Features.Documents.Many;
 
-public class DocumentOperationFacade<TDocument, TId, TFindDocumentDto>
-    : IDocumentOperationFacade<TDocument, TId, TFindDocumentDto>
+public class DocumentFacade<TDocument, TId, TFindDocumentDto>
+    : IDocumentFacade<TDocument, TId, TFindDocumentDto>
     where TDocument : IDocument<TId>
     where TFindDocumentDto : IDocumentDto<TId>
 {
 
-    public DocumentOperationFacade(
-        ISingleDocumentService<TDocument, TId, TFindDocumentDto> singleSingleDocumentService,
-        IManyDocumentsService<TDocument, TId, TFindDocumentDto>  manyManyDocumentsService)
+    public DocumentFacade(
+        ISingleDocumentService<TDocument, TId, TFindDocumentDto> singleDocumentService,
+        IManyDocumentsService<TDocument, TId, TFindDocumentDto>  manyDocumentsService)
     {
-        SingleDocumentService  = singleSingleDocumentService;
-        ManyDocumentsService = manyManyDocumentsService;
+        SingleDocumentService  = singleDocumentService;
+        ManyDocumentsService = manyDocumentsService;
     }
     protected ISingleDocumentService<TDocument, TId, TFindDocumentDto> SingleDocumentService  { get; }
     protected IManyDocumentsService<TDocument, TId, TFindDocumentDto>  ManyDocumentsService { get; }

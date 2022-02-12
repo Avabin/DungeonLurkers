@@ -7,6 +7,6 @@ public static class ContainerBuilderExtensions
 {
     public static void AddPersistenceCore(this ContainerBuilder builder)
     {
-        builder.RegisterGeneric(typeof(DocumentOperationFacade<,,>)).AsImplementedInterfaces();
+        builder.RegisterGeneric(typeof(DocumentFacade<,,>)).AsImplementedInterfaces();
     }
 }
