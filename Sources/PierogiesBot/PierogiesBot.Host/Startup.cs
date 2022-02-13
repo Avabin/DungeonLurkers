@@ -120,6 +120,8 @@ public class Startup : StartupBase
                               "https://avabin.tk",
                               "https://api.pierogiesbot.tk",
                               "https://localhost:5001",
+                              "https://localhost", 
+                              "https://app.localhost",
                               "https://localhost:5003",
                               "https://localhost:5005",
                               "https://localhost:5007")
@@ -146,8 +148,8 @@ public class Startup : StartupBase
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                if (!string.IsNullOrWhiteSpace(pathBase)) c.RoutePrefix = pathBase;
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "PierogiesBot v1");
+                c.RoutePrefix = "pierogiesbot";
+                c.SwaggerEndpoint("/pierogiesbot/swagger/v1/swagger.json", "PierogiesBot v1");
                 c.OAuthClientId("pierogiesbot");
                 c.OAuthClientSecret("secret");
             });

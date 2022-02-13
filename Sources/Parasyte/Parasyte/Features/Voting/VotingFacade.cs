@@ -3,7 +3,7 @@ using Parasyte.Features.Players;
 
 namespace Parasyte.Features.Voting;
 
-internal class VotingFacade : IVotingFacade
+public class VotingFacade : IVotingFacade
 {
     private readonly IVotingFactory _votingFactory;
     public           IVoting?       CurrentVoting { get; private set; }

@@ -1,0 +1,112 @@
+version: "3.3"
+
+services:
+
+  traefik:
+    image: "traefik:latest"
+    container_name: "traefik"
+    command:
+      - "--log.level=DEBUG"
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.websecure.address=:80"
+#      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
+#    labels:
+#      - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
+#      - "traefik.http.routers.http-catchall.entrypoints=web"
+#      - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
+#      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+    ports:
+      - "80:80"
+#      - "443:443"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  mongo:
+    image: "mongo:latest"
+    container_name: "mongo"
+    expose:
+      - "27017"
+  identity:
+    image: "ghcr.io/avabin/identity:latest"
+    container_name: "identity"
+    volumes:
+      - "./logs/identity:/app/logs"
+    expose:
+      - 80
+    environment:
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Identity_DevUserPassword=P@ssw0rd!
+      - Identity_ConnectionStrings__MongoDb=mongodb://mongo:27017
+      - Identity_JWT__ValidAudience=http://app.localhost
+      - Identity_JWT__ValidIssuer=http://app.localhost
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.identity.rule=Host(`app.localhost`)&&!PathPrefix(`/sessions`, `/characters`)"
+      - "traefik.http.routers.identity.entrypoints=websecure"
+
+  pierogiesbot:
+    image: "ghcr.io/avabin/pierogiesbot:latest"
+    container_name: "pierogiesbot"
+    volumes:
+      - "./logs/pierogiesbot:/app/logs"
+    expose:
+      - 80
+    environment:
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ASPNETCORE_ENVIRONMENT=Development
+      - PierogiesBot_DiscordSettings__Token=
+      - PierogiesBot_IsDiscordEnabled=false
+      - PierogiesBot_IdentityUrl=http://app.localhost
+      - PierogiesBot_ConnectionStrings__MongoDb=mongodb://mongo:27017
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pierogiesbot.rule=Host(`bot.localhost`)"
+      - "traefik.http.routers.pierogiesbot.entrypoints=websecure"
+
+  tdg-sessions:
+    image: "ghcr.io/avabin/tdg-sessions:latest"
+    container_name: "tdg-sessions"
+    volumes:
+      - "./logs/tdg:/app/logs"
+    expose:
+      - 80
+    environment:
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ASPNETCORE_ENVIRONMENT=Development
+      - TheDungeonGuide_IdentityUrl=http://app.localhost
+      - TheDungeonGuide_ConnectionStrings__MongoDb=mongodb://mongo:27017
+      - TheDungeonGuide_PathBase=/sessions
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tdg-sessions.rule=Host(`app.localhost`)&&PathPrefix(`/sessions`)"
+      - "traefik.http.routers.tdg-sessions.entrypoints=websecure"
+      - "traefik.http.services.tdg-sessions.loadBalancer.passHostHeader=false"
+  tdg-characters:
+    image: "ghcr.io/avabin/tdg-characters:latest"
+    container_name: "tdg-characters"
+    volumes:
+      - "./logs/tdg:/app/logs"
+    expose:
+      - 80
+    environment:
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ASPNETCORE_ENVIRONMENT=Development
+      - TheDungeonGuide_IdentityUrl=http://app.localhost
+      - TheDungeonGuide_ConnectionStrings__MongoDb=mongodb://mongo:27017
+      - TheDungeonGuide_PathBase=/characters
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tdg-characters.rule=Host(`app.localhost`)&&PathPrefix(`/characters`)"
+      - "traefik.http.routers.tdg-characters.entrypoints=websecure"
+      - "traefik.http.services.tdg-characters.loadBalancer.passHostHeader=false"
+
+volumes:
+  portainer_data:

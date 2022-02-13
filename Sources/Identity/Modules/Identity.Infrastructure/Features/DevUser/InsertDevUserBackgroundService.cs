@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Shared.Persistence.Identity.Features.Users;
@@ -9,17 +10,20 @@ public class InsertDevUserBackgroundService : BackgroundService
 {
     private readonly ILogger<InsertDevUserBackgroundService> _logger;
     private readonly UserManager<UserDocument>               _userManager;
+    private readonly IConfiguration                          _configuration;
+
     public InsertDevUserBackgroundService(
         ILogger<InsertDevUserBackgroundService> logger,
-        UserManager<UserDocument>               userManager)
+        UserManager<UserDocument>               userManager, IConfiguration configuration)
     {
-        _logger      = logger;
-        _userManager = userManager;
+        _logger             = logger;
+        _userManager        = userManager;
+        _configuration = configuration;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var password = GenerateRandomPassword();
+        var password = _configuration["DevUserPassword"] ?? GenerateRandomPassword();
         _logger.LogInformation("Adding dev user to database...");
         var devUser = new UserDocument
         {
