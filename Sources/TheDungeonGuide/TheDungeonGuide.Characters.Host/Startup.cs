@@ -135,7 +135,7 @@ public class Startup
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                if (string.IsNullOrWhiteSpace(pathBase)) c.RoutePrefix = pathBase;
+                if (!string.IsNullOrWhiteSpace(pathBase)) c.RoutePrefix = pathBase;
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Characters API v1");
                 c.OAuthClientId("characters");
                 c.OAuthClientSecret("secret");

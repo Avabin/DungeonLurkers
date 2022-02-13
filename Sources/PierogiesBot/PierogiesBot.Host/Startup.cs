@@ -146,7 +146,7 @@ public class Startup : StartupBase
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                if (string.IsNullOrWhiteSpace(pathBase)) c.RoutePrefix = pathBase;
+                if (!string.IsNullOrWhiteSpace(pathBase)) c.RoutePrefix = pathBase;
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "PierogiesBot v1");
                 c.OAuthClientId("pierogiesbot");
                 c.OAuthClientSecret("secret");
