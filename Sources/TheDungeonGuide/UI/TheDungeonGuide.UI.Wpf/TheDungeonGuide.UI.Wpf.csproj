@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+      <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+      <PackageReference Include="ReactiveUI.Fody" Version="17.1.17" />
+      <PackageReference Include="ReactiveUI.WPF" Version="17.1.17" />
+      <PackageReference Include="Serilog.Extensions.Hosting" Version="4.2.0" />
+      <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
+      <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\TheDungeonGuide.UI.Shared\TheDungeonGuide.UI.Shared.csproj" />
+      <ProjectReference Include="..\TheDungeonGuide.UI.ViewModels\TheDungeonGuide.UI.ViewModels.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="FodyWeavers.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Features\LoginView" />
+    </ItemGroup>
+
+</Project>

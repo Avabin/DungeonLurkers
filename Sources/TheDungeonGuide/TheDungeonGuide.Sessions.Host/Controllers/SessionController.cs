@@ -10,7 +10,7 @@ namespace TheDungeonGuide.Sessions.Host.Controllers;
 
 [ApiController]
 [Authorize(Roles = "player,gm,admin")]
-[Route("[controller]")]
+[Route("/")]
 [SuppressMessage("Style", "CC0061", MessageId = "Asynchronous method can be terminated with the \'Async\' keyword.")]
 public class SessionController : ControllerBase
 {

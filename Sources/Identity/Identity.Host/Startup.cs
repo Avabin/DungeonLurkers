@@ -254,6 +254,8 @@ public class Startup
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+        var pathBase = Configuration["PathBase"];
+        if (!string.IsNullOrWhiteSpace(pathBase)) app.UsePathBase(pathBase);
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
@@ -261,6 +263,7 @@ public class Startup
             app.UseSwaggerUI(
                 c =>
                 {
+                    if (string.IsNullOrWhiteSpace(pathBase)) c.RoutePrefix = pathBase;
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Identity v1");
                     c.OAuthClientId("default");
                     c.OAuthClientSecret("secret");

@@ -1,0 +1,15 @@
+﻿<reactiveUi:ReactiveUserControl x:TypeArguments="profileView:ProfileViewModel"
+                                x:Class="TheDungeonGuide.UI.Wpf.Features.ProfileView.ProfileView"
+                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                                xmlns:local="clr-namespace:TheDungeonGuide.UI.Wpf.Features.ProfileView"
+                                xmlns:reactiveUi="http://reactiveui.net"
+                                xmlns:profileView="clr-namespace:TheDungeonGuide.UI.ViewModels.Features.ProfileView;assembly=TheDungeonGuide.UI.ViewModels"
+                                mc:Ignorable="d"
+                                d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Label x:Name="UsernameLabel"/>
+    </Grid>
+</reactiveUi:ReactiveUserControl>

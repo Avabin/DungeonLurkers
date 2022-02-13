@@ -116,7 +116,13 @@ public class Startup : StartupBase
         {
             options.AddPolicy("AnyOrigin", o =>
             {
-                o.WithOrigins("https://identity.pierogiesbot.tk", "https://api.pierogiesbot.tk", "https://localhost:5001", "https://localhost:5003", "https://localhost:5005", "https://localhost:5007")
+                o.WithOrigins("https://identity.pierogiesbot.tk",
+                              "https://avabin.tk",
+                              "https://api.pierogiesbot.tk",
+                              "https://localhost:5001",
+                              "https://localhost:5003",
+                              "https://localhost:5005",
+                              "https://localhost:5007")
                  .AllowAnyHeader()
                  .AllowAnyMethod();
             });
@@ -132,12 +138,15 @@ public class Startup : StartupBase
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+        var pathBase = Configuration["PathBase"];
+        if (!string.IsNullOrWhiteSpace(pathBase)) app.UsePathBase(pathBase);
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
+                if (string.IsNullOrWhiteSpace(pathBase)) c.RoutePrefix = pathBase;
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "PierogiesBot v1");
                 c.OAuthClientId("pierogiesbot");
                 c.OAuthClientSecret("secret");
