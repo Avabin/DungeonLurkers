@@ -263,7 +263,7 @@ public class Startup
             app.UseSwaggerUI(
                 c =>
                 {
-                    if (string.IsNullOrWhiteSpace(pathBase)) c.RoutePrefix = pathBase;
+                    if (!string.IsNullOrWhiteSpace(pathBase)) c.RoutePrefix = pathBase;
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Identity v1");
                     c.OAuthClientId("default");
                     c.OAuthClientSecret("secret");
