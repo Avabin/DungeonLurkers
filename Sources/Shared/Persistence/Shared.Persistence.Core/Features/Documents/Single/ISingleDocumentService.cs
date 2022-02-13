@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Shared.Features;
+using Shared.Features.Roles;
 
 namespace Shared.Persistence.Core.Features.Documents.Single;
 

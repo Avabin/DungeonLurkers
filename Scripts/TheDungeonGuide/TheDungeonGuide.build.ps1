@@ -14,12 +14,12 @@ Write-Host "Solution file: $SolutionFile"
 
 task CleanCharacters {
     Write-Host "Cleaning $CharactersCsProj"
-    exec {dotnet clean $CharactersCsProj.FullName}
+    exec {dotnet clean -c $buildConfiguration $CharactersCsProj.FullName}
 }
 
 task CleanSessions {
     Write-Host "Cleaning $SessionsCsProj"
-    exec {dotnet clean $SessionsCsProj.FullName}
+    exec {dotnet clean -c $buildConfiguration $SessionsCsProj.FullName}
 }
 
 task BuildCharacters {
@@ -43,17 +43,18 @@ task TestSessions {
 task BuildDockerImage {
     Write-Host "Building Docker image for $projectName"
     $dockerfile = Join-Path $SessionsCsProj.FullName "Dockerfile"
-    exec {dotnet clean $SolutionFile.FullName}
-
+    exec {dotnet clean -c $buildConfiguration $SolutionFile.FullName}
+    $dockerContext = $SolutionPath
+    Write-Host "Docker context: $dockerContext"
     Write-Host "Building Docker image for sessions host"
 
     $dockerfile = Join-Path $SessionsCsProj.Directory.FullName "Dockerfile"
-    exec {docker build -f $dockerfile -t tdg-sessions:latest $SolutionFile.Directory.FullName}
+    exec {docker build -f $dockerfile -t ghcr.io/avabin/tdg-sessions:latest $dockerContext}
 
     Write-Host "Building Docker image for characters host"
 
     $dockerfile = Join-Path $CharactersCsProj.Directory.FullName "Dockerfile"
-    exec {docker build -f $dockerfile -t tdg-characters:latest $SolutionFile.Directory.FullName}
+    exec {docker build -f $dockerfile -t ghcr.io/avabin/tdg-characters:latest $dockerContext}
 }
 
 task Build CleanCharacters, CleanSessions, BuildCharacters, BuildSessions

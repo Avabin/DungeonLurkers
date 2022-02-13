@@ -10,7 +10,7 @@ namespace TheDungeonGuide.Characters.Host.Controllers;
 
 [Produces("application/json")]
 [ApiController]
-[Route("/")]
+[Route("[controller]")]
 [Authorize(Roles = "user,gm,admin")]
 [SuppressMessage("Style", "CC0061", MessageId = "Asynchronous method can be terminated with the \'Async\' keyword.")]
 #pragma warning disable CS1591

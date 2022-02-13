@@ -6,7 +6,7 @@ using Parasyte.Features.Players;
 
 namespace Parasyte.Features.GameSetup;
 
-internal class GamePlayers : IGamePlayers
+public class GamePlayers : IGamePlayers
 {
     private readonly Random                        _random  = Random.Shared;
     private readonly List<IPlayer>                 _players = new(10);

@@ -50,17 +50,18 @@ public class SingleRoleService : SingleDocumentService<RoleDocument, string, Fin
         return _mapper.Map<FindRoleDto>(doc);
     }
 
-    public new async Task<FindRoleDto> GetByIdAsync(string id)
+    public new async Task<FindRoleDto?> GetByIdAsync(string id)
     {
         var doc = await _roleManager.FindByIdAsync(id);
-        return _mapper.Map<FindRoleDto>(doc);
+        return doc is null ? null : _mapper.Map<FindRoleDto>(doc);
     }
 
-    public new Task<FindRoleDto> GetByPredicateAsync(Expression<Func<RoleDocument, bool>> predicate)
+    public new Task<FindRoleDto?> GetByPredicateAsync(Expression<Func<RoleDocument, bool>> predicate)
     {
-        var doc = _roleManager.Roles.Single(predicate);
+        var doc = _roleManager.Roles.SingleOrDefault(predicate);
 
+        if (doc is null) return Task.FromResult<FindRoleDto?>(null);
         var mapped = _mapper.Map<FindRoleDto>(doc);
-        return Task.FromResult(mapped);
+        return Task.FromResult<FindRoleDto?>(mapped);
     }
 }

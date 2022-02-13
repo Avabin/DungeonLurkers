@@ -3,7 +3,7 @@ using Parasyte.Features.Players;
 
 namespace Parasyte.Features.Voting;
 
-internal class Voting : IVoting
+public class Voting : IVoting
 {
     private readonly List<IVote>        _votes = new();
     public           IEnumerable<IVote> Votes => _votes.ToImmutableList();

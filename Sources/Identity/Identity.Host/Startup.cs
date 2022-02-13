@@ -226,6 +226,8 @@ public class Startup
                                       "https://pierogiesbot.avabin.tk",
                                       "https://sessions.tdg.avabin.tk",
                                       "https://characters.tdg.avabin.tk",
+                                      "https://localhost", 
+                                      "https://app.localhost", 
                                       "https://localhost:5001", 
                                       "https://localhost:5003", 
                                       "https://localhost:5005",

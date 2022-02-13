@@ -110,6 +110,8 @@ public class Startup
                               "https://sessions.tdg.avabin.tk",
                               "https://characters.tdg.avabin.tk",
                               "https://localhost:5001",
+                              "https://localhost", 
+                              "https://app.localhost",
                               "https://localhost:5003",
                               "https://localhost:5005",
                               "https://localhost:5007")
@@ -135,7 +137,6 @@ public class Startup
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                if (!string.IsNullOrWhiteSpace(pathBase)) c.RoutePrefix = pathBase;
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Characters API v1");
                 c.OAuthClientId("characters");
                 c.OAuthClientSecret("secret");

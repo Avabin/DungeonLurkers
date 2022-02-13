@@ -11,7 +11,7 @@ $buildConfiguration = "$Configuration $projectName"
 
 task Clean {
     Write-Host "Cleaning $projectName at $($CsProj.FullName)"
-    exec {dotnet clean $CsProj.FullName}
+    exec {dotnet clean -c $buildConfiguration $CsProj.FullName}
 }
 
 task BuildHost {
@@ -47,9 +47,10 @@ task RunUnitTests {
 task BuildDockerImage {
     Write-Host "Building Docker image for $projectName"
     $dockerfile = Join-Path $ProjectDirectory.FullName "Dockerfile"
-    exec {dotnet clean $SolutionFile.FullName}
-
-    exec {docker build -f $dockerfile -t pierogiesbot:latest $SolutionFile.Directory.FullName}
+    exec {dotnet clean -c $buildConfiguration $SolutionFile.FullName}
+    $dockerContext = $SolutionPath
+    Write-Host "Docker context: $dockerContext"
+    exec {docker build -f $dockerfile -t ghcr.io/avabin/pierogiesbot:latest $dockerContext}
 }
 
 task Build Clean, BuildHost
