@@ -25,10 +25,11 @@ namespace PierogiesBot.Host;
 [SuppressMessage("Design", "CC0091", MessageId = "Use static method")]
 public class Startup : StartupBase
 {
-    private readonly string _validIssuer;
+    private readonly string _clientSecret;
 
     public Startup(IConfiguration configuration, IHostEnvironment environment) : base(configuration, environment)
     {
+        _clientSecret = Configuration["JWT:ClientSecret"] ?? "secret";
     }
 
     // This method gets called by the runtime. Use this method to add services to the container.
@@ -148,10 +149,9 @@ public class Startup : StartupBase
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.RoutePrefix = "pierogiesbot";
-                c.SwaggerEndpoint("/pierogiesbot/swagger/v1/swagger.json", "PierogiesBot v1");
-                c.OAuthClientId("pierogiesbot");
-                c.OAuthClientSecret("secret");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "PierogiesBot v1");
+                c.OAuthClientId("default");
+                c.OAuthClientSecret(_clientSecret);
             });
         }
 

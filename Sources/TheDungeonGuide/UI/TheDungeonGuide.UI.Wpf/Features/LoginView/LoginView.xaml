@@ -1,0 +1,30 @@
+﻿<reactiveUi:ReactiveUserControl x:TypeArguments="loginView:LoginViewModel"
+                                x:Class="TheDungeonGuide.UI.Wpf.Features.LoginView.LoginView"
+                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                                xmlns:local="clr-namespace:TheDungeonGuide.UI.Wpf.Features.LoginView"
+                                xmlns:reactiveUi="http://reactiveui.net"
+                                xmlns:loginView="clr-namespace:TheDungeonGuide.UI.ViewModels.Features.LoginView;assembly=TheDungeonGuide.UI.ViewModels"
+                                mc:Ignorable="d"
+                                d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <TextBox Margin="5" x:Name="Username" />
+            <PasswordBox  Margin="5, 0, 5, 5" x:Name="PasswordBox" />
+            <Button Margin="5" x:Name="LoginButton" Content="Login" HorizontalAlignment="Right"/>
+        </StackPanel>
+    </Grid>
+</reactiveUi:ReactiveUserControl>

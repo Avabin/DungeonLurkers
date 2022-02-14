@@ -15,10 +15,14 @@ namespace TheDungeonGuide.Sessions.Host;
 [SuppressMessage("Design", "CC0091", MessageId = "Use static method")]
 public class Startup
 {
+    private readonly string _clientSecret;
+
     public Startup(IConfiguration configuration, IHostEnvironment environment)
     {
         Configuration = configuration;
         Environment   = environment;
+        
+        _clientSecret = Configuration["JWT:Secret"] ?? "secret";
     }
 
     /// <summary>
@@ -138,7 +142,7 @@ public class Startup
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sessions API v1");
                 c.OAuthClientId("sessions");
-                c.OAuthClientSecret("secret");
+                c.OAuthClientSecret(_clientSecret);
             });
         }
 
