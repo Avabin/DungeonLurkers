@@ -10,7 +10,7 @@ using TheDungeonGuide.UI.ViewModels.Features.SessionsView;
 
 namespace TheDungeonGuide.UI.ViewModels.Features.MainView;
 
-public class MainViewModel : DefaultHostScreenViewModel, IActivatableViewModel
+public class MainViewModel : DefaultHostScreenViewModel
 {
     public ReactiveCommand<Unit, IRoutableViewModel> GoToSessionsCommand   { get; }
     public ReactiveCommand<Unit, IRoutableViewModel> GoToProfileCommand   { get; }
@@ -27,6 +27,4 @@ public class MainViewModel : DefaultHostScreenViewModel, IActivatableViewModel
         GoToCharactersCommand = CreateNavigateCommand<CharactersViewModel>();
         GoBack                = ReactiveCommand.CreateFromObservable(NavigateBack)!;
     }
-
-    public ViewModelActivator Activator { get; }
 }

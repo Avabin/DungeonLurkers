@@ -16,10 +16,14 @@ namespace TheDungeonGuide.Characters.Host;
 [SuppressMessage("Design", "CC0091", MessageId = "Use static method")]
 public class Startup
 {
+    private readonly string _clientSecret;
+
     public Startup(IConfiguration configuration, IHostEnvironment environment)
     {
         Environment   = environment;
         Configuration = configuration;
+        
+        _clientSecret = Configuration["JWT:Secret"] ?? "secret";
     }
 
     private IHostEnvironment Environment { get; }
@@ -138,8 +142,8 @@ public class Startup
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Characters API v1");
-                c.OAuthClientId("characters");
-                c.OAuthClientSecret("secret");
+                c.OAuthClientId("default");
+                c.OAuthClientSecret(_clientSecret);
             });
         }
 

@@ -23,12 +23,14 @@ namespace Identity.Host;
 public class Startup
 {
     private readonly string _validIssuer;
+    private readonly string _clientSecret;
 
     public Startup(IConfiguration configuration, IHostEnvironment environment)
     {
         Configuration = configuration;
         Environment   = environment;
-        _validIssuer  = Configuration["JWT:ValidIssuer"] ?? "https://localhost";
+        _validIssuer  = Configuration["JWT:ValidIssuer"]  ?? "https://localhost";
+        _clientSecret = Configuration["JWT:Secret"] ?? "secret";
     }
 
     public IConfiguration   Configuration { get; }
@@ -38,6 +40,7 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         if (Environment.IsDevelopment()) services.AddHostedService<InsertDevUserBackgroundService>();
+        
         services.AddControllers();
         services.AddOptions()
                 .Configure<MongoSettings>(Configuration.GetSection("MongoSettings"))
@@ -132,15 +135,22 @@ public class Startup
                     ClientId          = "default",
                     ClientName        = "Default",
                     AllowedGrantTypes = { GrantType.ResourceOwnerPassword },
-                    ClientSecrets     = { new Secret("secret".Sha256()) },
-                    AllowedScopes     = { IdentityServerConstants.LocalApi.ScopeName },
+                    ClientSecrets     = { new Secret(_clientSecret.Sha256()) },
+                    AllowedScopes     =
+                    {
+                        IdentityServerConstants.LocalApi.ScopeName,
+                        "users.*", "users.read", "users.write",
+                        "sessions.read", "sessions.write", "sessions.*",
+                        "characters.read", "characters.write", "characters.*",
+                        "pierogiesbot.read", "pierogiesbot.write", "pierogiesbot.*"
+                    },
                 },
                 new()
                 {
                     ClientId   = "sessions",
                     ClientName = "Sessions client",
                     AllowedGrantTypes = { GrantType.ResourceOwnerPassword },
-                    ClientSecrets = { new Secret("secret".Sha256()) },
+                    ClientSecrets = { new Secret(_clientSecret.Sha256()) },
                     AllowedScopes =
                     {
                         "sessions.read", "sessions.write", "sessions.*", "user.read",
@@ -152,7 +162,7 @@ public class Startup
                     ClientId   = "characters",
                     ClientName = "Characters client",
                     AllowedGrantTypes = { GrantType.ResourceOwnerPassword },
-                    ClientSecrets = { new Secret("secret".Sha256()) },
+                    ClientSecrets = { new Secret(_clientSecret.Sha256()) },
                     AllowedScopes =
                     {
                         "characters.read", "characters.write", "characters.*", "user.read",
@@ -164,7 +174,7 @@ public class Startup
                     ClientId   = "pierogiesbot",
                     ClientName = "PierogiesBot client",
                     AllowedGrantTypes = { GrantType.ResourceOwnerPassword },
-                    ClientSecrets = { new Secret("secret".Sha256()) },
+                    ClientSecrets = { new Secret(_clientSecret.Sha256()) },
                     AllowedScopes =
                     {
                         "pierogiesbot.read", "pierogiesbot.write", "pierogiesbot.*", "user.read",
@@ -268,7 +278,7 @@ public class Startup
                     if (!string.IsNullOrWhiteSpace(pathBase)) c.RoutePrefix = pathBase;
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Identity v1");
                     c.OAuthClientId("default");
-                    c.OAuthClientSecret("secret");
+                    c.OAuthClientSecret(_clientSecret);
                 });
         }
 

@@ -34,7 +34,7 @@ public partial class HostedWpfApplication<TStartup> where TStartup : class
         Host.CreateDefaultBuilder()
             .UseServiceProviderFactory(new AutofacServiceProviderFactory())
             .ConfigureContainer<ContainerBuilder>
-             ((_, builder) => builder.AddViewModels().AddViews())
+             ((_, builder) => builder.AddViewModels().AddViews().AddUiServices())
             .UseSerilog((hostingContext, serilog) =>
                             serilog.MinimumLevel.Verbose().WriteTo.Console().Enrich.FromLogContext().WriteTo.File("logs/tdg-wpf.log").Enrich.FromLogContext())
             .UseStartup<TStartup>();

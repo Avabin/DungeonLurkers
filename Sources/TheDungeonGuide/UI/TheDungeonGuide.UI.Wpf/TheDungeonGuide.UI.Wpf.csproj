@@ -11,6 +11,7 @@
       <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
       <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+      <PackageReference Include="ReactiveUI.Events.WPF" Version="15.1.1" />
       <PackageReference Include="ReactiveUI.Fody" Version="17.1.17" />
       <PackageReference Include="ReactiveUI.WPF" Version="17.1.17" />
       <PackageReference Include="Serilog.Extensions.Hosting" Version="4.2.0" />
@@ -27,10 +28,12 @@
       <None Update="FodyWeavers.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Features\LoginView" />
+      <None Update="appsettings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="appsettings.Development.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
