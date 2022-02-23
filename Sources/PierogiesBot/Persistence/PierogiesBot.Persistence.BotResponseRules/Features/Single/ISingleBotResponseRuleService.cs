@@ -7,4 +7,5 @@ public interface ISingleBotResponseRuleService : ISingleDocumentService<BotRespo
 {
     Task RemoveResponseFromRuleAsync(string id, string response);
     Task AddResponseToRuleAsync(string      id, string response);
+    Task<IEnumerable<string>> GetResponsesForRuleAsync(string    ruleId);
 }

@@ -40,4 +40,7 @@ public class SessionFacade : DocumentFacade<SessionDocument, string, SessionDto>
     {
         return _manyDocumentsService.GetAllByPredicateAsync(x => x.CharactersIds.Contains(id), skip, limit);
     }
+
+    public async Task<IEnumerable<SessionDto>> GetAllByMemberId(string id, int? skip = null, int? limit = null) => 
+        await _manyDocumentsService.GetAllByMemberIdAsync(id, skip, limit);
 }

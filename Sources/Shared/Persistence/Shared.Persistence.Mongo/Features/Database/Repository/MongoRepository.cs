@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
@@ -20,21 +21,25 @@ namespace Shared.Persistence.Mongo.Features.Database.Repository;
 
 internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocument<string>
 {
-    public virtual   string       DatabaseName { get; private set; } = MongoDbHelper.DatabaseName;
+    protected virtual   string       DatabaseName { get; }
     private readonly IMongoClient _client;
 
     private readonly string                      _collection = MongoDbHelper.GetCollectionName<T>();
     private readonly ILogger<MongoRepository<T>> _logger;
 
-    public MongoRepository(IMongoClient client, ILogger<MongoRepository<T>> logger, IOptions<MongoSettings> options)
+    public MongoRepository(IMongoClient client, ILogger<MongoRepository<T>> logger, IConfiguration  configuration)
     {
         _client = client;
         _logger = logger;
+        
+        var connectionString = configuration.GetConnectionString("MongoDb");
+        
+        var url = new MongoUrl(connectionString);
 
-        if (options.Value is { DatabaseName: not null or "" } settings)
+        if (url is { DatabaseName: not null or "" } settings)
         {
             _logger.LogDebug("Using custom database name: {DatabaseName}", settings.DatabaseName);
-            DatabaseName = options.Value.DatabaseName;
+            DatabaseName = url.DatabaseName;
         }
         else
         {
@@ -284,6 +289,16 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
             _logger.LogTrace("{Action}: Publishing update change event", nameof(RemoveElementFromArrayFieldAsync));
             _docChangedSubject.OnNext(DocumentChanged.Updated(oldDoc, result));
         }
+    }
+
+    public async Task<IEnumerable<TElement>> GetArrayFieldAsync<TElement>(string ruleId, Expression<Func<T, IEnumerable<TElement>>> field)
+    {
+        _logger.LogTrace("{Action} of {DocumentType}", nameof(GetArrayFieldAsync), typeof(T).Name);
+        
+        var            filter = Builders<T>.Filter.Eq(s => s.Id, ruleId);
+        var result = await Collection.Find(filter).Project(field).SingleAsync();
+        
+        return result ?? Enumerable.Empty<TElement>();
     }
 
     public async Task<IEnumerable<TField>> GetFieldsAsync<TField>(

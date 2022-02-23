@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Security.Claims;
+using System.Text.Json.Serialization;
 using Autofac;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -41,7 +42,7 @@ public class Startup
         var identityUrl = UsersHttpClient is not null
                               ? UsersHttpClient.BaseAddress!.ToString()
                               : Configuration.GetValue<string>("IdentityUrl");
-        services.AddControllers();
+        services.AddControllers().AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
         services.AddAutoMapper(expression => { expression.AddProfile<PersistenceCharactersMapperProfile>(); });
         services.AddAuthentication(options =>
@@ -141,7 +142,7 @@ public class Startup
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Characters API v1");
+                c.SwaggerEndpoint($"{pathBase ?? ""}/swagger/v1/swagger.json", "Characters API v1");
                 c.OAuthClientId("default");
                 c.OAuthClientSecret(_clientSecret);
             });

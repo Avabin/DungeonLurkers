@@ -83,7 +83,7 @@ public class CharacterControllerTests : AuthenticatedTestsBase
            .InsertAsync(characters);
 
         // Act
-        var result = await _charactersClient.GetAllAsync(skip, limit);
+        var result = await _charactersClient.GetAllCharactersAsync(skip, limit);
 
         // Assert
         var resultList = result.ToList();
@@ -110,7 +110,7 @@ public class CharacterControllerTests : AuthenticatedTestsBase
            .InsertAsync(characters);
 
         // Act
-        var result = await _charactersClient.FindByOwnerIdAsync(TestUser.Id, skip, limit);
+        var result = await _charactersClient.FindCharactersByOwnerIdAsync(TestUser.Id, skip, limit);
 
         // Assert
         var resultList = result.ToList();
@@ -131,6 +131,7 @@ public class CharacterControllerTests : AuthenticatedTestsBase
         var request = new CreateCharacterDto
         {
             Name = "Test character",
+            OwnerId = TestUser.Id,
         };
         var mongoRepository = GetServiceFromCharactersCube<IMongoRepository<CharacterDocument>>();
 
@@ -141,10 +142,12 @@ public class CharacterControllerTests : AuthenticatedTestsBase
         // Assert
         result.Id.Should().NotBeEmpty();
         result.Name.Should().Be(request.Name);
+        result.OwnerId.Should().Be(request.OwnerId);
 
         saved.Should().NotBeNull();
         saved!.Id.Should().Be(result.Id);
         saved.Name.Should().Be(request.Name);
+        saved.OwnerId.Should().Be(request.OwnerId);
     }
 
     [Test]
@@ -162,7 +165,7 @@ public class CharacterControllerTests : AuthenticatedTestsBase
            .InsertAsync(character);
 
         // Act
-        var result = await _charactersClient.FindByIdAsync(id);
+        var result = await _charactersClient.FindCharacterByIdAsync(id);
 
         // Assert
         result.Id.Should().NotBeEmpty();
@@ -176,7 +179,7 @@ public class CharacterControllerTests : AuthenticatedTestsBase
         var id = ":)";
 
         // Act
-        var act = async () => await _charactersClient.FindByIdAsync(id);
+        var act = async () => await _charactersClient.FindCharacterByIdAsync(id);
 
         // Assert
         await act.Should().ThrowExactlyAsync<ApiException>().Where(e => e.StatusCode == HttpStatusCode.BadRequest);
@@ -189,7 +192,7 @@ public class CharacterControllerTests : AuthenticatedTestsBase
         var id = ObjectId.GenerateNewId().ToString();
 
         // Act
-        var act = async () => await _charactersClient.FindByIdAsync(id);
+        var act = async () => await _charactersClient.FindCharacterByIdAsync(id);
 
         // Assert
         await act.Should().ThrowExactlyAsync<ApiException>().Where(e => e.StatusCode == HttpStatusCode.NotFound);

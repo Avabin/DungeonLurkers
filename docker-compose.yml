@@ -45,11 +45,11 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - Identity_DevUserPassword=P@ssw0rd!
       - Identity_ConnectionStrings__MongoDb=mongodb://mongo:27017
-      - Identity_JWT__ValidAudience=http://app.localhost
-      - Identity_JWT__ValidIssuer=http://app.localhost
+      - Identity_JWT__ValidAudience=http://andrzej-pc.lan
+      - Identity_JWT__ValidIssuer=http://andrzej-pc.lan
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.identity.rule=Host(`app.localhost`)&&!PathPrefix(`/sessions`, `/characters`)"
+      - "traefik.http.routers.identity.rule=Host(`andrzej-pc.lan`)&&!PathPrefix(`/sessions`, `/characters`)"
       - "traefik.http.routers.identity.entrypoints=websecure"
 
   pierogiesbot:
@@ -64,11 +64,11 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - PierogiesBot_DiscordSettings__Token=
       - PierogiesBot_IsDiscordEnabled=false
-      - PierogiesBot_IdentityUrl=http://app.localhost
+      - PierogiesBot_IdentityUrl=http://andrzej-pc.lan
       - PierogiesBot_ConnectionStrings__MongoDb=mongodb://mongo:27017
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.pierogiesbot.rule=Host(`bot.localhost`)"
+      - "traefik.http.routers.pierogiesbot.rule=Host(`bot.andrzej-pc.lan`)"
       - "traefik.http.routers.pierogiesbot.entrypoints=websecure"
 
   tdg-sessions:
@@ -81,12 +81,12 @@ services:
     environment:
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - ASPNETCORE_ENVIRONMENT=Development
-      - TheDungeonGuide_IdentityUrl=http://app.localhost
+      - TheDungeonGuide_IdentityUrl=http://andrzej-pc.lan
       - TheDungeonGuide_ConnectionStrings__MongoDb=mongodb://mongo:27017
       - TheDungeonGuide_PathBase=/sessions
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.tdg-sessions.rule=Host(`app.localhost`)&&PathPrefix(`/sessions`)"
+      - "traefik.http.routers.tdg-sessions.rule=Host(`andrzej-pc.lan`)&&PathPrefix(`/sessions`)"
       - "traefik.http.routers.tdg-sessions.entrypoints=websecure"
       - "traefik.http.services.tdg-sessions.loadBalancer.passHostHeader=false"
   tdg-characters:
@@ -99,14 +99,11 @@ services:
     environment:
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - ASPNETCORE_ENVIRONMENT=Development
-      - TheDungeonGuide_IdentityUrl=http://app.localhost
+      - TheDungeonGuide_IdentityUrl=http://andrzej-pc.lan
       - TheDungeonGuide_ConnectionStrings__MongoDb=mongodb://mongo:27017
       - TheDungeonGuide_PathBase=/characters
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.tdg-characters.rule=Host(`app.localhost`)&&PathPrefix(`/characters`)"
+      - "traefik.http.routers.tdg-characters.rule=Host(`andrzej-pc.lan`)&&PathPrefix(`/characters`)"
       - "traefik.http.routers.tdg-characters.entrypoints=websecure"
       - "traefik.http.services.tdg-characters.loadBalancer.passHostHeader=false"
-
-volumes:
-  portainer_data:

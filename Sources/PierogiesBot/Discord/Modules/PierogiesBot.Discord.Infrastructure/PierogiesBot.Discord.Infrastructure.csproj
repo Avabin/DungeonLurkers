@@ -24,6 +24,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\Persistence\PierogiesBot.Persistence.BotCrontabRule\PierogiesBot.Persistence.BotCrontabRule.csproj" />
       <ProjectReference Include="..\PierogiesBot.Discord.Commands\PierogiesBot.Discord.Commands.csproj" />
+      <ProjectReference Include="..\PierogiesBot.Discord.Interactions\PierogiesBot.Discord.Interactions.csproj" />
     </ItemGroup>
 
 </Project>

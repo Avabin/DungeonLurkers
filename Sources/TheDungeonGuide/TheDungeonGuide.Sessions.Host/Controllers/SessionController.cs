@@ -10,7 +10,7 @@ namespace TheDungeonGuide.Sessions.Host.Controllers;
 
 [ApiController]
 [Authorize(Roles = "player,gm,admin")]
-[Route("[controller]")]
+[Route("/")]
 [SuppressMessage("Style", "CC0061", MessageId = "Asynchronous method can be terminated with the \'Async\' keyword.")]
 public class SessionController : ControllerBase
 {
@@ -55,6 +55,28 @@ public class SessionController : ControllerBase
         
         if (session is null) return NotFound();
         return Ok(session);
+    }
+    
+    
+    // Get all sessions by member ID
+    /// <summary>
+    ///     Fetches all sessions by member ID
+    /// </summary>
+    /// <param name="id">Member ID</param>
+    /// <returns>List of all sessions</returns>
+    /// <response code="200">Returns all sessions for member</response>
+    /// <response code="404">Member not found</response>
+    /// <response code="400">Invalid member ID</response>
+    [ProducesResponseType(typeof(IEnumerable<SessionDto>), StatusCodes.Status200OK)]
+    [HttpGet("members/{id}")]
+    public async Task<IActionResult> GetSessionsByMemberId([FromRoute] string id)
+    {
+        if (!ObjectId.TryParse(id, out _)) return BadRequest("Id is not a valid ObjectId");
+
+        var sessions = await _sessionFacade.GetAllByMemberId(id);
+        
+        if (sessions is null) return NotFound();
+        return Ok(sessions);
     }
 
     /// <summary>

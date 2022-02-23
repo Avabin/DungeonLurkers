@@ -9,7 +9,8 @@ public interface ISessionFacade : IDocumentFacade<SessionDocument, string, Sessi
         string gameMasterId,
         int?   skip = null,
         int?   take = null);
-    Task                              RemovePlayerAsync(string        id, string memberId);
-    Task                              RemoveCharacterAsync(string     id, string characterId);
+    Task                          RemovePlayerAsync(string        id, string memberId);
+    Task                          RemoveCharacterAsync(string     id, string characterId);
     Task<IEnumerable<SessionDto>> GetAllByCharacterIdAsync(string id, int?   skip = null, int? limit = null);
+    Task<IEnumerable<SessionDto>>                        GetAllByMemberId(string         id, int?   skip = null, int? limit = null);
 }

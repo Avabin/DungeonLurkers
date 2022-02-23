@@ -5,6 +5,7 @@ namespace PierogiesBot.Persistence.BotResponseRules.Features;
 
 public interface IBotResponseRuleFacade : IDocumentFacade<BotResponseRuleDocument, string, BotResponseRuleDto>
 {
-    Task RemoveResponseFromRuleAsync(string id, string response);
-    Task AddResponseToRuleAsync(string      id, string response);
+    Task               RemoveResponseFromRuleAsync(string id, string response);
+    Task               AddResponseToRuleAsync(string      id, string response);
+    Task<IEnumerable<string>> GetResponsesForRuleAsync(string   ruleId);
 }

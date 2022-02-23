@@ -22,4 +22,7 @@ public class BotResponseRuleFacade : DocumentFacade<BotResponseRuleDocument, str
 
     public Task AddResponseToRuleAsync(string id, string response) => 
         _singleDocumentService.AddResponseToRuleAsync(id, response);
+
+    public Task<IEnumerable<string>> GetResponsesForRuleAsync(string ruleId) => 
+        _singleDocumentService.GetResponsesForRuleAsync(ruleId);
 }

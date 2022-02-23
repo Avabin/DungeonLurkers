@@ -7,7 +7,7 @@ public interface IUsersApi : IAuthenticatedApi
 {
     [Get("users/{id}")] Task<UserDto> GetUserByIdAsync([Path] string id);
 
-    [Get("users/username/{username}")] Task<UserDto> GetUserByUsernameAsync([Path] string username);
+    [Get("users/UserName/{username}")] Task<UserDto> GetUserByUsernameAsync([Path] string username);
 
     [Post("users")] Task<UserDto> CreateUserAsync([Body] CreateUserDto user);
 
