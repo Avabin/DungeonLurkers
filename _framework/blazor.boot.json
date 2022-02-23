@@ -126,10 +126,10 @@
       "System.Threading.ThreadPool.dll": "sha256-CBPGkU26XwJaNWMTZh3xb2NieiVf4K6gg0IJLeVXkXU=",
       "System.Threading.Timer.dll": "sha256-HgW8cmBXi7fRCXDphaIaA6gx\/exN4bU8mGxBpwx1cXs=",
       "TheDungeonGuide.Shared.dll": "sha256-AMwam0IKwkKvSMHy0ct9UbWCiis6zv74NpkntUKH454=",
-      "TheDungeonGuide.UI.dll": "sha256-+MEZ04FwJXnPXOcS4vUGKCBGJW\/nOFAtSmBde7RvUSQ=",
+      "TheDungeonGuide.UI.dll": "sha256-ddhdd2TBBq\/W40T\/5Tk\/g3ejVi2ynvAr3JyWObWc59M=",
       "TheDungeonGuide.UI.Shared.dll": "sha256-9nh22a05ck6MTnNVf+AF3GL+XZFKoSB3X6\/YH5XYZiI=",
       "TheDungeonGuide.UI.ViewModels.dll": "sha256-4IivqR\/dWUBrOdaGr+qLlp8a5z4nSERZuEi1rGmvjlw=",
-      "TheDungeonGuide.UI.Web.dll": "sha256-xc+wGnqwlpfWh3C\/qsqKt1i+3shMWE1zGGJIa\/TDw4c="
+      "TheDungeonGuide.UI.Web.dll": "sha256-HnPT6PZgQ\/AFXGatO3BBc2\/0k4H88P2EtjEqAMglEuI="
     },
     "extensions": null,
     "lazyAssembly": null,
