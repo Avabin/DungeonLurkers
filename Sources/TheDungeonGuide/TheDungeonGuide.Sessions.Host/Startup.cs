@@ -22,8 +22,8 @@ public class Startup
     public Startup(IConfiguration configuration, IHostEnvironment environment)
     {
         Configuration = configuration;
-        Environment   = environment;
-        
+        Environment = environment;
+
         _clientSecret = Configuration["JWT:Secret"] ?? "secret";
     }
 
@@ -32,26 +32,27 @@ public class Startup
     /// </summary>
     public static HttpClient? IdentityHttpClient { get; set; }
 
-    public IConfiguration   Configuration { get; }
-    public IHostEnvironment Environment   { get; }
+    public IConfiguration Configuration { get; }
+    public IHostEnvironment Environment { get; }
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
         var identityUrl = IdentityHttpClient is not null
-                              ? IdentityHttpClient.BaseAddress!.ToString()
-                              : Configuration.GetValue<string>("IdentityUrl");
-        services.AddControllers().AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+            ? IdentityHttpClient.BaseAddress!.ToString()
+            : Configuration.GetValue<string>("IdentityUrl");
+        services.AddControllers()
+            .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme    = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
         {
             options.Authority = identityUrl;
             if (Environment.IsDevelopment())
                 options.RequireHttpsMetadata = false;
-            options.Audience  = "sessions";
+            options.Audience = "sessions";
             options.SaveToken = true;
 
             options.TokenValidationParameters =
@@ -67,7 +68,7 @@ public class Startup
         {
             c.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title   = "Sessions.Cube",
+                Title = "Sessions.Cube",
                 Version = "v1",
             });
 
@@ -83,7 +84,7 @@ public class Startup
                     Password = new OpenApiOAuthFlow
                     {
                         AuthorizationUrl = new Uri($"{identityUrl}connect/authorize"),
-                        TokenUrl         = new Uri($"{identityUrl}connect/token"),
+                        TokenUrl = new Uri($"{identityUrl}connect/token"),
                         Scopes =
                         {
                             {
@@ -105,21 +106,22 @@ public class Startup
         {
             options.AddPolicy("AnyOrigin", o =>
             {
-                o.WithOrigins("https://identity.pierogiesbot.tk",
-                              "https://identity.avabin.tk",
-                              "https://avabin.tk",
-                              "https://api.pierogiesbot.tk",
-                              "https://pierogiesbot.avabin.tk",
-                              "https://sessions.tdg.avabin.tk",
-                              "https://characters.tdg.avabin.tk",
-                              "https://localhost:5001",
-                              "https://localhost", 
-                              "https://app.localhost",
-                              "https://localhost:5003",
-                              "https://localhost:5005",
-                              "https://localhost:5007")
-                 .AllowAnyHeader()
-                 .AllowAnyMethod();
+                o.WithOrigins("https://avabin.github.io",
+                        "https://identity.pierogiesbot.tk",
+                        "https://identity.avabin.tk",
+                        "https://avabin.tk",
+                        "https://api.pierogiesbot.tk",
+                        "https://pierogiesbot.avabin.tk",
+                        "https://sessions.tdg.avabin.tk",
+                        "https://characters.tdg.avabin.tk",
+                        "https://localhost:5001",
+                        "https://localhost",
+                        "https://app.localhost",
+                        "https://localhost:5003",
+                        "https://localhost:5005",
+                        "https://localhost:5007")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
             });
         });
     }
@@ -129,7 +131,7 @@ public class Startup
         builder.AddPersistenceCore();
         builder.AddPersistenceMongo();
         builder.AddSessionsMongoServices();
-        
+
         builder.RegisterType<DocumentMessageBroker>().AsImplementedInterfaces().SingleInstance();
     }
 

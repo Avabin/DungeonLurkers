@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Shared.UI.Navigation.RoutableViewModel;
 
-namespace Shared.UI.HostScreen;
+namespace Shared.UI.ViewModels.HostScreen;
 
 public class DefaultHostScreenViewModel : HostScreenViewModelBase
 {

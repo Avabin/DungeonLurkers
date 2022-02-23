@@ -9,6 +9,7 @@ using Shared.UI.HostScreen;
 using Shared.UI.Navigation.RoutableViewModel;
 using Shared.UI.ViewModels.LoginView;
 using Shared.UI.ViewModels.ProfileView;
+using DefaultHostScreenViewModel = Shared.UI.ViewModels.HostScreen.DefaultHostScreenViewModel;
 
 namespace Shared.UI.ViewModels.MainView;
 
@@ -43,6 +44,7 @@ public class MainViewModel : DefaultHostScreenViewModel, IActivatableViewModel
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .InvokeCommand(GoToLoginCommand));
 
+            // User is authenticated, navigate to profile
             d(authenticationStore
                 .IsAuthenticated
                 .Where(x => x)

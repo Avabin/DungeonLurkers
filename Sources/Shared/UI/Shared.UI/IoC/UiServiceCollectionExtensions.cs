@@ -70,9 +70,6 @@ public static class UiServiceCollectionExtensions
         return builder;
     }
 
-    public static ContainerBuilder AddScreen(this ContainerBuilder builder) => AddScreen<DefaultHostScreenViewModel>(builder);
-
-
     public static ContainerBuilder AddSharedUiServices<T>(this ContainerBuilder builder) where T : IAuthenticatedApi
     {
         builder.RegisterType<UserStore.AppUserStore>().AsImplementedInterfaces().SingleInstance();

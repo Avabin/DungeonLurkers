@@ -6,6 +6,9 @@
         <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <EmccTotalMemory>16MB</EmccTotalMemory>
+    </PropertyGroup>
     <!-- In debug, make builds faster by reducing optimizations -->
     <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
         <WasmNativeStrip>false</WasmNativeStrip>

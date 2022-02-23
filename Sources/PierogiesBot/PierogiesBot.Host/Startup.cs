@@ -37,13 +37,14 @@ public class Startup : StartupBase
     public void ConfigureServices(IServiceCollection services)
     {
         var identityUrl = IdentityHttpClient is not null
-                              ? IdentityHttpClient.BaseAddress!.ToString()
-                              : Configuration.GetValue<string>("IdentityUrl");
-        services.AddControllers().AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+            ? IdentityHttpClient.BaseAddress!.ToString()
+            : Configuration.GetValue<string>("IdentityUrl");
+        services.AddControllers()
+            .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
         services.AddOptions()
-                .Configure<MongoSettings>(Configuration.GetSection("MongoSettings"))
-                .ConfigureRabbit(Configuration.GetSection("Rabbit"));
-        
+            .Configure<MongoSettings>(Configuration.GetSection("MongoSettings"))
+            .ConfigureRabbit(Configuration.GetSection("Rabbit"));
+
         services.AddDiscord(Configuration.GetSection(DiscordSettings.SectionName));
 
         services.AddAutoMapper(expression =>
@@ -59,13 +60,13 @@ public class Startup : StartupBase
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme    = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
         {
             options.Authority = identityUrl;
             if (Environment.IsDevelopment())
                 options.RequireHttpsMetadata = false;
-            options.Audience  = "pierogiesbot";
+            options.Audience = "pierogiesbot";
             options.SaveToken = true;
 
             options.TokenValidationParameters =
@@ -80,7 +81,7 @@ public class Startup : StartupBase
         {
             c.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title   = "PierogiesBot",
+                Title = "PierogiesBot",
                 Version = "v1",
             });
 
@@ -96,7 +97,7 @@ public class Startup : StartupBase
                     Password = new OpenApiOAuthFlow
                     {
                         AuthorizationUrl = new Uri($"{identityUrl}connect/authorize"),
-                        TokenUrl         = new Uri($"{identityUrl}connect/token"),
+                        TokenUrl = new Uri($"{identityUrl}connect/token"),
                         Scopes =
                         {
                             {
@@ -118,17 +119,18 @@ public class Startup : StartupBase
         {
             options.AddPolicy("AnyOrigin", o =>
             {
-                o.WithOrigins("https://identity.pierogiesbot.tk",
-                              "https://avabin.tk",
-                              "https://api.pierogiesbot.tk",
-                              "https://localhost:5001",
-                              "https://localhost", 
-                              "https://app.localhost",
-                              "https://localhost:5003",
-                              "https://localhost:5005",
-                              "https://localhost:5007")
-                 .AllowAnyHeader()
-                 .AllowAnyMethod();
+                o.WithOrigins("https://avabin.github.io",
+                        "https://identity.pierogiesbot.tk",
+                        "https://avabin.tk",
+                        "https://api.pierogiesbot.tk",
+                        "https://localhost:5001",
+                        "https://localhost",
+                        "https://app.localhost",
+                        "https://localhost:5003",
+                        "https://localhost:5005",
+                        "https://localhost:5007")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
             });
         });
     }

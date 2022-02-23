@@ -68,9 +68,4 @@
       <ProjectReference Include="..\..\..\..\Shared\UI\Shared.UI.ViewModels\Shared.UI.ViewModels.csproj" />
       <ProjectReference Include="..\..\..\..\Shared\UI\Shared.UI\Shared.UI.csproj" />
     </ItemGroup>
-    <ItemGroup>
-      <None Update="FodyWeavers.xml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
 </Project>

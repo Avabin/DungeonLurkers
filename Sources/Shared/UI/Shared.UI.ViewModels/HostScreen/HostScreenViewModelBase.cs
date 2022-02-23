@@ -3,9 +3,10 @@ using System.Reactive.Linq;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Shared.UI.HostScreen;
 using Shared.UI.Navigation.RoutableViewModel;
 
-namespace Shared.UI.HostScreen;
+namespace Shared.UI.ViewModels.HostScreen;
 
 public abstract class HostScreenViewModelBase : ReactiveObject, IHostScreenViewModel
 {
