@@ -4,5 +4,5 @@ namespace Shared.UI.Login;
 
 public interface ILoginService
 {
-    Task<SignInResponse> LoginAsync(string userName, string password);
+    Task<SignInResponse> LoginAsync(string userName, string password, string scope = "IdentityServerApi");
 }

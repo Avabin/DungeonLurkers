@@ -18,8 +18,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development",
         "PierogiesBot_IdentityUrl": "https://localhost:5001/",
         "PierogiesBot_ConnectionStrings__MongoDb": "mongodb://localhost:27017/PierogiesBot",
-        "PierogiesBot_JWT__Secret": "P@ssw0rdS3cr3T",
-        "PierogiesBot_DiscordSettings__Token": ""
+        "PierogiesBot_JWT__Secret": "P@ssw0rdS3cr3T"
       }
     },
     "IIS Express": {

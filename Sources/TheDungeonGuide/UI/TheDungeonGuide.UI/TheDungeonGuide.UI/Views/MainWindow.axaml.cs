@@ -4,21 +4,20 @@ using Avalonia.ReactiveUI;
 using ReactiveUI;
 using Shared.UI.ViewModels.MainView;
 
-namespace TheDungeonGuide.UI.Views
+namespace TheDungeonGuide.UI.Views;
+
+public partial class MainWindow : ReactiveWindow<DefaultMainViewModel>
 {
-    public partial class MainWindow : ReactiveWindow<MainViewModel>
+    public MainWindow()
     {
-        public MainWindow()
-        {
-            this.WhenActivated(disposables => { });
-            InitializeComponent();
+        this.WhenActivated(disposables => { });
+        InitializeComponent();
 #if DEBUG
-            this.AttachDevTools();
+        this.AttachDevTools();
 #endif
-        }
-        public void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+    }
+    public void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
     }
 }

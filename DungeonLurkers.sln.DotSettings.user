@@ -27,6 +27,7 @@
 	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=Users_002ETests_003B_002A_003B_002A_003B_002A/@EntryIndexedValue">False</s:Boolean>
 	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=Users_002ETests_003B_002A_003B_002A_003B_002A/@EntryIndexRemoved">True</s:Boolean>
 	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">C:\Users\avabi\AppData\Local\JetBrains\Rider2021.3\resharper-host\temp\Rider\vAny\CoverageData\_DungeonLurkers.1733324179\Snapshot\snapshot.utdcvr</s:String>
+	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=66a24113_002D3ea7_002D4a7d_002Da623_002Db2b173390bfd/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="RemoveResponseFromRule_Success" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::7901FAEB-A3D1-43CB-BF77-04B747D00F51::net6.0::PierogiesBot.Tests.BotResponseRuleControllerIntegrationTests.RemoveResponseFromRule_Success&lt;/TestId&gt;&#xD;

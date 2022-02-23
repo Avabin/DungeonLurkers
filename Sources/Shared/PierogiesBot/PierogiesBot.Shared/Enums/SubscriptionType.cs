@@ -1,9 +1,8 @@
-﻿namespace PierogiesBot.Shared.Enums
+﻿namespace PierogiesBot.Shared.Enums;
+
+public enum SubscriptionType
 {
-    public enum SubscriptionType
-    {
-        Empty,
-        Responses,
-        Crontab
-    }
+    Empty,
+    Responses,
+    Crontab
 }

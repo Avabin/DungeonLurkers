@@ -10,13 +10,11 @@ namespace PierogiesBot.UI.Views;
 
 public partial class LoginView : ReactiveUserControl<LoginViewModel>, IEnableLogger
 {
-    public TextBox Username => this.FindControl<TextBox>("UsernameTextBox");
-    public TextBox Password => this.FindControl<TextBox>("PasswordTextBox");
     public LoginView() : this(ServiceLocator.GetRequiredService<LoginViewModel>()) {}
     public LoginView(LoginViewModel viewModel)
     {
-        ViewModel = viewModel;
         AvaloniaXamlLoader.Load(this);
+        ViewModel = viewModel;
         this.WhenActivated(d =>
         {
             

@@ -12,6 +12,7 @@ using Shared.UI.HostScreen;
 using Shared.UI.Login;
 using Shared.UI.Navigation.RoutableViewModel;
 using Shared.UI.Users;
+using Shared.UI.UserStore;
 using Splat;
 
 namespace Shared.UI.IoC;
@@ -70,12 +71,9 @@ public static class UiServiceCollectionExtensions
         return builder;
     }
 
-    public static ContainerBuilder AddScreen(this ContainerBuilder builder) => AddScreen<DefaultHostScreenViewModel>(builder);
-
-
     public static ContainerBuilder AddSharedUiServices<T>(this ContainerBuilder builder) where T : IAuthenticatedApi
     {
-        builder.RegisterType<UserStore.AppUserStore>().AsImplementedInterfaces().SingleInstance();
+        builder.RegisterType<AppUserService>().AsImplementedInterfaces().SingleInstance();
         builder.RegisterType<LoginService>().AsImplementedInterfaces();
         builder.RegisterType<UsersService>().AsImplementedInterfaces();
         builder.RegisterType<RoutableViewModelFactory>().AsImplementedInterfaces();
@@ -84,8 +82,13 @@ public static class UiServiceCollectionExtensions
             var config = ctx.Resolve<IConfiguration>();
             
             var apiUrl = config["ApiUrl"];
+            var apiPathPrefix = config["ApiPathPrefix"] ?? "";
+            var identityPathPrefix = config["IdentityPathPrefix"];
 
             var client = RestClient.For<T>(apiUrl);
+
+            client.IdentityPathPrefix = identityPathPrefix;
+            client.PathPrefix         = apiPathPrefix;
             
             return client;
         }).AsImplementedInterfaces().SingleInstance();

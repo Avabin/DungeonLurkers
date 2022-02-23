@@ -1,5 +1,9 @@
 ﻿using Autofac;
+using JetBrains.Annotations;
 using PierogiesBot.Shared.Features;
+using PierogiesBot.UI.Shared;
+using PierogiesBot.UI.ViewModels.Features.BotCrontabRules;
+using PierogiesBot.UI.ViewModels.Features.MainView;
 using PierogiesBot.UI.Views;
 using Shared.UI.IoC;
 using Shared.UI.ViewModels;
@@ -11,14 +15,15 @@ public static class ServiceCollectionExtensions
 {
     public static ContainerBuilder AddPierogiesBotUiInfrastructure(this ContainerBuilder builder)
     {
-        // var viewModelsAssembly = typeof(SessionsViewModel).Assembly;
-        var viewsAssembly = typeof(MainView).Assembly;
+        var viewModelsAssembly = typeof(CrontabRulesViewModel).Assembly;
+        var viewsAssembly      = typeof(MainView).Assembly;
 
         builder.AddSharedUiServices<IPierogiesBotApi>()
-            .AddScreen<MainViewModel>()
-            .AddViews(viewsAssembly)
-            // .AddViewModels(viewModelsAssembly)
-            .AddSharedViewModels();
+               .AddUiServices()
+               .AddViewModels(viewModelsAssembly)
+               .AddScreen<PierogiesBotMainViewModel>()
+               .AddViews(viewsAssembly)
+               .AddSharedViewModels();
 
         return builder;
     }

@@ -1,5 +1,7 @@
-﻿using System.Reactive.Linq;
+﻿using System.Net;
+using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using RestEase;
 using Shared.Features.Authentication;
 using Shared.UI.Users;
 using Shared.UI.UserStore;
@@ -8,18 +10,15 @@ namespace Shared.UI.Authentication;
 
 public abstract class AuthenticationStoreBase : IAuthenticationStore
 {
-    private readonly IUserStore        _userStore;
     private readonly IUsersService     _usersService;
     private readonly IAuthenticatedApi _api;
 
     private readonly ISubject<AuthenticationState?>    _subject;
-    public           IObservable<AuthenticationState?> TokenObservable => _subject.AsObservable();
-    public           IObservable<bool>    IsAuthenticated => TokenObservable.Select(x => x?.Expiration >= DateTimeOffset.Now && !string.IsNullOrWhiteSpace(x.Token));
+    public           IObservable<AuthenticationState?> AuthenticationObservable => _subject.AsObservable();
+    public           IObservable<bool>    IsAuthenticated => AuthenticationObservable.Select(x => x?.Expiration >= DateTimeOffset.Now && !string.IsNullOrWhiteSpace(x.Token));
 
-    protected AuthenticationStoreBase(IUserStore userStore, IUsersService usersService, IAuthenticatedApi api)
+    protected AuthenticationStoreBase(IAuthenticatedApi api)
     {
-        _userStore    = userStore;
-        _usersService = usersService;
         _api     = api;
         _subject      = new BehaviorSubject<AuthenticationState?>(null);
 
@@ -42,8 +41,6 @@ public abstract class AuthenticationStoreBase : IAuthenticationStore
         if (saved != null)
         {
             _api.SetBearer(saved.Token);
-            var user = await _usersService.GetCurrentUser();
-            _userStore.PublishUserInfo(user);
         }
         _subject.OnNext(saved);
     }

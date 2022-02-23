@@ -171,7 +171,7 @@ public class BotResponseRuleControllerIntegrationTests : AuthenticatedTestsBase
            .InsertAsync(rule);
 
         // Act
-        await _rulesClient.RemoveResponseFromRule(id, responses.First());
+        await _rulesClient.RemoveResponseFromResponseRule(id, responses.First());
         var result = await _rulesClient.FindResponseRuleByIdAsync(id);
 
         // Assert

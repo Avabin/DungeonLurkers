@@ -1,9 +1,8 @@
-﻿namespace PierogiesBot.Shared.Enums
+﻿namespace PierogiesBot.Shared.Enums;
+
+public enum ResponseMode
 {
-    public enum ResponseMode
-    {
-        Unknown,
-        First,
-        Random
-    }
+    Unknown,
+    First,
+    Random
 }

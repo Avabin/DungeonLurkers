@@ -7,9 +7,9 @@ namespace TheDungeonGuide.UI.Views;
 
 public static class DesignData
 {
-    public static LoginViewModel   LoginViewModel   => Vm<LoginViewModel>();
-    public static MainViewModel    MainViewModel    => Vm<MainViewModel>();
-    public static ProfileViewModel ProfileViewModel => Vm<ProfileViewModel>();
+    public static LoginViewModel       LoginViewModel   => Vm<LoginViewModel>();
+    public static DefaultMainViewModel MainViewModel    => Vm<DefaultMainViewModel>();
+    public static ProfileViewModel     ProfileViewModel => Vm<ProfileViewModel>();
 
 
     private static T Vm<T>() => Locator.GetLocator().GetService<T>()!;

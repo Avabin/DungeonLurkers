@@ -10,8 +10,8 @@ public class LocalStorageAuthenticationStore : AuthenticationStoreBase
 {
     private readonly ILocalStorageService _localStorageService;
 
-    public LocalStorageAuthenticationStore(IUserStore userStore, IUsersService usersService,
-        ILocalStorageService localStorageService, IAuthenticatedApi api) : base(userStore, usersService, api)
+    public LocalStorageAuthenticationStore(
+        ILocalStorageService localStorageService, IAuthenticatedApi api) : base(api)
     {
         _localStorageService = localStorageService;
     }

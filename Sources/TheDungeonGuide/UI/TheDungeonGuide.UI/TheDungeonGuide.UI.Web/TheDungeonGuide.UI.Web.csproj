@@ -6,6 +6,10 @@
         <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <EmccTotalMemory>16MB</EmccTotalMemory>
+    </PropertyGroup>
+
     <!-- In debug, make builds faster by reducing optimizations -->
     <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
         <WasmNativeStrip>false</WasmNativeStrip>
@@ -24,21 +28,14 @@
     <ItemGroup>
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
         <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" PrivateAssets="all" />
-        <PackageReference Include="Avalonia.Web.Blazor" Version="0.10.11" />
-        <PackageReference Include="ReactiveUI.Fody" Version="17.1.50" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.2" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.2" PrivateAssets="all" />
+        <PackageReference Include="Avalonia.Web.Blazor" Version="0.10.12" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\..\..\..\Shared\UI\Shared.UI.Web\Shared.UI.Web.csproj" />
         <ProjectReference Include="..\TheDungeonGuide.UI\TheDungeonGuide.UI.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Update="FodyWeavers.xml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
     </ItemGroup>
 
     <ItemGroup>

@@ -6,7 +6,6 @@ using ReactiveUI.Fody.Helpers;
 using ReactiveUI.Validation.Extensions;
 using ReactiveUI.Validation.States;
 using RestEase;
-using Shared.UI.Authentication;
 using Shared.UI.HostScreen;
 using Shared.UI.Login;
 using Shared.UI.Navigation.RoutableViewModel;
@@ -18,7 +17,6 @@ namespace Shared.UI.ViewModels.LoginView;
 public class LoginViewModel : ViewModelBase
 {
     private readonly ILoginService        _api;
-    private readonly IAuthenticationStore _authenticationStore;
 
     [Reactive] public string? Username { get; set; }
 
@@ -27,11 +25,10 @@ public class LoginViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit>               LoginCommand { get; set; }
     public ReactiveCommand<Unit, IRoutableViewModel> GoToProfile  { get; }
 
-    public LoginViewModel(ILoginService api, IAuthenticationStore authenticationStore, IHostScreenViewModel hostScreenViewModel) :
+    public LoginViewModel(ILoginService api, IHostScreenViewModel hostScreenViewModel) :
         base(hostScreenViewModel)
     {
         _api                      = api;
-        _authenticationStore = authenticationStore;
 
         GoToProfile = hostScreenViewModel.CreateNavigateAndResetCommand<ProfileViewModel>();
 
@@ -63,9 +60,7 @@ public class LoginViewModel : ViewModelBase
 
     private async Task LoginAsync()
     {
-        var response = await _api.LoginAsync(Username!, Password!);
-        
-        await _authenticationStore.PublishToken(response.AccessToken, DateTimeOffset.Now.AddSeconds(response.ExpiresInSeconds));
+        await _api.LoginAsync(Username!, Password!);
     }
 
     public override string             UrlPathSegment => "login";

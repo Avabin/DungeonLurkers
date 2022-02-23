@@ -12,8 +12,7 @@ public class LiteDbAuthenticationStore : AuthenticationStoreBase, IDisposable
     private readonly ILiteDatabase _db;
     private ILiteCollection<AuthenticationState> Collection => _db.GetCollection<AuthenticationState>("authentication");
 
-    public LiteDbAuthenticationStore(IUserStore    userStore, IUsersService usersService,
-                                     IFileProvider fileProvider, IAuthenticatedApi api) : base(userStore, usersService, api)
+    public LiteDbAuthenticationStore(IFileProvider fileProvider, IAuthenticatedApi api) : base(api)
     {
         var dbFile = fileProvider.GetFileInfo("litedb.db");
         _db = new LiteDatabase(dbFile.PhysicalPath);

@@ -2,7 +2,7 @@
 
 public interface IAuthenticationStore
 {
-    IObservable<AuthenticationState?> TokenObservable { get; }
+    IObservable<AuthenticationState?> AuthenticationObservable { get; }
     IObservable<bool>    IsAuthenticated { get; }
 
     Task PublishToken(string token, DateTimeOffset expiration);

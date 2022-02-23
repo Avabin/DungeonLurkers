@@ -2,9 +2,9 @@
 
 namespace Shared.UI.UserStore;
 
-public interface IUserStore
+public interface IUserService
 {
     IObservable<UserDto> UserInfoObservable { get; }
 
-    void PublishUserInfo(UserDto userInfo);
+    IObservable<UserDto> FetchProfile();
 }

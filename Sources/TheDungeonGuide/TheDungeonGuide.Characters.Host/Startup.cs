@@ -21,9 +21,9 @@ public class Startup
 
     public Startup(IConfiguration configuration, IHostEnvironment environment)
     {
-        Environment   = environment;
+        Environment = environment;
         Configuration = configuration;
-        
+
         _clientSecret = Configuration["JWT:Secret"] ?? "secret";
     }
 
@@ -40,21 +40,22 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         var identityUrl = UsersHttpClient is not null
-                              ? UsersHttpClient.BaseAddress!.ToString()
-                              : Configuration.GetValue<string>("IdentityUrl");
-        services.AddControllers().AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+            ? UsersHttpClient.BaseAddress!.ToString()
+            : Configuration.GetValue<string>("IdentityUrl");
+        services.AddControllers()
+            .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
         services.AddAutoMapper(expression => { expression.AddProfile<PersistenceCharactersMapperProfile>(); });
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme    = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
         {
             options.Authority = identityUrl;
             if (Environment.IsDevelopment())
                 options.RequireHttpsMetadata = false;
-            options.Audience  = "characters";
+            options.Audience = "characters";
             options.SaveToken = true;
 
             options.TokenValidationParameters =
@@ -69,7 +70,7 @@ public class Startup
         {
             c.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title   = "Characters.Cube",
+                Title = "Characters.Cube",
                 Version = "v1",
             });
 
@@ -85,7 +86,7 @@ public class Startup
                     Password = new OpenApiOAuthFlow
                     {
                         AuthorizationUrl = new Uri($"{identityUrl}connect/authorize"),
-                        TokenUrl         = new Uri($"{identityUrl}connect/token"),
+                        TokenUrl = new Uri($"{identityUrl}connect/token"),
                         Scopes =
                         {
                             {
@@ -107,21 +108,22 @@ public class Startup
         {
             options.AddPolicy("AnyOrigin", o =>
             {
-                o.WithOrigins("https://identity.pierogiesbot.tk",
-                              "https://identity.avabin.tk",
-                              "https://avabin.tk",
-                              "https://api.pierogiesbot.tk",
-                              "https://pierogiesbot.avabin.tk",
-                              "https://sessions.tdg.avabin.tk",
-                              "https://characters.tdg.avabin.tk",
-                              "https://localhost:5001",
-                              "https://localhost", 
-                              "https://app.localhost",
-                              "https://localhost:5003",
-                              "https://localhost:5005",
-                              "https://localhost:5007")
-                 .AllowAnyHeader()
-                 .AllowAnyMethod();
+                o.WithOrigins("https://avabin.github.io",
+                        "https://identity.pierogiesbot.tk",
+                        "https://identity.avabin.tk",
+                        "https://avabin.tk",
+                        "https://api.pierogiesbot.tk",
+                        "https://pierogiesbot.avabin.tk",
+                        "https://sessions.tdg.avabin.tk",
+                        "https://characters.tdg.avabin.tk",
+                        "https://localhost:5001",
+                        "https://localhost",
+                        "https://app.localhost",
+                        "https://localhost:5003",
+                        "https://localhost:5005",
+                        "https://localhost:5007")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
             });
         });
     }

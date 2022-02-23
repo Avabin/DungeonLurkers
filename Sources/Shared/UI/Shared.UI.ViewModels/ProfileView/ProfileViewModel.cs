@@ -9,43 +9,30 @@ using Shared.UI.UserStore;
 
 namespace Shared.UI.ViewModels.ProfileView;
 
-public class ProfileViewModel : ViewModelBase, IDisposable
+public class ProfileViewModel : ViewModelBase, IActivatableViewModel
 {
-    private readonly  CompositeDisposable _subs;
-    [Reactive] public string              Id       { get; set; } = "";
-    [Reactive] public string              Username { get; set; } = "";
-    [Reactive] public string              Email    { get; set; } = "";
-    public ProfileViewModel(IUserStore userStore, IHostScreenViewModel hostScreenViewModel) : base(hostScreenViewModel)
+    public override   string             UrlPathSegment => "me";
+    public            ViewModelActivator Activator      { get; }      = new();
+    [Reactive] public string             Id             { get; set; } = "";
+    [Reactive] public string             Username       { get; set; } = "";
+    [Reactive] public string             Email          { get; set; } = "";
+    public ProfileViewModel(IUserService userService, IHostScreenViewModel hostScreenViewModel) : base(hostScreenViewModel)
     {
-        _subs = new CompositeDisposable();
-        
-        userStore.UserInfoObservable
-                 .Select(x => x.UserName)
-                 .BindTo(this, vm => vm.Username)
-                 .DisposeWith(_subs);
-        
-        userStore.UserInfoObservable.Select(x => x.Email)
-                 .BindTo(this, vm => vm.Email)
-                 .DisposeWith(_subs);
+        this.WhenActivated(d =>
+        {
+            d(userService.UserInfoObservable
+                         .Select(x => x.UserName)
+                         .BindTo(this, vm => vm.Username));
 
-        userStore.UserInfoObservable.Select(x => x.Id)
-                 .BindTo(this, vm => vm.Id)
-                 .DisposeWith(_subs);
+            d(userService.UserInfoObservable.Select(x => x.Email)
+                         .BindTo(this, vm => vm.Email));
+
+            d(userService.UserInfoObservable.Select(x => x.Id)
+                         .BindTo(this, vm => vm.Id));
+
+            d(userService.FetchProfile().Subscribe());
+        });
     }
     
-    public override string UrlPathSegment => "me";
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (disposing)
-        {
-            _subs.Dispose();
-        }
-    }
-
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
+    
 }

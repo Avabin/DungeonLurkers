@@ -27,7 +27,7 @@ public class AutofacViewLocator : IDataTemplate, IViewLocator
             }
         }
         var name = viewType.Name!.Replace("ViewModel", "View");
-        var type = Type.GetType($"TheDungeonGuide.UI.Views.{name}");
+        var type = Type.GetType($"PierogiesBot.UI.Views.{name}");
 
         if (type != null)
         {

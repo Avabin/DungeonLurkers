@@ -6,6 +6,9 @@
         <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <EmccTotalMemory>16MB</EmccTotalMemory>
+    </PropertyGroup>
     <!-- In debug, make builds faster by reducing optimizations -->
     <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
         <WasmNativeStrip>false</WasmNativeStrip>
@@ -23,9 +26,9 @@
 
     <ItemGroup>
         <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" PrivateAssets="all" />
-        <PackageReference Include="Avalonia.Web.Blazor" Version="0.10.11" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.2" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.2" PrivateAssets="all" />
+        <PackageReference Include="Avalonia.Web.Blazor" Version="0.10.12" />
     </ItemGroup>
 
     <ItemGroup>

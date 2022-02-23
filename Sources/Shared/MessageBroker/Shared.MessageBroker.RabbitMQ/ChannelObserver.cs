@@ -35,7 +35,6 @@ public class ChannelObserver<T> : IObserver<T>
 
     public virtual void OnNext(T value)
     {
-        Console.WriteLine($"Sending message to queue {QueueName}");
         using var ms = new MemoryStream();
         using var bsonWriter = new BsonDataWriter(ms);
         var serializer = JsonSerializer.CreateDefault(_settings);

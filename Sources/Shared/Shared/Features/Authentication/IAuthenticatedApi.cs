@@ -4,12 +4,15 @@ using Shared.Features.Users;
 
 namespace Shared.Features.Authentication;
 
-public interface IAuthenticatedApi
-{
-    [Header("Authorization")] AuthenticationHeaderValue Authorization { get; set; }
+public interface IAuthenticatedApi : IHasPathPrefix
 
-    [Post("connect/token")]
+{
+    [Path("IdentityPathPrefix")] 
+    string                    IdentityPathPrefix { get; set; }
+    [Header("Authorization")]           AuthenticationHeaderValue Authorization      { get; set; }
+
+    [Post("{IdentityPathPrefix}/connect/token")]
     Task<SignInResponse> SignInAsync([Body(BodySerializationMethod.UrlEncoded)] SignInDto signIn);
 
-    [Get("users/me")] Task<UserDto> GetCurrentUserProfileAsync();
+    [Get("{IdentityPathPrefix}/users/me")] Task<UserDto> GetCurrentUserProfileAsync();
 }

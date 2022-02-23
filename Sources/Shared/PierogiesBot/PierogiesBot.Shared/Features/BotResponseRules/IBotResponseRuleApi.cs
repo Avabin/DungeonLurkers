@@ -5,21 +5,21 @@ namespace PierogiesBot.Shared.Features.BotResponseRules;
 
 public interface IBotResponseRuleApi : IAuthenticatedApi
 {
-    [Get("BotResponseRule")]
+    [Get("{PathPrefix}/BotResponseRule")]
     Task<IEnumerable<BotResponseRuleDto>> GetAllResponseRulesAsync([Query] int? skip = null, [Query] int? limit = null);
 
-    [Get("BotResponseRule/{id}")] Task<BotResponseRuleDto> FindResponseRuleByIdAsync([Path] string id);
+    [Get("{PathPrefix}/BotResponseRule/{id}")] Task<BotResponseRuleDto> FindResponseRuleByIdAsync([Path] string id);
 
-    [Post("BotResponseRule")] Task<BotResponseRuleDto> CreateBotResponseRuleAsync([Body] CreateBotResponseRuleDto createDto);
+    [Post("{PathPrefix}/BotResponseRule")] Task<BotResponseRuleDto> CreateBotResponseRuleAsync([Body] CreateBotResponseRuleDto createDto);
 
-    [Put("BotResponseRule/{id}")]
+    [Put("{PathPrefix}/BotResponseRule/{id}")]
     Task UpdateBotResponseRuleAsync([Path] string id, [Body] UpdateBotResponseRuleDto updateDto);
     
-    [Post("BotResponseRule/{id}/responses")]
-    Task AddResponseToRule([Path] string id, [Query] string response);
+    [Post("{PathPrefix}/BotResponseRule/{id}/responses")]
+    Task AddResponseToResponseRule([Path] string id, [Query] string response);
     
-    [Delete("BotResponseRule/{id}/responses")]
-    Task RemoveResponseFromRule([Path] string id, [Query] string response);
+    [Delete("{PathPrefix}/BotResponseRule/{id}/responses")]
+    Task RemoveResponseFromResponseRule([Path] string id, [Query] string response);
 
-    [Delete("BotResponseRule/{id}")] Task DeleteBotResponseRuleAsync([Path] string id);
+    [Delete("{PathPrefix}/BotResponseRule/{id}")] Task DeleteBotResponseRuleAsync([Path] string id);
 }

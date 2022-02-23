@@ -9,25 +9,31 @@ using Shared.UI.HostScreen;
 using Shared.UI.Navigation.RoutableViewModel;
 using Shared.UI.ViewModels.LoginView;
 using Shared.UI.ViewModels.ProfileView;
+using DefaultHostScreenViewModel = Shared.UI.ViewModels.HostScreen.DefaultHostScreenViewModel;
 
 namespace Shared.UI.ViewModels.MainView;
 
 public class MainViewModel : DefaultHostScreenViewModel, IActivatableViewModel
 {
-    private readonly IMessageBus _messageBus;
-    [Reactive] public string LoadingText { get; set; }
-    public IAuthenticationStore                       AuthenticationStore   { get; }
-    public ReactiveCommand<Unit, IRoutableViewModel>  GoToProfileCommand    { get; }
-    public ReactiveCommand<Unit, IRoutableViewModel>  GoToLoginCommand      { get; }
-    public ReactiveCommand<Unit, IRoutableViewModel?> GoBack                => Router.NavigateBack;
+    private readonly  IMessageBus                                _messageBus;
+    protected virtual Type AfterLoginViewModelType => typeof(ProfileViewModel);
+    [Reactive] public string                                     LoadingText                 { get; set; }
+    public            IAuthenticationStore                       AuthenticationStore         { get; }
+    public    ReactiveCommand<Unit, IRoutableViewModel>  NavigateToAfterLoginCommand { get; }
+    public            ReactiveCommand<Unit, IRoutableViewModel>  GoToLoginCommand            { get; }
+    public            ReactiveCommand<Unit, IRoutableViewModel?> GoBack                      => Router.NavigateBack;
 
     public MainViewModel(ILogger<MainViewModel> logger, IAuthenticationStore authenticationStore, IRoutableViewModelFactory routableViewModelFactory, IMessageBus messageBus) :
         base(logger, routableViewModelFactory)
     {
-        _messageBus = messageBus;
-        AuthenticationStore = authenticationStore;
-        GoToProfileCommand  = CreateNavigateCommand<ProfileViewModel>();
-        GoToLoginCommand    = CreateNavigateCommand<LoginViewModel>();
+        _messageBus                 = messageBus;
+        AuthenticationStore         = authenticationStore;
+        NavigateToAfterLoginCommand = ReactiveCommand.CreateFromObservable(() =>
+        {
+            var vm = (IRoutableViewModel) routableViewModelFactory.GetViewModel(AfterLoginViewModelType);
+            return Router.NavigateAndReset.Execute(vm);
+        });
+        GoToLoginCommand            = CreateNavigateCommand<LoginViewModel>();
 
         this.WhenActivated(d =>
         {
@@ -43,12 +49,13 @@ public class MainViewModel : DefaultHostScreenViewModel, IActivatableViewModel
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .InvokeCommand(GoToLoginCommand));
 
+            // User is authenticated, navigate to profile
             d(authenticationStore
                 .IsAuthenticated
                 .Where(x => x)
                 .Select(_ => Unit.Default)
                 .ObserveOn(RxApp.MainThreadScheduler)
-                .InvokeCommand(GoToProfileCommand));
+                .InvokeCommand(NavigateToAfterLoginCommand));
 
             d(authenticationStore
                 .Initialize()

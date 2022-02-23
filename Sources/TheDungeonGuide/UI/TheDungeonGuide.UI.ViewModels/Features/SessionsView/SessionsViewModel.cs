@@ -20,7 +20,7 @@ public class SessionsViewModel : ViewModelBase, IDisposable
     public           ObservableCollectionExtended<Session> Sessions { get; }
 
     [Reactive] public string                                     CurrentUserId { get; set; } = "";
-    public SessionsViewModel(ISessionsService     sessionsService, IUserStore userStore,
+    public SessionsViewModel(ISessionsService     sessionsService, IUserService userService,
                              IHostScreenViewModel hostScreenViewModel) :
         base(hostScreenViewModel)
     {
@@ -33,7 +33,7 @@ public class SessionsViewModel : ViewModelBase, IDisposable
                  .Subscribe()
                  .DisposeWith(_compositeDisposable);
 
-        var userIdObservable = userStore.UserInfoObservable
+        var userIdObservable = userService.UserInfoObservable
                                         .Select(x => x.Id);
 
         userIdObservable.BindTo(this, vm => vm.CurrentUserId)

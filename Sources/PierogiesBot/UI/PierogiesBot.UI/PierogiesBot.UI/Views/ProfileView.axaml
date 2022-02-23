@@ -1,17 +1,42 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:profileView="clr-namespace:Shared.UI.ViewModels.ProfileView;assembly=Shared.UI.ViewModels"
-             xmlns:views="clr-namespace:PierogiesBot.UI.Views"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="PierogiesBot.UI.Views.ProfileView"
-             d:DataContext="{x:Static views:DesignData.ProfileViewModel}"
-             x:DataType="profileView:ProfileViewModel">
-    <Grid ColumnDefinitions="*,Auto,*" RowDefinitions="*,Auto,Auto,Auto,Auto,*" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Label Grid.Row="1" Grid.Column="0" Content="Profile" />
-        <TextBox Grid.Row="2" Grid.Column="0" Text="{CompiledBinding Id}" Margin="5" IsReadOnly="True" />
-        <TextBox Grid.Row="3" Grid.Column="0" Text="{CompiledBinding Username}" Margin="5" IsReadOnly="True" />
-        <TextBox Grid.Row="4" Grid.Column="0" Text="{CompiledBinding Email}" Margin="5" IsReadOnly="True" />
+﻿<UserControl
+    d:DataContext="{x:Static views:DesignData.ProfileViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d"
+    x:Class="PierogiesBot.UI.Views.ProfileView"
+    x:DataType="profileView:ProfileViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:profileView="clr-namespace:Shared.UI.ViewModels.ProfileView;assembly=Shared.UI.ViewModels"
+    xmlns:views="clr-namespace:PierogiesBot.UI.Views"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid
+        ColumnDefinitions="*,Auto,*"
+        HorizontalAlignment="Center"
+        RowDefinitions="*,Auto,Auto,Auto,Auto,*"
+        VerticalAlignment="Center">
+        <Label
+            Content="Profile"
+            Grid.Column="0"
+            Grid.Row="1" />
+        <TextBox
+            Grid.Column="0"
+            Grid.Row="2"
+            IsReadOnly="True"
+            Margin="5"
+            Text="{CompiledBinding Id}" />
+        <TextBox
+            Grid.Column="0"
+            Grid.Row="3"
+            IsReadOnly="True"
+            Margin="5"
+            Text="{CompiledBinding Username}" />
+        <TextBox
+            Grid.Column="0"
+            Grid.Row="4"
+            IsReadOnly="True"
+            Margin="5"
+            Text="{CompiledBinding Email}" />
     </Grid>
 </UserControl>

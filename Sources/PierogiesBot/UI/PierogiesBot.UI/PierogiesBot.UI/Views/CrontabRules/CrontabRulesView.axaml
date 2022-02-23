@@ -1,0 +1,201 @@
+﻿<UserControl
+    Name="Root"
+    d:DataContext="{x:Static views:DesignData.CrontabRulesViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d"
+    x:Class="PierogiesBot.UI.Views.CrontabRules.CrontabRulesView"
+    x:DataType="botCrontabRules:CrontabRulesViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:botCrontabRules="clr-namespace:PierogiesBot.UI.ViewModels.Features.BotCrontabRules;assembly=PierogiesBot.UI.ViewModels"
+    xmlns:botCrontabRules1="clr-namespace:PierogiesBot.Shared.Features.BotCrontabRules;assembly=PierogiesBot.Shared"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:system="clr-namespace:System;assembly=netstandard"
+    xmlns:views="clr-namespace:PierogiesBot.UI.Views"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ExperimentalAcrylicBorder IsHitTestVisible="True">
+        <ExperimentalAcrylicBorder.Material>
+            <ExperimentalAcrylicMaterial
+                BackgroundSource="Digger"
+                MaterialOpacity="0.65"
+                TintColor="Black"
+                TintOpacity="1" />
+        </ExperimentalAcrylicBorder.Material>
+        <Grid>
+            <DataGrid
+                IsReadOnly="True"
+                Items="{Binding Rules}"
+                SelectedItem="{Binding SelectedRule}"
+                SelectionMode="Single">
+                <DataGrid.RowDetailsTemplate>
+                    <DataTemplate DataType="botCrontabRules:CrontabRule">
+                        <ExperimentalAcrylicBorder IsHitTestVisible="True">
+                            <ExperimentalAcrylicBorder.Material>
+                                <ExperimentalAcrylicMaterial
+                                    BackgroundSource="Digger"
+                                    MaterialOpacity="0.75"
+                                    TintColor="Black"
+                                    TintOpacity="1" />
+                            </ExperimentalAcrylicBorder.Material>
+                            <StackPanel Orientation="Horizontal">
+                                <Grid
+                                    ColumnDefinitions="*,Auto,*"
+                                    HorizontalAlignment="Left"
+                                    Margin="5,0,5,0"
+                                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"
+                                    VerticalAlignment="Center">
+                                    <Label>Id</Label>
+                                    <TextBox
+                                        Grid.Column="0"
+                                        Grid.Row="1"
+                                        IsReadOnly="True"
+                                        Text="{Binding Id}" />
+
+                                    <Label Grid.Column="0" Grid.Row="2">Crontab</Label>
+                                    <TextBox
+                                        Grid.Column="0"
+                                        Grid.Row="3"
+                                        IsReadOnly="True"
+                                        Text="{Binding Crontab}" />
+
+                                    <Label Grid.Column="0" Grid.Row="4">Response mode</Label>
+                                    <TextBox
+                                        Grid.Column="0"
+                                        Grid.Row="5"
+                                        IsReadOnly="True"
+                                        Text="{Binding ResponseMode}" />
+                                </Grid>
+                                <StackPanel Orientation="Vertical">
+                                    <Label>Responses</Label>
+                                    <ItemsRepeater Items="{Binding ReplyMessages}">
+                                        <ItemsRepeater.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border>
+                                                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto">
+                                                        <TextBox
+                                                            HorizontalAlignment="Stretch"
+                                                            IsEnabled="{Binding !#Root.ViewModel.RemoveResponseFromRuleCommand.IsExecuting^}"
+                                                            IsReadOnly="True"
+                                                            Margin="0,5,5,0"
+                                                            Text="{Binding .}" />
+                                                        <Button
+                                                            Background="Red"
+                                                            Command="{Binding #Root.ViewModel.RemoveResponseFromRuleCommand}"
+                                                            CommandParameter="{Binding .}"
+                                                            Grid.Column="1"
+                                                            HorizontalAlignment="Center"
+                                                            Margin="0,5,0,0">
+                                                            <PathIcon Data="{StaticResource DeleteRegular}" />
+                                                        </Button>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsRepeater.ItemTemplate>
+                                    </ItemsRepeater>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto">
+                                            <TextBox
+                                                HorizontalAlignment="Stretch"
+                                                IsEnabled="{Binding !#Root.ViewModel.AddResponseToRuleCommand.IsExecuting^}"
+                                                Margin="0,5,5,0"
+                                                Name="NewResponseTextBox"
+                                                Watermark="New response" />
+                                            <Button
+                                                Background="Green"
+                                                Command="{Binding #Root.ViewModel.AddResponseToRuleCommand}"
+                                                CommandParameter="{Binding #NewResponseTextBox.Text}"
+                                                Grid.Column="1"
+                                                HorizontalAlignment="Center"
+                                                Margin="0,5,0,0">
+                                                <PathIcon Data="{StaticResource CheckmarkRegular}" />
+                                            </Button>
+                                        </Grid>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Margin="5,0,5,0" Orientation="Vertical">
+                                    <Label>Emotes</Label>
+                                    <ItemsRepeater Items="{Binding ReplyEmojis}">
+                                        <ItemsRepeater.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border>
+                                                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto">
+                                                        <TextBox
+                                                            HorizontalAlignment="Stretch"
+                                                            IsEnabled="{Binding !#Root.ViewModel.RemoveEmoteFromRuleCommand.IsExecuting^}"
+                                                            IsReadOnly="True"
+                                                            Margin="0,5,5,0"
+                                                            Text="{Binding .}" />
+                                                        <Button
+                                                            Background="Red"
+                                                            Command="{Binding #Root.ViewModel.RemoveEmoteFromRuleCommand}"
+                                                            CommandParameter="{Binding .}"
+                                                            Grid.Column="1"
+                                                            HorizontalAlignment="Center"
+                                                            Margin="0,5,0,0">
+                                                            <PathIcon Data="{StaticResource DeleteRegular}" />
+                                                        </Button>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsRepeater.ItemTemplate>
+                                    </ItemsRepeater>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto">
+                                            <TextBox
+                                                HorizontalAlignment="Stretch"
+                                                IsEnabled="{Binding !#Root.ViewModel.AddEmoteToRuleCommand.IsExecuting^}"
+                                                Margin="0,5,5,0"
+                                                Name="NewEmoteTextBox"
+                                                Watermark="New emote" />
+                                            <Button
+                                                Background="Green"
+                                                Command="{Binding #Root.ViewModel.AddEmoteToRuleCommand}"
+                                                CommandParameter="{Binding #NewEmoteTextBox.Text}"
+                                                Grid.Column="1"
+                                                HorizontalAlignment="Center"
+                                                Margin="0,5,0,0">
+                                                <PathIcon Data="{StaticResource CheckmarkRegular}" />
+                                            </Button>
+                                        </Grid>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </ExperimentalAcrylicBorder>
+                    </DataTemplate>
+                </DataGrid.RowDetailsTemplate>
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Binding="{CompiledBinding Crontab}"
+                        Header="Crontab"
+                        x:DataType="botCrontabRules:CrontabRule" />
+                    <DataGridCheckBoxColumn
+                        Binding="{CompiledBinding IsEmoji}"
+                        Header="Sends emoji"
+                        x:DataType="botCrontabRules:CrontabRule" />
+                    <DataGridTextColumn
+                        Binding="{CompiledBinding ReplyMessages.Count}"
+                        Header="Responses"
+                        x:DataType="botCrontabRules:CrontabRule" />
+                    <DataGridTextColumn
+                        Binding="{CompiledBinding ReplyEmojis.Count}"
+                        Header="Emotes"
+                        x:DataType="botCrontabRules:CrontabRule" />
+                    <DataGridTemplateColumn Header="">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate DataType="botCrontabRules:CrontabRule">
+                                <Button
+                                    Background="Red"
+                                    Command="{Binding #Root.ViewModel.DeleteRuleCommand}"
+                                    CommandParameter="{Binding .}"
+                                    VerticalAlignment="Center">
+                                    <PathIcon Data="{StaticResource DeleteRegular}" />
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </ExperimentalAcrylicBorder>
+</UserControl>

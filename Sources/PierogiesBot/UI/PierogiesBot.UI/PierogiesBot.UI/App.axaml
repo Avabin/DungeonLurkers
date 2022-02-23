@@ -1,13 +1,16 @@
-<Application xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:ui="clr-namespace:PierogiesBot.UI"
-             x:Class="PierogiesBot.UI.App">
+<Application
+    x:Class="PierogiesBot.UI.App"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:ui="clr-namespace:PierogiesBot.UI"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Application.DataTemplates>
-        <ui:AutofacViewLocator/>
+        <ui:AutofacViewLocator />
     </Application.DataTemplates>
 
     <Application.Styles>
-        <FluentTheme Mode="Dark"/>
-        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+        <FluentTheme Mode="Dark" />
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
+        <StyleInclude Source="avares://PierogiesBot.UI/Styles/Icons.axaml" />
+        <StyleInclude Source="avares://Aura.UI.FluentTheme/AuraUI.xaml" />
     </Application.Styles>
 </Application>

@@ -2,36 +2,28 @@ using System;
 using System.Reactive.Linq;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
+using PierogiesBot.UI.ViewModels.Features.MainView;
 using ReactiveUI;
 using Shared.UI.IoC;
 using Shared.UI.ViewModels.MainView;
 
-namespace PierogiesBot.UI.Views
-{
-    public partial class MainView : ReactiveUserControl<MainViewModel>
-    {
-        public MainView() : this(ServiceLocator.GetRequiredService<MainViewModel>()) {}
-        public MainView(MainViewModel viewModel)
-        {
-            ViewModel = viewModel;
-            InitializeComponent();
+namespace PierogiesBot.UI.Views;
 
-            this.WhenActivated(d =>
-            {
-                d(ViewModel.AuthenticationStore.IsAuthenticated
-                           .Skip(1)
-                           .Select(isAuthenticated => 
-                                       isAuthenticated 
-                                           ? ViewModel.GoToProfileCommand.Execute() 
-                                           : ViewModel.GoToLoginCommand.Execute())
-                           .Concat()
-                           .Subscribe());
-            });
-        }
-        
-        public void InitializeComponent()
+public partial class MainView : ReactiveUserControl<PierogiesBotMainViewModel>
+{
+    public MainView() : this(ServiceLocator.GetRequiredService<PierogiesBotMainViewModel>()) {}
+    public MainView(PierogiesBotMainViewModel viewModel)
+    {
+        ViewModel = viewModel;
+        InitializeComponent();
+
+        this.WhenActivated(d =>
         {
-            AvaloniaXamlLoader.Load(this);
-        }
+        });
+    }
+        
+    public void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
     }
 }

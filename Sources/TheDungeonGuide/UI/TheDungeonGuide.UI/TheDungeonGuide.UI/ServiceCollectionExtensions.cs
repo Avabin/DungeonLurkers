@@ -15,7 +15,7 @@ public static class ServiceCollectionExtensions
         var viewModelsAssembly = typeof(SessionsViewModel).Assembly;
         var viewsAssembly = typeof(MainView).Assembly;
         builder
-            .AddScreen<MainViewModel>()
+            .AddScreen<DefaultMainViewModel>()
             .AddViews(viewsAssembly)
             .AddViewModels(viewModelsAssembly)
             .AddSharedUiServices<ITheDungeonGuideApi>()

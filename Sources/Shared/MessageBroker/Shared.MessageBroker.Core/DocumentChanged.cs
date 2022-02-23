@@ -2,11 +2,12 @@
 
 namespace Shared.MessageBroker.Core;
 
-public record DocumentChanged<TDocument, TId>(Snapshot<TDocument> DocumentSnapshot, TId DocumentId,ChangeType ChangeType) 
-    : DocumentChangeBase<TDocument, TId>(DocumentSnapshot, false, Snapshot.Of<IEnumerable<TDocument>>(Enumerable.Empty<TDocument>(), Enumerable.Empty<TDocument>()), ChangeType)
-    where TDocument : class, IDocument<TId>
-{
-}
+public record DocumentChanged<TDocument, TId>(Snapshot<TDocument> DocumentSnapshot, TId DocumentId,
+                                              ChangeType          ChangeType)
+    : DocumentChangeBase<TDocument, TId>(DocumentSnapshot, false,
+                                         Snapshot.Of(Enumerable.Empty<TDocument>(), Enumerable.Empty<TDocument>()),
+                                         ChangeType)
+    where TDocument : class, IDocument<TId>;
 
 public static class DocumentChanged
 {

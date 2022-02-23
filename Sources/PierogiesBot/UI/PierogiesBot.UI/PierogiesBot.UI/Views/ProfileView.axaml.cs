@@ -11,6 +11,7 @@ public partial class ProfileView : ReactiveUserControl<ProfileViewModel>
     public ProfileView() : this(ServiceLocator.GetRequiredService<ProfileViewModel>()) {}
     public ProfileView(ProfileViewModel viewModel)
     {
+        ViewModel = viewModel;
         InitializeComponent();
         this.WhenActivated(d => { });
     }

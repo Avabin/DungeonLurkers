@@ -38,7 +38,6 @@ public abstract class DocumentChangesAwareBase<T> where T : class, IDocument<str
                 await HandleDocumentDeletedAsync(previous!);
                 break;
             case ChangeType.Update:
-                
                 await HandleDocumentUpdatedAsync(previous!, current!);
                 break;
             default:

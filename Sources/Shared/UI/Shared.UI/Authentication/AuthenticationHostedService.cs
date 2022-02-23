@@ -1,7 +1,9 @@
-﻿using System.Reactive.Linq;
+﻿using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
+using Shared.Features.Authentication;
 
 namespace Shared.UI.Authentication;
 
@@ -14,22 +16,25 @@ namespace Shared.UI.Authentication;
 /// </summary>
 public class AuthenticationHostedService : IHostedService
 {
-    private readonly IAuthenticationStore _authenticationStore;
+    private readonly IAuthenticationStore                 _authenticationStore;
+    private readonly IAuthenticatedApi                    _api;
     private readonly ILogger<AuthenticationHostedService> _logger;
-    private readonly IMessageBus _messageBus;
-    private IDisposable? _sub;
+    private readonly IMessageBus                          _messageBus;
+    private          CompositeDisposable?                 _sub;
 
     public AuthenticationHostedService(ILogger<AuthenticationHostedService> logger, IMessageBus messageBus,
-        IAuthenticationStore authenticationStore)
+        IAuthenticationStore authenticationStore, IAuthenticatedApi api)
     {
-        _logger = logger;
-        _messageBus = messageBus;
+        _logger              = logger;
+        _messageBus          = messageBus;
         _authenticationStore = authenticationStore;
+        _api            = api;
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        var tokenExpiredObservable = _authenticationStore.TokenObservable
+        _sub = new CompositeDisposable();
+        var tokenExpiredObservable = _authenticationStore.AuthenticationObservable
             .ObserveOn(RxApp.TaskpoolScheduler)
             .WhereNotNull()
             .Select(x => Observable.Return(x).Delay(x.Expiration))
@@ -41,10 +46,16 @@ public class AuthenticationHostedService : IHostedService
             .Where(x => !x) // Not authenticated
             .Do(_ =>
             {
-                _logger.LogInformation("Login expired or not found, requesting new token");
+                _logger.LogInformation("Login expired or not found, requesting new user login");
                 _messageBus.SendMessage(new UserLoginNeeded());
             });
-        _sub = loginNeededObservable.Subscribe();
+        loginNeededObservable.Subscribe().DisposeWith(_sub);
+        _authenticationStore
+           .AuthenticationObservable
+           .WhereNotNull()
+           .Do(x => _api.SetBearer(x.Token!))
+           .Subscribe()
+           .DisposeWith(_sub);
     }
 
     public Task StopAsync(CancellationToken cancellationToken)

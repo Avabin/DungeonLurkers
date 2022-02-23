@@ -11,5 +11,10 @@ public class RoutableViewModelFactory : IRoutableViewModelFactory
     {
         _provider = provider;
     }
-    public T GetViewModel<T>() where T : IRoutableViewModel => _provider.GetRequiredService<T>();
+    public T      GetViewModel<T>() where T : IRoutableViewModel => _provider.GetRequiredService<T>();
+    public object GetViewModel(Type viewModelType)
+    {
+        var viewModel = _provider.GetRequiredService(viewModelType);
+        return viewModel;
+    }
 }

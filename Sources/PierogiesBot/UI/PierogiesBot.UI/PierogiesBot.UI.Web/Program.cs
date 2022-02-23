@@ -6,6 +6,8 @@ using Autofac.Extensions.DependencyInjection;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Projektanker.Icons.Avalonia;
+using Projektanker.Icons.Avalonia.MaterialDesign;
 using ReactiveUI;
 using Shared.UI.Authentication;
 using Shared.UI.IoC;
@@ -14,10 +16,11 @@ using Splat;
 
 namespace PierogiesBot.UI.Web;
 
-public class Program
+public static class Program
 {
     public static async Task Main(string[] args)
     {
+        IconProvider.Register<MaterialDesignIconProvider>();
         var host = CreateHostBuilder(args).Build();
 
         ServiceLocator.Instance = host.Services;
@@ -34,15 +37,15 @@ public class Program
 
         builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) })
                .AddBlazoredLocalStorage()
+               .AddInfrastructure()
                .AddSingleton<IAuthenticationStore, LocalStorageAuthenticationStore>();
         
-        builder.Services.AddInfrastructure();
         return builder;
     }
 
     private static void ConfigureContainer(ContainerBuilder builder)
     {
-        builder.AddPierogiesBotUiInfrastructure();
         Locator.CurrentMutable.RegisterLazySingleton(() => new AutofacViewLocator(), typeof(IViewLocator));
+        builder.AddPierogiesBotUiInfrastructure();
     }
 }

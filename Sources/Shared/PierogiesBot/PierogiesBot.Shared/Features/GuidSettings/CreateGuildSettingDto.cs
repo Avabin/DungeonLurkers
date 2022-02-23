@@ -1,9 +1,7 @@
 ﻿using Shared.Features;
 
-namespace PierogiesBot.Shared.Features.GuidSettings
+namespace PierogiesBot.Shared.Features.GuidSettings;
+
+public class CreateGuildSettingDto : GuildSettingsDtoBase, ICreateDocumentDto
 {
-    
-    public class CreateGuildSettingDto : GuildSettingsDtoBase, ICreateDocumentDto
-    {
-    }
 }

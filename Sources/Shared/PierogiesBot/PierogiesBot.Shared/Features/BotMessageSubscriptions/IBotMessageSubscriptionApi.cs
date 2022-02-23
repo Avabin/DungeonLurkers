@@ -5,20 +5,20 @@ namespace PierogiesBot.Shared.Features.BotMessageSubscriptions;
 
 public interface IBotMessageSubscriptionApi : IAuthenticatedApi
 {
-    [Get("BotMessageSubscription")]
+    [Get("{PathPrefix}/BotMessageSubscription")]
     Task<IEnumerable<BotMessageSubscriptionDto>> GetAllMessageSubscriptionsAsync([Query] int? skip = null, [Query] int? limit = null);
 
-    [Get("BotMessageSubscription/{id}")] Task<BotMessageSubscriptionDto> FindMessageSubscriptionByIdAsync([Path] string id);
+    [Get("{PathPrefix}/BotMessageSubscription/{id}")] Task<BotMessageSubscriptionDto> FindMessageSubscriptionByIdAsync([Path] string id);
     
-    [Get("BotMessageSubscription/guild/{guildId}/channel/{channelId}")]
+    [Get("{PathPrefix}/BotMessageSubscription/guild/{guildId}/channel/{channelId}")]
     Task<IEnumerable<BotMessageSubscriptionDto>> FindAllMessageSubscriptionsForChannelAsync([Path] ulong guildId, [Path] ulong channelId);    
-    [Get("BotMessageSubscription/guild/{guildId}")]
+    [Get("{PathPrefix}/BotMessageSubscription/guild/{guildId}")]
     Task<IEnumerable<BotMessageSubscriptionDto>> FindAllMessageSubscriptionsForGuildAsync([Path] ulong guildId);
 
-    [Post("BotMessageSubscription")] Task<BotMessageSubscriptionDto> CreateBotMessageSubscriptionAsync([Body] CreateBotMessageSubscriptionDto createDto);
+    [Post("{PathPrefix}/BotMessageSubscription")] Task<BotMessageSubscriptionDto> CreateBotMessageSubscriptionAsync([Body] CreateBotMessageSubscriptionDto createDto);
 
-    [Put("BotMessageSubscription/{id}")]
+    [Put("{PathPrefix}/BotMessageSubscription/{id}")]
     Task UpdateBotMessageSubscriptionAsync([Path] string id, [Body] UpdateBotMessageSubscriptionDto updateDto);
 
-    [Delete("BotMessageSubscription/{id}")] Task DeleteBotMessageSubscriptionAsync([Path] string id);
+    [Delete("{PathPrefix}/BotMessageSubscription/{id}")] Task DeleteBotMessageSubscriptionAsync([Path] string id);
 }
