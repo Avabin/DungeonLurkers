@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Text.Json.Serialization;
 using AspNetCore.Identity.Mongo;
 using Autofac;
 using Identity.Infrastructure.Features.DevUser;
@@ -41,7 +42,7 @@ public class Startup
     {
         if (Environment.IsDevelopment()) services.AddHostedService<InsertDevUserBackgroundService>();
         
-        services.AddControllers();
+        services.AddControllers().AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
         services.AddOptions()
                 .Configure<MongoSettings>(Configuration.GetSection("MongoSettings"))
                 .ConfigureRabbit(Configuration.GetSection("Rabbit"));
@@ -87,6 +88,25 @@ public class Startup
             {
                 new()
                 {
+                    Name = "tdg", Scopes = new List<string>
+                    {
+                        IdentityServerConstants.LocalApi.ScopeName, 
+                        "users.*", "users.read", "users.write",
+                        "sessions.read", "sessions.write", "sessions.*",
+                        "characters.read", "characters.write", "characters.*"
+                    },
+                },
+                new()
+                {
+                    Name = "pierogiesbot", Scopes = new List<string>
+                    {
+                        IdentityServerConstants.LocalApi.ScopeName, 
+                        "users.*", "users.read", "users.write",
+                        "pierogiesbot.read", "pierogiesbot.write", "pierogiesbot.*"
+                    },
+                },
+                new()
+                {
                     Name = IdentityServerConstants.LocalApi.ScopeName, Scopes = new List<string>
                         { IdentityServerConstants.LocalApi.ScopeName, "users.*", "users.read", "users.write" },
                 },
@@ -98,12 +118,7 @@ public class Startup
                 {
                     Name = "characters",
                     Scopes = new List<string> { "characters.read", "characters.write", "characters.*" },
-                },
-                new()
-                {
-                    Name = "pierogiesbot",
-                    Scopes = new List<string> { "pierogiesbot.read", "pierogiesbot.write", "pierogiesbot.*" },
-                },
+                }
             })
            .AddInMemoryApiScopes(new List<ApiScope>
             {
@@ -183,7 +198,8 @@ public class Startup
                 },
             })
            .AddPersistedGrantStore<MongoPersistedGrantStore>()
-           .AddProfileService<JwtProfileService>();
+           .AddProfileService<JwtProfileService>()
+           .AddDefaultEndpoints();
 
         services.AddLocalApiAuthentication();
         services.AddSwaggerGen(
@@ -257,7 +273,7 @@ public class Startup
             builder.AddRabbitMqMessageBroker();
         } else
         {
-            builder.RegisterType<DocumentMessageBroker>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<DocumentMessageBroker>().AsImplementedInterfaces().As<IMessageBroker>().SingleInstance();
         }
         builder.AddIdentityMongoServices();
     }
@@ -276,7 +292,7 @@ public class Startup
                 c =>
                 {
                     if (!string.IsNullOrWhiteSpace(pathBase)) c.RoutePrefix = pathBase;
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Identity v1");
+                    c.SwaggerEndpoint($"{pathBase ?? ""}/swagger/v1/swagger.json", "Identity v1");
                     c.OAuthClientId("default");
                     c.OAuthClientSecret(_clientSecret);
                 });

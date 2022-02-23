@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Security.Claims;
+using System.Text.Json.Serialization;
 using Autofac;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -29,7 +30,7 @@ public class Startup : StartupBase
 
     public Startup(IConfiguration configuration, IHostEnvironment environment) : base(configuration, environment)
     {
-        _clientSecret = Configuration["JWT:ClientSecret"] ?? "secret";
+        _clientSecret = Configuration["JWT:Secret"] ?? "secret";
     }
 
     // This method gets called by the runtime. Use this method to add services to the container.
@@ -38,7 +39,7 @@ public class Startup : StartupBase
         var identityUrl = IdentityHttpClient is not null
                               ? IdentityHttpClient.BaseAddress!.ToString()
                               : Configuration.GetValue<string>("IdentityUrl");
-        services.AddControllers();
+        services.AddControllers().AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
         services.AddOptions()
                 .Configure<MongoSettings>(Configuration.GetSection("MongoSettings"))
                 .ConfigureRabbit(Configuration.GetSection("Rabbit"));
@@ -149,7 +150,7 @@ public class Startup : StartupBase
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "PierogiesBot v1");
+                c.SwaggerEndpoint($"{pathBase ?? ""}/swagger/v1/swagger.json", "PierogiesBot v1");
                 c.OAuthClientId("default");
                 c.OAuthClientSecret(_clientSecret);
             });

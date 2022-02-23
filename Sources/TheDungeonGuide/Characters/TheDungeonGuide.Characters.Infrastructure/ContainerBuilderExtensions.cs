@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Shared.MessageBroker.Core;
 using Shared.Persistence.Core.Features;
 using Shared.Persistence.Mongo.Features;
 using TheDungeonGuide.Persistence.Characters;
@@ -12,5 +13,7 @@ public static class ContainerBuilderExtensions
         builder.AddPersistenceCore();
         builder.AddPersistenceMongo();
         builder.AddCharactersMongoServices();
+
+        builder.RegisterType<DocumentMessageBroker>().AsImplementedInterfaces().SingleInstance();
     }
 }

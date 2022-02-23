@@ -37,7 +37,11 @@ public interface IRepository<T, TId> where T : class, IDocument<TId>
     Task<T?>                     GetByPredicateAsync(Expression<Func<T, bool>> predicate);
     Task<IReadOnlyCollection<T>> GetAllAsync(int?                              skip = null, int? limit = null);
 
-    Task AddElementToArrayFieldAsync<TElement>(string   id, Expression<Func<T, IEnumerable<TElement>>> field,
-                                                    TElement newElement);
-    Task RemoveElementFromArrayFieldAsync<TElement>(string id, Expression<Func<T, IEnumerable<TElement>>> field, TElement like);
+    Task AddElementToArrayFieldAsync<TElement>(TId      id, Expression<Func<T, IEnumerable<TElement>>> field,
+                                               TElement newElement);
+
+    Task RemoveElementFromArrayFieldAsync<TElement>(TId      id, Expression<Func<T, IEnumerable<TElement>>> field,
+                                                    TElement like);
+
+    Task<IEnumerable<TElement>> GetArrayFieldAsync<TElement>(TId ruleId, Expression<Func<T, IEnumerable<TElement>>> field);
 }

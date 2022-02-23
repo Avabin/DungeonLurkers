@@ -1,11 +1,13 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Security.Claims;
+using System.Text.Json.Serialization;
 using Autofac;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Shared.Infrastructure;
+using Shared.MessageBroker.Core;
 using Shared.Persistence.Core.Features;
 using Shared.Persistence.Mongo.Features;
 using TheDungeonGuide.Persistence.Sessions;
@@ -39,7 +41,7 @@ public class Startup
         var identityUrl = IdentityHttpClient is not null
                               ? IdentityHttpClient.BaseAddress!.ToString()
                               : Configuration.GetValue<string>("IdentityUrl");
-        services.AddControllers();
+        services.AddControllers().AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -127,6 +129,8 @@ public class Startup
         builder.AddPersistenceCore();
         builder.AddPersistenceMongo();
         builder.AddSessionsMongoServices();
+        
+        builder.RegisterType<DocumentMessageBroker>().AsImplementedInterfaces().SingleInstance();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -140,7 +144,7 @@ public class Startup
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sessions API v1");
+                c.SwaggerEndpoint($"{pathBase ?? ""}/swagger/v1/swagger.json", "Sessions API v1");
                 c.OAuthClientId("sessions");
                 c.OAuthClientSecret(_clientSecret);
             });

@@ -1,9 +1,10 @@
-﻿using TheDungeonGuide.UI.Shared.Features.HostScreen;
-using TheDungeonGuide.UI.Shared.Features.Navigation.RoutableViewModel;
+﻿using Shared.UI;
+using Shared.UI.HostScreen;
+using Shared.UI.Navigation.RoutableViewModel;
 
 namespace TheDungeonGuide.UI.ViewModels.Features.CharactersView;
 
-public class CharactersViewModel : RoutableViewModelBase
+public class CharactersViewModel : ViewModelBase
 {
     public CharactersViewModel(IHostScreenViewModel hostScreenViewModel) : base(hostScreenViewModel)
     {

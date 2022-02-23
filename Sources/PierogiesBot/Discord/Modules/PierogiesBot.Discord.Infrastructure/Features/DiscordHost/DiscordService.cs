@@ -2,12 +2,17 @@
 using System.Reflection;
 using Discord;
 using Discord.Commands;
+using Discord.Interactions;
 using Discord.WebSocket;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PierogiesBot.Discord.Commands.Features;
 using PierogiesBot.Discord.Core.Features.MessageSubscriptions;
 using PierogiesBot.Discord.Core.Features.TimeZoneTypeConverter;
+using PierogiesBot.Discord.Interactions.Features.WhoIs;
+using IResult = Discord.Commands.IResult;
+using RunMode = Discord.Interactions.RunMode;
 
 // ReSharper disable TemplateIsNotCompileTimeConstantProblem
 
@@ -21,27 +26,40 @@ public class DiscordService : IDiscordService
     private readonly DiscordSocketClient             _client;
     private readonly CommandService                  _commandService;
     private readonly ILogger<CommandService>         _commandLogger;
+    private readonly ILogger<InteractionService>     _interactionLogger;
     private readonly ILogger<DiscordSocketClient>    _discordLogger;
     private readonly IOptions<DiscordSettings>       _settings;
     private readonly IEnumerable<ILoadSubscriptions> _subscriptions;
+    private readonly InteractionService              _interactionService;
 
     public DiscordService(
         IServiceProvider                services,
         ILogger<CommandService>         commandLogger,
+        ILogger<InteractionService>         interactionLogger,
         ILogger<DiscordSocketClient>    discordLogger,
         IOptions<DiscordSettings>       settings,
         IOptions<CommandServiceConfig>  commandConfig,
         IEnumerable<ILoadSubscriptions> subscriptions,
         DiscordSocketClient client)
     {
-        _services      = services;
-        _commandLogger = commandLogger;
-        _discordLogger = discordLogger;
-        _settings      = settings;
-        _subscriptions = subscriptions;
+        _services               = services;
+        _commandLogger          = commandLogger;
+        _interactionLogger = interactionLogger;
+        _discordLogger          = discordLogger;
+        _settings               = settings;
+        _subscriptions          = subscriptions;
 
         _client         = client;
-        _commandService = new CommandService(commandConfig.Value);
+        _commandService = new CommandService(new CommandServiceConfig
+        {
+            DefaultRunMode = global::Discord.Commands.RunMode.Async
+        });
+        
+        _interactionService = new InteractionService(_client, new InteractionServiceConfig
+        {
+            UseCompiledLambda = true,
+            DefaultRunMode    = RunMode.Async,
+        });
 
         MessageObservable = Observable.FromEvent<Func<SocketMessage, Task>, SocketMessage>(
          h => _client.MessageReceived += h,
@@ -86,8 +104,49 @@ public class DiscordService : IDiscordService
 
         await eventAwaiter.Task.ConfigureAwait(false);
         await InstallCommandsAsync();
+        await InstallInteractionsAsync();
 
         await Task.WhenAll(_subscriptions.Select(s => s.LoadSubscriptionsAsync()));
+    }
+
+    private async Task InstallInteractionsAsync()
+    {
+        _interactionLogger.LogInformation("Installing interactions...");
+        _interactionService.Log += message =>
+        {
+            var logLevel = message.Severity switch
+            {
+                LogSeverity.Critical => LogLevel.Critical,
+                LogSeverity.Error    => LogLevel.Error,
+                LogSeverity.Warning  => LogLevel.Warning,
+                LogSeverity.Info     => LogLevel.Information,
+                LogSeverity.Verbose  => LogLevel.Debug,
+                LogSeverity.Debug    => LogLevel.Trace,
+                _                    => throw new ArgumentOutOfRangeException(nameof(message), "has wrong LogSeverity!")
+            };
+            if (message.Exception is not null) _interactionLogger.LogError(message.Exception, message.Message);
+            else _interactionLogger.Log(logLevel, message.Message);
+            return Task.CompletedTask;
+        };
+        
+        _interactionService.AddTypeConverter(typeof(TimeZoneInfo), new TimeZoneInfoConverter());
+        await _interactionService.AddModulesAsync(typeof(WhoIsInteractionModule).Assembly, _services);
+
+        var guilds = _client.Guilds;
+
+        await Task.WhenAll(guilds.Select(g =>
+        {
+            _interactionLogger.LogDebug("Installing interactions for guild {Guild}...", g);
+            return _interactionService.RegisterCommandsToGuildAsync(g.Id);
+        }));
+        
+        _client.InteractionCreated += async interaction =>
+        {
+            _interactionLogger.LogTrace("Interaction created: {InteractionId}", interaction.Id);
+            var scope = _services.CreateScope();
+            var ctx   = new SocketInteractionContext(_client, interaction);
+            await _interactionService.ExecuteCommandAsync(ctx, scope.ServiceProvider);
+        };
     }
 
     public async Task Stop()

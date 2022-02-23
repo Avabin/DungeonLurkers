@@ -1,0 +1,28 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:reactiveUi="http://reactiveui.net"
+             xmlns:views="clr-namespace:TheDungeonGuide.UI.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="TheDungeonGuide.UI.Views.MainView"
+             Background="#171C2C"
+             d:DataContext="{x:Static views:DesignData.MainViewModel}">
+            <!-- <ExperimentalAcrylicBorder IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center"> -->
+            <!--     <ExperimentalAcrylicBorder.Material> -->
+            <!--         <ExperimentalAcrylicMaterial -->
+            <!--             BackgroundSource="Digger" -->
+            <!--             TintColor="Black" -->
+            <!--             TintOpacity="1" -->
+            <!--             MaterialOpacity="0.65" /> -->
+            <!--     </ExperimentalAcrylicBorder.Material> -->
+            <!-- </ExperimentalAcrylicBorder> -->
+            
+            <reactiveUi:RoutedViewHost Router="{Binding Router}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <reactiveUi:RoutedViewHost.DefaultContent>
+                    <Label Content="{Binding LoadingText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </reactiveUi:RoutedViewHost.DefaultContent>
+            </reactiveUi:RoutedViewHost>
+                
+            
+</UserControl>
