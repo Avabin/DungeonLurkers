@@ -44,6 +44,7 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
         else
         {
             _logger.LogWarning("Using default database name: {DatabaseName}", MongoDbHelper.DatabaseName);
+            DatabaseName = MongoDbHelper.DatabaseName;
         }
 
         if (!_client.GetDatabase(DatabaseName).ListCollectionNames().ToList().Contains(_collection))
@@ -59,11 +60,15 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
 
     public async Task<TField?> GetFieldAsync<TField>(
         Expression<Func<T, bool>>   predicate,
-        Expression<Func<T, TField>> field) =>
-        await Collection
-           .Find(predicate)
-           .Project(field)
-           .SingleOrDefaultAsync();
+        Expression<Func<T, TField>> field)
+    {
+        _logger.LogTrace("{Action} of {DocumentType} with predicate {Predicate} on field {Field}}",
+                         nameof(GetFieldAsync), typeof(T).Name, predicate, field);
+        return await Collection
+                    .Find(predicate)
+                    .Project(field)
+                    .SingleOrDefaultAsync();
+    }
 
     public async Task<string> InsertAsync(T doc)
     {
@@ -127,6 +132,8 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
         Expression<Func<T, TField>> field,
         TField                      value)
     {
+        _logger.LogTrace("{Action} of {DocumentType} with predicate {Predicate} on field {Field} with value {@Value}",
+                         nameof(UpdateAllAsync), typeof(T).Name, predicate, field, value);
         var update = Builders<T>.Update.Set(field, value);
         var oldDocs = await Collection.Find(predicate).ToListAsync();
 
@@ -147,6 +154,8 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
         Expression<Func<T, TField>> field,
         TField                      value)
     {
+        _logger.LogTrace("{Action} of {DocumentType} with predicate {Predicate} on field {Field} with value {@Value}",
+                         nameof(UpdateSingleAsync), typeof(T).Name, predicate, field, value);
         var update = Builders<T>.Update.Set(field, value);
         
         var oldDoc = await Collection.FindOneAndUpdateAsync(predicate, update);
@@ -163,7 +172,7 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
 
     public async Task DeleteAsync(string id)
     {
-        _logger.LogTrace("{Action}: Doc Id = {DocumentId} of type {DocumentType}", nameof(InsertAsync), id,
+        _logger.LogTrace("{Action}: Doc Id = {DocumentId} of type {DocumentType}", nameof(DeleteAsync), id,
                          typeof(T).Name);
         await ThrowIfDocWithIdNotFound(id);
         var oldDoc = await Collection.Find(x => x.Id == id).SingleAsync();
@@ -180,18 +189,17 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
 
     public async Task<T?> GetByIdAsync(string id)
     {
-        _logger.LogTrace("{Action}: Doc Id = {DocumentId} of type {DocumentType}", nameof(InsertAsync), id,
+        _logger.LogTrace("{Action}: Doc Id = {DocumentId} of type {DocumentType}", nameof(GetByIdAsync), id,
                          typeof(T).Name);
         var filter = Builders<T>.Filter.Eq(s => s.Id, id);
         return await Collection.Find(filter).FirstOrDefaultAsync();
     }
 
-    public async Task<T?> GetByFieldAsync<TProp>(Expression<Func<T, TProp>> propertyAccessor, TProp value)
+    public async Task<T?> GetByFieldAsync<TProp>(Expression<Func<T, TProp>> field, TProp value)
     {
-        _logger.LogTrace(
-            "{Action}: Searching entity for property of type {PropertyType} and value {PropertyValue} of type {DocumentType}",
-            nameof(GetByFieldAsync), typeof(T).Name, value, typeof(T).Name);
-        var filter = Builders<T>.Filter.Eq(propertyAccessor, value);
+        _logger.LogTrace("{Action} of {DocumentType} on field {Field} with value {@Value}",
+                         nameof(GetByFieldAsync), typeof(T).Name, field, value);
+        var filter = Builders<T>.Filter.Eq(field, value);
         return await Collection.Find(filter).FirstOrDefaultAsync();
     }
 
@@ -201,9 +209,8 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
         int?                       skip  = null,
         int?                       limit = null)
     {
-        _logger.LogTrace(
-            "{Action}: Searching entity for property of type {PropertyType} and value {PropertyValue} of type {DocumentType}",
-            nameof(GetByFieldAsync), typeof(T).Name, value, typeof(T).Name);
+        _logger.LogTrace("{Action} of {DocumentType} ({Skip}, {Limit}) on field {Field} with value {@Value}",
+                         nameof(GetAllByFieldAsync), typeof(T).Name, skip, limit, field, value);
         var filter = Builders<T>.Filter.Eq(field, value);
         return await Collection
                     .Find(filter)
@@ -217,8 +224,8 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
         int?                      skip  = null,
         int?                      limit = null)
     {
-        _logger.LogTrace("{Action} of {DocumentType} ({Skip}, {Limit})", nameof(GetAllByPredicateAsync),
-                           typeof(T).Name, skip, limit);
+        _logger.LogTrace("{Action} of {DocumentType} ({Skip}, {Limit}) with predicate {Predicate}",
+                         nameof(GetAllByPredicateAsync), typeof(T).Name, skip, limit, predicate);
         var filter = Builders<T>.Filter.Where(predicate);
         return await Collection
                     .Find(filter)
@@ -229,7 +236,8 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
 
     public async Task<T?> GetByPredicateAsync(Expression<Func<T, bool>> predicate)
     {
-        _logger.LogTrace("{Action} of {DocumentType}", nameof(GetAllByPredicateAsync), typeof(T).Name);
+        _logger.LogTrace("{Action} of {DocumentType} with predicate {Predicate}", nameof(GetByPredicateAsync),
+                           typeof(T).Name, predicate);
 
         var filter = Builders<T>.Filter.Where(predicate);
 
@@ -258,16 +266,16 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
         
         var filter = Builders<T>.Filter.Eq(s => s.Id, id);
         var update = Builders<T>.Update.AddToSet(field, newElement);
-        var oldDoc = await Collection.Find(filter).SingleAsync();
-        if(oldDoc is null) throw new DocumentNotFoundException($"Document with id {id} not found");
         var result = await Collection.FindOneAndUpdateAsync(filter, update);
+        if(result is null) throw new DocumentNotFoundException($"Document with id {id} not found");
+        var newDoc = await Collection.Find(filter).SingleOrDefaultAsync();
         
-        _logger.LogTrace("{Action}: Result of update: {@Result}", nameof(AddElementToArrayFieldAsync), result);
+        _logger.LogTrace("{Action}: Result of update: {@Result}", nameof(AddElementToArrayFieldAsync), newDoc);
 
-        if (result is not null)
+        if (newDoc is not null)
         {
             _logger.LogTrace("{Action}: Publishing update change event", nameof(AddElementToArrayFieldAsync));
-            _docChangedSubject.OnNext(DocumentChanged.Updated(oldDoc, result));
+            _docChangedSubject.OnNext(DocumentChanged.Updated(result, newDoc));
         }
     }
     
@@ -278,27 +286,29 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
         
         var filter = Builders<T>.Filter.Eq(s => s.Id, id);
         var update = Builders<T>.Update.Pull(field, like);
-        var oldDoc = await Collection.Find(filter).SingleAsync();
-        if(oldDoc is null) throw new DocumentNotFoundException($"Document with id {id} not found");
         var result = await Collection.FindOneAndUpdateAsync(filter, update);
+        if(result is null) throw new DocumentNotFoundException($"Document with id {id} not found");
+        var newDoc = await Collection.Find(filter).SingleOrDefaultAsync();
         
-        _logger.LogTrace("{Action}: Result of update: {@Result}", nameof(RemoveElementFromArrayFieldAsync), result);
+        _logger.LogTrace("{Action}: Result of update: {@Result}", nameof(RemoveElementFromArrayFieldAsync), newDoc);
 
-        if (result is not null)
+        if (newDoc is not null)
         {
             _logger.LogTrace("{Action}: Publishing update change event", nameof(RemoveElementFromArrayFieldAsync));
-            _docChangedSubject.OnNext(DocumentChanged.Updated(oldDoc, result));
+            _docChangedSubject.OnNext(DocumentChanged.Updated(result, newDoc));
         }
     }
 
-    public async Task<IEnumerable<TElement>> GetArrayFieldAsync<TElement>(string ruleId, Expression<Func<T, IEnumerable<TElement>>> field)
+    public async Task<IEnumerable<TElement>> GetArrayFieldAsync<TElement>(string id, Expression<Func<T, IEnumerable<TElement>>> field)
     {
-        _logger.LogTrace("{Action} of {DocumentType}", nameof(GetArrayFieldAsync), typeof(T).Name);
+        _logger.LogTrace("{Action} of {DocumentType} on field {Field}", nameof(GetArrayFieldAsync), typeof(T).Name, field);
         
-        var            filter = Builders<T>.Filter.Eq(s => s.Id, ruleId);
-        var result = await Collection.Find(filter).Project(field).SingleAsync();
+        var            filter = Builders<T>.Filter.Eq(s => s.Id, id);
+        var result = await Collection.Find(filter).Project(field).SingleOrDefaultAsync();
+
+        if(result is null) throw new DocumentNotFoundException($"Document with id {id} not found");
         
-        return result ?? Enumerable.Empty<TElement>();
+        return result;
     }
 
     public async Task<IEnumerable<TField>> GetFieldsAsync<TField>(
@@ -306,8 +316,9 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
         int?                        skip  = null,
         int?                        limit = null)
     {
-        _logger.LogTrace("{Action} of {DocumentType} ({Skip}, {Limit})", nameof(GetAllAsync), typeof(T).Name, skip,
-                           limit);
+        _logger.LogTrace("{Action} of {DocumentType} ({Skip}, {Limit}) on field {Field}", nameof(GetFieldsAsync), typeof(T).Name, skip,
+                         limit, field);
+        
         var result =await Collection
                     .Find(FilterDefinition<T>.Empty)
                     .Project(field)
@@ -325,8 +336,9 @@ internal class MongoRepository<T> : IMongoRepository<T> where T : class, IDocume
         int?                        skip  = null,
         int?                        limit = null)
     {
-        _logger.LogTrace("{Action} of {DocumentType} ({Skip}, {Limit})", nameof(GetAllAsync), typeof(T).Name, skip,
-                           limit);
+        _logger.LogTrace("{Action} of {DocumentType} ({Skip}, {Limit}) with predicate {Predicate} on field {Field}",
+                         nameof(GetFieldsByPredicateAsync), typeof(T).Name, skip, limit, predicate, field);
+        
         var result = await Collection
                     .Find(predicate)
                     .Project(field)

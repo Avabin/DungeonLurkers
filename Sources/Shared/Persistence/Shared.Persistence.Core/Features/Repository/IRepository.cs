@@ -21,7 +21,7 @@ public interface IRepository<T, TId> where T : class, IDocument<TId>
 
     Task     DeleteAsync(TId                                   id);
     Task<T?> GetByIdAsync(TId                                  id);
-    Task<T?> GetByFieldAsync<TProp>(Expression<Func<T, TProp>> propertyAccessor, TProp value);
+    Task<T?> GetByFieldAsync<TProp>(Expression<Func<T, TProp>> field, TProp value);
 
     Task<IReadOnlyCollection<T>> GetAllByFieldAsync<TField>(
         Expression<Func<T, TField>> field,
@@ -43,5 +43,5 @@ public interface IRepository<T, TId> where T : class, IDocument<TId>
     Task RemoveElementFromArrayFieldAsync<TElement>(TId      id, Expression<Func<T, IEnumerable<TElement>>> field,
                                                     TElement like);
 
-    Task<IEnumerable<TElement>> GetArrayFieldAsync<TElement>(TId ruleId, Expression<Func<T, IEnumerable<TElement>>> field);
+    Task<IEnumerable<TElement>> GetArrayFieldAsync<TElement>(TId id, Expression<Func<T, IEnumerable<TElement>>> field);
 }

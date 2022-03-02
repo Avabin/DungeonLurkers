@@ -39,7 +39,7 @@ public class UsersControllerTests : AuthenticatedTestsBase
 
     public override string Password     => "P@a$$w0rd!";
     public override string ClientId     => "default";
-    public override string ClientSecret => "StrONGKAutHENTICATIONKEy";
+    public override string ClientSecret => "secret";
     public override string Scope        => IdentityServerConstants.LocalApi.ScopeName;
 
     public override UserDocument TestUser { get; }
