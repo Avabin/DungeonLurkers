@@ -38,8 +38,11 @@ public abstract class HostScreenViewModelBase : ReactiveObject, IHostScreenViewM
             .BindTo(this, vm => vm.Url);
     }
 
-    public IObservable<IRoutableViewModel> Navigate<T>() where T : IRoutableViewModel =>
-        Router.Navigate.Execute(_routableViewModelFactory.GetViewModel<T>());
+    public IObservable<IRoutableViewModel> Navigate<T>() where T : IRoutableViewModel
+    {
+        var routableViewModel = _routableViewModelFactory.GetViewModel<T>();
+        return Router.Navigate.Execute(routableViewModel);
+    }
 
     public IObservable<IRoutableViewModel?> NavigateBack() => NavigateBackCommand.Execute();
 

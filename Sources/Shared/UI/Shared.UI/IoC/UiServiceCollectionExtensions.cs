@@ -54,8 +54,7 @@ public static class UiServiceCollectionExtensions
         builder.RegisterAssemblyTypes(assembly)
             .Where(t => t.Name.EndsWith("ViewModel") && !t.IsInterface && t.GetInterfaces().All(x => x != typeof(IScreen)))
             .AsSelf()
-            .AsImplementedInterfaces()
-            .SingleInstance();
+            .AsImplementedInterfaces();
 
         return builder;
     }

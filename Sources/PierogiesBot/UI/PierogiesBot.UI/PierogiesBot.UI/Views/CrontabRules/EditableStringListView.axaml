@@ -1,0 +1,58 @@
+﻿<UserControl
+    Name="Root"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d"
+    x:Class="PierogiesBot.UI.Views.CrontabRules.EditableStringListView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel Margin="5,0,5,0" Orientation="Vertical">
+        <Label Content="{Binding #Root.Title}" />
+        <ItemsRepeater Items="{Binding #Root.Items}">
+            <ItemsRepeater.ItemTemplate>
+                <DataTemplate>
+                    <Border>
+                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto">
+                            <TextBox
+                                HorizontalAlignment="Stretch"
+                                IsEnabled="{Binding !#Root.RemoveElementCommand.IsExecuting^}"
+                                IsReadOnly="True"
+                                Margin="0,5,5,0"
+                                Text="{Binding .}" />
+                            <Button
+                                Background="Red"
+                                Command="{Binding #Root.RemoveElementCommand}"
+                                CommandParameter="{Binding .}"
+                                Grid.Column="1"
+                                HorizontalAlignment="Center"
+                                Margin="0,5,0,0">
+                                <PathIcon Data="{StaticResource DeleteRegular}" />
+                            </Button>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ItemsRepeater.ItemTemplate>
+        </ItemsRepeater>
+        <StackPanel Orientation="Horizontal">
+            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto">
+                <TextBox
+                    HorizontalAlignment="Stretch"
+                    IsEnabled="{Binding !#Root.AddElementCommand.IsExecuting^}"
+                    Margin="0,5,5,0"
+                    Name="NewEmoteTextBox"
+                    Watermark="New" />
+                <Button
+                    Background="Green"
+                    Command="{Binding #Root.AddElementCommand}"
+                    CommandParameter="{Binding #NewEmoteTextBox.Text}"
+                    Grid.Column="1"
+                    HorizontalAlignment="Center"
+                    Margin="0,5,0,0">
+                    <PathIcon Data="{StaticResource CheckmarkRegular}" />
+                </Button>
+            </Grid>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

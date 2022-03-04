@@ -1,5 +1,7 @@
 ﻿using PierogiesBot.Shared.Enums;
 using PierogiesBot.Shared.Features.BotCrontabRules;
+using PierogiesBot.UI.ViewModels;
+using PierogiesBot.UI.ViewModels.Features;
 using PierogiesBot.UI.ViewModels.Features.BotCrontabRules;
 using PierogiesBot.UI.ViewModels.Features.MainView;
 using PierogiesBot.UI.ViewModels.Features.NavigationView;
@@ -20,10 +22,11 @@ public static class DesignData
         ReplyMessages = {"hello"},
         ResponseMode = ResponseMode.First
     });
-    public static NavigationViewModel         NavigationViewModel         => Vm<NavigationViewModel>();
-    public static LoginViewModel              LoginViewModel              => Vm<LoginViewModel>();
-    public static PierogiesBotMainViewModel   MainViewModel               => Vm<PierogiesBotMainViewModel>();
-    public static ProfileViewModel            ProfileViewModel            => Vm<ProfileViewModel>();
+    public static NavigationViewModel       NavigationViewModel     => Vm<NavigationViewModel>();
+    public static AddCrontabRuleViewModel   AddCrontabRuleViewModel => Vm<AddCrontabRuleViewModel>();
+    public static LoginViewModel            LoginViewModel          => Vm<LoginViewModel>();
+    public static PierogiesBotMainViewModel MainViewModel           => Vm<PierogiesBotMainViewModel>();
+    public static ProfileViewModel          ProfileViewModel        => Vm<ProfileViewModel>();
 
     public static CrontabRulesViewModel CrontabRulesViewModel => Vm<CrontabRulesViewModel>();
 

@@ -21,7 +21,7 @@
         Router="{Binding Router}"
         VerticalAlignment="Stretch">
         <reactiveUi:RoutedViewHost.DefaultContent>
-            <Label Content="{CompiledBinding LoadingText}" />
+            <views:LoginView />
         </reactiveUi:RoutedViewHost.DefaultContent>
     </reactiveUi:RoutedViewHost>
 

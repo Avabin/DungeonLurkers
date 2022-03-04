@@ -11,6 +11,5 @@
         <FluentTheme Mode="Dark" />
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
         <StyleInclude Source="avares://PierogiesBot.UI/Styles/Icons.axaml" />
-        <StyleInclude Source="avares://Aura.UI.FluentTheme/AuraUI.xaml" />
     </Application.Styles>
 </Application>

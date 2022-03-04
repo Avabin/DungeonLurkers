@@ -9,8 +9,6 @@
         <AvaloniaResource Include="Assets\**" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Aura.UI" Version="0.1.4.2" />
-        <PackageReference Include="Aura.UI.FluentTheme" Version="0.1.4.2" />
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.Controls.DataGrid" Version="0.10.12" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
@@ -22,6 +20,7 @@
     <ItemGroup>
       <UpToDateCheckInput Remove="Views\MainView.axaml" />
       <UpToDateCheckInput Remove="Views\MainWindow.axaml" />
+      <UpToDateCheckInput Remove="Views\NavigationView\NavigationView.axaml" />
     </ItemGroup>
     <ItemGroup>
       <Compile Update="Views\LoginView.axaml.cs">
@@ -68,6 +67,8 @@
         <DependentUpon>EditableStringListView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Remove="Views\OneParamNav.axaml.cs" />
+      <Compile Remove="Views\NavigationTestView.axaml.cs" />
     </ItemGroup>
     <ItemGroup>
       <AdditionalFiles Include="Views\LoginView.axaml" />
@@ -81,5 +82,8 @@
       <ProjectReference Include="..\..\..\..\Shared\UI\Shared.UI.ViewModels\Shared.UI.ViewModels.csproj" />
       <ProjectReference Include="..\..\..\..\Shared\UI\Shared.UI\Shared.UI.csproj" />
       <ProjectReference Include="..\..\PierogiesBot.UI.ViewModels\PierogiesBot.UI.ViewModels.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Views\Home" />
     </ItemGroup>
 </Project>

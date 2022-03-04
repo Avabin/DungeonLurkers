@@ -29,4 +29,10 @@ public class CrontabRulesService : ICrontabRulesService
 
     public async Task DeleteRuleAsync(string ruleId) => 
         await _api.DeleteBotCrontabRuleAsync(ruleId);
+
+    public async Task<BotCrontabRuleDto> CreateRuleAsync(CreateBotCrontabRuleDto request)
+    {
+        var createdRule = await _api.CreateBotCrontabRuleAsync(request);
+        return createdRule;
+    }
 }

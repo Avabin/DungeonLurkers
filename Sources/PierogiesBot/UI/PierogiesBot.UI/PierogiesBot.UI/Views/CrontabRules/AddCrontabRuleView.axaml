@@ -1,0 +1,91 @@
+﻿<UserControl
+    Name="Root"
+    d:DataContext="{x:Static views:DesignData.AddCrontabRuleViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d"
+    x:Class="PierogiesBot.UI.Views.CrontabRules.AddCrontabRuleView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:botCrontabRules="clr-namespace:PierogiesBot.UI.ViewModels.Features.BotCrontabRules;assembly=PierogiesBot.UI.ViewModels"
+    xmlns:crontabRules="clr-namespace:PierogiesBot.UI.Views.CrontabRules"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:reactiveUi="http://reactiveui.net"
+    xmlns:views="clr-namespace:PierogiesBot.UI.Views"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto, Auto, Auto, Auto,*, Auto">
+        <Label
+            Grid.ColumnSpan="2"
+            HorizontalAlignment="Center"
+            Margin="5">
+            Add new scheduled message rule
+        </Label>
+        <TextBox
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Grid.Row="1"
+            Margin="5,0,5,5"
+            Text="{Binding Crontab}"
+            Watermark="Crontab" />
+        <Label
+            Content="Responsing mode"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Grid.Row="2"
+            HorizontalAlignment="Center"
+            Margin="5,0,5,5"
+            VerticalContentAlignment="Center" />
+        <ComboBox
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Grid.Row="3"
+            HorizontalAlignment="Stretch"
+            Items="{Binding ResponseModes}"
+            Margin="0,0,5,5"
+            SelectedItem="{Binding ResponseMode}" />
+        <Label
+            Content="Send emoji?"
+            Grid.Column="0"
+            Grid.Row="4"
+            HorizontalAlignment="Right"
+            Margin="5,0,5,5"
+            VerticalContentAlignment="Center" />
+        <CheckBox
+            Grid.Column="1"
+            Grid.Row="4"
+            HorizontalAlignment="Left"
+            IsChecked="{Binding IsEmoji}"
+            Margin="0,0,0,5" />
+
+        <crontabRules:EditableStringListView
+            AddElementCommand="{Binding AddResponseCommand}"
+            Grid.Column="0"
+            Grid.Row="5"
+            HorizontalAlignment="Stretch"
+            Items="{Binding Responses}"
+            Margin="5,0,5,5"
+            RemoveElementCommand="{Binding RemoveResponseCommand}"
+            Title="Responses"
+            VerticalAlignment="Stretch" />
+        <crontabRules:EditableStringListView
+            AddElementCommand="{Binding AddEmoteCommand}"
+            Grid.Column="1"
+            Grid.Row="5"
+            HorizontalAlignment="Stretch"
+            Items="{Binding Emotes}"
+            Margin="0,0,5,5"
+            RemoveElementCommand="{Binding RemoveEmoteCommand}"
+            Title="Emotes"
+            VerticalAlignment="Stretch" />
+        <Button
+            Background="Green"
+            Command="{Binding SaveRuleCommand}"
+            Content="Save"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Grid.Row="6"
+            HorizontalAlignment="Right"
+            Margin="5"
+            VerticalAlignment="Bottom" />
+    </Grid>
+</UserControl>
