@@ -59,17 +59,11 @@ export class SKHtmlCanvas {
         htmlCanvas.SKHtmlCanvas.deinit();
         htmlCanvas.SKHtmlCanvas = undefined;
     }
-    static requestAnimationFrame(element, renderLoop) {
+    static requestAnimationFrame(element, renderLoop, width, height) {
         const htmlCanvas = element;
         if (!htmlCanvas || !htmlCanvas.SKHtmlCanvas)
             return;
-        htmlCanvas.SKHtmlCanvas.requestAnimationFrame(renderLoop);
-    }
-    static setCanvasSize(element, width, height) {
-        const htmlCanvas = element;
-        if (!htmlCanvas || !htmlCanvas.SKHtmlCanvas)
-            return;
-        htmlCanvas.SKHtmlCanvas.setCanvasSize(width, height);
+        htmlCanvas.SKHtmlCanvas.requestAnimationFrame(renderLoop, width, height);
     }
     static setEnableRenderLoop(element, enable) {
         const htmlCanvas = element;
@@ -86,24 +80,15 @@ export class SKHtmlCanvas {
     deinit() {
         this.setEnableRenderLoop(false);
     }
-    setCanvasSize(width, height) {
-        this.newWidth = width;
-        this.newHeight = height;
-        if (this.htmlCanvas.width != this.newWidth) {
-            this.htmlCanvas.width = this.newWidth;
-        }
-        if (this.htmlCanvas.height != this.newHeight) {
-            this.htmlCanvas.height = this.newHeight;
-        }
-        if (this.glInfo) {
-            // make current
-            GL.makeContextCurrent(this.glInfo.context);
-        }
-    }
-    requestAnimationFrame(renderLoop) {
+    requestAnimationFrame(renderLoop, width, height) {
         // optionally update the render loop
         if (renderLoop !== undefined && this.renderLoopEnabled !== renderLoop)
             this.setEnableRenderLoop(renderLoop);
+        // make sure the canvas is scaled correctly for the drawing
+        if (width && height) {
+            this.htmlCanvas.width = width;
+            this.htmlCanvas.height = height;
+        }
         // skip because we have a render loop
         if (this.renderLoopRequest !== 0)
             return;
@@ -112,12 +97,6 @@ export class SKHtmlCanvas {
             if (this.glInfo) {
                 // make current
                 GL.makeContextCurrent(this.glInfo.context);
-            }
-            if (this.htmlCanvas.width != this.newWidth) {
-                this.htmlCanvas.width = this.newWidth;
-            }
-            if (this.htmlCanvas.height != this.newHeight) {
-                this.htmlCanvas.height = this.newHeight;
             }
             this.renderFrameCallback.invokeMethod('Invoke');
             this.renderLoopRequest = 0;
