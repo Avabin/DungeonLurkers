@@ -18,14 +18,17 @@ public class AutofacViewLocator : IDataTemplate, IViewLocator
 
     public IControl Build(object param)
     {
+        // throw new NotImplementedException();
         var viewType = param.GetType();
-        if (viewType.IsGenericType)
-        {
-            if (viewType.IsAssignableFrom(typeof(IViewFor<>)))
-            {
-                var genericType = viewType.GetGenericTypeDefinition();
-            }
-        }
+        // if (viewType.IsGenericType)
+        // {
+        //     if (viewType.IsAssignableFrom(typeof(IViewFor<>)))
+        //     {
+        //         var genericType = viewType.GetGenericTypeDefinition();
+        //         var viewModel   = ServiceLocator.GetService(genericType);
+        //         return (Control) ServiceLocator.GetService(type)!;
+        //     }
+        // }
         var name = viewType.Name!.Replace("ViewModel", "View");
         var type = Type.GetType($"PierogiesBot.UI.Views.{name}");
 

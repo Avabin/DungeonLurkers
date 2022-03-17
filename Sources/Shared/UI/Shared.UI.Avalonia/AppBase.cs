@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.VisualTree;
 using Shared.UI.IoC;
 using Shared.UI.ViewModels.MainView;
 
@@ -11,6 +12,7 @@ public abstract class AppBase<TWindow, TSingleView, TDataContext> : Application
     where TWindow : Window, new()
     where TSingleView : UserControl, new()
 {
+    protected static IVisual XamlRoot;
     public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -19,6 +21,7 @@ public abstract class AppBase<TWindow, TSingleView, TDataContext> : Application
             {
                 DataContext = ServiceLocator.GetRequiredService<TDataContext>()
             };
+            XamlRoot = desktop.MainWindow;
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {
@@ -26,6 +29,7 @@ public abstract class AppBase<TWindow, TSingleView, TDataContext> : Application
             {
                 DataContext = ServiceLocator.GetRequiredService<TDataContext>()
             };
+            XamlRoot = singleViewPlatform.MainView;
         }
 
         base.OnFrameworkInitializationCompleted();

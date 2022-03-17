@@ -16,10 +16,9 @@ namespace Shared.UI.ViewModels.MainView;
 public class MainViewModel : DefaultHostScreenViewModel, IActivatableViewModel
 {
     private readonly  IMessageBus                                _messageBus;
-    protected virtual Type AfterLoginViewModelType => typeof(ProfileViewModel);
     [Reactive] public string                                     LoadingText                 { get; set; }
     public            IAuthenticationStore                       AuthenticationStore         { get; }
-    public    ReactiveCommand<Unit, IRoutableViewModel>  NavigateToAfterLoginCommand { get; }
+    public   virtual ReactiveCommand<Unit, IRoutableViewModel>  NavigateToAfterLoginCommand { get; }
     public            ReactiveCommand<Unit, IRoutableViewModel>  GoToLoginCommand            { get; }
     public            ReactiveCommand<Unit, IRoutableViewModel?> GoBack                      => Router.NavigateBack;
 
@@ -30,7 +29,7 @@ public class MainViewModel : DefaultHostScreenViewModel, IActivatableViewModel
         AuthenticationStore         = authenticationStore;
         NavigateToAfterLoginCommand = ReactiveCommand.CreateFromObservable(() =>
         {
-            var vm = (IRoutableViewModel) routableViewModelFactory.GetViewModel(AfterLoginViewModelType);
+            var vm = routableViewModelFactory.GetViewModel<ProfileViewModel>();
             return Router.NavigateAndReset.Execute(vm);
         });
         GoToLoginCommand            = CreateNavigateCommand<LoginViewModel>();

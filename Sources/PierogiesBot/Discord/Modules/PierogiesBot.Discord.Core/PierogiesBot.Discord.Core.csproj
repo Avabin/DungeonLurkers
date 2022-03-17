@@ -13,9 +13,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Discord.Net.Commands" Version="3.3.2" />
-      <PackageReference Include="Discord.Net.Interactions" Version="3.3.2" />
-      <PackageReference Include="Discord.Net.WebSocket" Version="3.3.2" />
+      <PackageReference Include="Discord.Net.Commands" Version="3.4.0" />
+      <PackageReference Include="Discord.Net.Interactions" Version="3.4.0" />
+      <PackageReference Include="Discord.Net.WebSocket" Version="3.4.0" />
       <PackageReference Include="TimeZoneConverter" Version="5.0.0" />
     </ItemGroup>
 

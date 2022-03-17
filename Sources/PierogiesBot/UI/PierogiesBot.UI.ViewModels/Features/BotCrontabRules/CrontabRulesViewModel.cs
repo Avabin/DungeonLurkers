@@ -91,12 +91,12 @@ public class CrontabRulesViewModel : ViewModelBase, IActivatableViewModel
         var ruleId = rule.Id;
         // Wait for user confirmation
         await ConfirmDeleteRuleInteraction.Handle(rule);
-        await _service.DeleteRuleAsync(ruleId);
-        _rules.Edit(x =>
-        {
-            var crontabRule = x.SingleOrDefault(y => y.Id == ruleId);
-            if (crontabRule is not null) x.Remove(crontabRule);
-        });
+        // await _service.DeleteRuleAsync(ruleId);
+        // _rules.Edit(x =>
+        // {
+            // var crontabRule = x.SingleOrDefault(y => y.Id == ruleId);
+            // if (crontabRule is not null) x.Remove(crontabRule);
+        // });
     }
 
     private async Task AddEmoteToRuleAsync(string emote)

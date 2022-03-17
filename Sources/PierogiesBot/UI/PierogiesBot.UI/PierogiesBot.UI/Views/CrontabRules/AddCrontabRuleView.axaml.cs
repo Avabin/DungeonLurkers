@@ -22,7 +22,7 @@ public partial class AddCrontabRuleView : ReactiveUserControl<AddCrontabRuleView
             d(ViewModel.RuleSavedInteraction.RegisterHandler(x =>
             {
                 var ruleId = x.Input.Id;
-                return this.ShowMessageBoxAndWait("Rule with ID " + ruleId + " has been saved.", "Rule saved", () => { });
+                this.ShowMessageBox("Rule with ID " + ruleId + " has been saved.", "Rule saved");
             }));
         });
     }

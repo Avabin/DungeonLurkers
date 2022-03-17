@@ -1,6 +1,7 @@
 <Application
     x:Class="PierogiesBot.UI.App"
     xmlns="https://github.com/avaloniaui"
+    xmlns:sty="using:FluentAvalonia.Styling"
     xmlns:ui="clr-namespace:PierogiesBot.UI"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Application.DataTemplates>
@@ -11,5 +12,7 @@
         <FluentTheme Mode="Dark" />
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
         <StyleInclude Source="avares://PierogiesBot.UI/Styles/Icons.axaml" />
+        <StyleInclude Source="avares://PierogiesBot.UI/Styles/Modals.axaml" />
+        <sty:FluentAvaloniaTheme />
     </Application.Styles>
 </Application>

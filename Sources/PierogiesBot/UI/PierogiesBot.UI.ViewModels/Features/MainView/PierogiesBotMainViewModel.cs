@@ -11,10 +11,10 @@ namespace PierogiesBot.UI.ViewModels.Features.MainView;
 
 public class PierogiesBotMainViewModel : MainViewModel
 {
-    protected override Type AfterLoginViewModelType => typeof(CrontabRulesViewModel);
+    public override    ReactiveCommand<Unit, IRoutableViewModel> NavigateToAfterLoginCommand { get; }
 
     public PierogiesBotMainViewModel(ILogger<PierogiesBotMainViewModel> logger, IAuthenticationStore authenticationStore, IRoutableViewModelFactory routableViewModelFactory, IMessageBus messageBus) : base(logger, authenticationStore, routableViewModelFactory, messageBus)
     {
-        
+        NavigateToAfterLoginCommand = ReactiveCommand.CreateFromObservable(Navigate<CrontabRulesViewModel>);
     }
 }

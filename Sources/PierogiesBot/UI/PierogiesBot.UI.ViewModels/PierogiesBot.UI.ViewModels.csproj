@@ -19,4 +19,12 @@
       <PackageReference Include="ReactiveUI.Fody" Version="17.1.50" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Features\Dialogs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Features\Dialogs\DialogViewModel.cs" />
+    </ItemGroup>
+
 </Project>

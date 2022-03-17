@@ -19,6 +19,7 @@ public partial class MainView : ReactiveUserControl<PierogiesBotMainViewModel>
 
         this.WhenActivated(d =>
         {
+            
         });
     }
         

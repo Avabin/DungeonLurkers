@@ -21,6 +21,11 @@ public static class Program
     public static async Task Main(string[] args)
     {
         IconProvider.Register<MaterialDesignIconProvider>();
+        PierogiesBot.UI.App.ConfigurePlatformServices = services =>
+        {
+            services.AddBlazoredLocalStorage();
+            services.AddSingleton<IAuthenticationStore, LocalStorageAuthenticationStore>();
+        };
         var host = CreateHostBuilder(args).Build();
 
         ServiceLocator.Instance = host.Services;
@@ -35,17 +40,13 @@ public static class Program
 
         builder.RootComponents.Add<App>("#app");
 
-        builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) })
-               .AddBlazoredLocalStorage()
-               .AddInfrastructure()
-               .AddSingleton<IAuthenticationStore, LocalStorageAuthenticationStore>();
-        
+        builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
         return builder;
     }
 
     private static void ConfigureContainer(ContainerBuilder builder)
     {
-        Locator.CurrentMutable.RegisterLazySingleton(() => new AutofacViewLocator(), typeof(IViewLocator));
-        builder.AddPierogiesBotUiInfrastructure();
+        
     }
 }

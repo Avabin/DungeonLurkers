@@ -2,35 +2,51 @@
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using Avalonia;
+using System.Reactive.Threading.Tasks;
+using System.Threading.Tasks;
 using Avalonia.Controls;
-using Avalonia.Layout;
 using Avalonia.LogicalTree;
+using Avalonia.Media;
+using Avalonia.VisualTree;
+using FluentAvalonia.UI.Controls;
+using Modalonia;
+using PierogiesBot.UI.Views;
+using Shared.UI.IoC;
 
 namespace PierogiesBot.UI;
 
 public static class Dialogs
 {
-    public static void ShowMessageBox(this ILogical @this, string message, string title, Action okAction)
+    public static async Task ShowMessageBox(this IVisual @this, string message, string title)
     {
-        // To be implemented
+        
+        var content = new TextBlock
+        {
+            TextWrapping = TextWrapping.Wrap,
+            Text         = message
+        };
+
+        var result = await Modal.Show(title, content, ModalButtons.Ok);
+        if (result == ModalResult.Yes)
+        {
+            // do something..
+        }
     }
-    public static void ShowDialog(this ILogical @this, string message, Action okAction, Action cancelAction)
+    public static async Task ShowDialog(this IVisual @this, string message, Action okAction, Action cancelAction)
     {
-        // To be implemented
-    }
-    
-    public static IObservable<Unit> ShowMessageBoxAndWait(this ILogical @this, string message, string title, Action onClose)
-    {
-        // To be implemented
-        return Observable.Return(Unit.Default);
-    }
-    
-    
-    public static IObservable<Unit> ShowDialogAndWait(this ILogical @this, string message, Action okAction, Action cancelAction, string okButtonContent = "Ok", string cancelButtonContent = "Cancel")
-    {
-        // To be implemented
-        return Observable.Return(Unit.Default);
+        var content = new TextBlock
+        {
+            TextWrapping = TextWrapping.Wrap,
+            Text         = message
+        };
+
+        var result = await Modal.Show("Confirm", content, ModalButtons.YesNo);
+        if (result == ModalResult.Yes)
+        {
+            okAction();
+            return;
+        }
+        cancelAction();
     }
     
 } 

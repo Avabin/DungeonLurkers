@@ -28,7 +28,7 @@
         <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.2" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.2" PrivateAssets="all" />
-        <PackageReference Include="Avalonia.Web.Blazor" Version="0.10.12" />
+        <PackageReference Include="Avalonia.Web.Blazor" Version="0.10.13" />
     </ItemGroup>
 
     <ItemGroup>
@@ -40,6 +40,11 @@
       <Content Update="wwwroot\appsettings.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- extends watching group to include *.js files -->
+        <Watch Include="**\*.axaml" Exclude="node_modules\**\*;**\*.g.axaml;obj\**\*;bin\**\*" />
     </ItemGroup>
 
 </Project>

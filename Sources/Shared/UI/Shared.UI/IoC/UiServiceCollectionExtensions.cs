@@ -14,6 +14,7 @@ using Shared.UI.Navigation.RoutableViewModel;
 using Shared.UI.Users;
 using Shared.UI.UserStore;
 using Splat;
+using Splat.Microsoft.Extensions.DependencyInjection;
 
 namespace Shared.UI.IoC;
 
@@ -21,15 +22,18 @@ public static class UiServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
+        services.UseMicrosoftDependencyResolver();
+        var resolver = Locator.CurrentMutable;
+        resolver.InitializeSplat();
+        resolver.InitializeReactiveUI();
+        
         services.AddOptions();
             
         services.AddSingleton(MessageBus.Current);
         services.AddSingleton<IFileProvider>((sp) => sp.GetRequiredService<IHostEnvironment>().ContentRootFileProvider);
 
         services.AddHostedService<AuthenticationHostedService>();
-
-        Locator.CurrentMutable.InitializeSplat();
-        Locator.CurrentMutable.InitializeReactiveUI();
+        
         return services;
     }
     

@@ -1,7 +1,5 @@
 ﻿using PierogiesBot.Shared.Enums;
 using PierogiesBot.Shared.Features.BotCrontabRules;
-using PierogiesBot.UI.ViewModels;
-using PierogiesBot.UI.ViewModels.Features;
 using PierogiesBot.UI.ViewModels.Features.BotCrontabRules;
 using PierogiesBot.UI.ViewModels.Features.MainView;
 using PierogiesBot.UI.ViewModels.Features.NavigationView;

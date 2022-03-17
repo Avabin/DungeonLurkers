@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Reactive;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using PierogiesBot.UI.ViewModels.Features.BotCrontabRules;
@@ -23,10 +25,11 @@ public partial class CrontabRulesView : ReactiveUserControl<CrontabRulesViewMode
     }
 
     private IObservable<Unit> HandleConfirm(InteractionContext<CrontabRule, bool> ctx) =>
-        this.ShowDialogAndWait("Are you sure you want to delete this rule? ID: " + ctx.Input.Id, 
+        this.ShowDialog("Are you sure you want to delete this rule? ID: " + ctx.Input.Id, 
                                () => ctx.SetOutput(true),
-                               () => ctx.SetOutput(false),
-                               "Yes", "No");
+                               () => ctx.SetOutput(false))
+            .ToObservable()
+            .Select(_ => Unit.Default);
 
     private void InitializeComponent()
     {
