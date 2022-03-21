@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using PierogiesBot.Discord.Commands.Features;
 using PierogiesBot.Discord.Core.Features.MessageSubscriptions;
 using PierogiesBot.Discord.Core.Features.TimeZoneTypeConverter;
+using PierogiesBot.Discord.Interactions.Features.Emoji;
 using PierogiesBot.Discord.Interactions.Features.WhoIs;
 using IResult = Discord.Commands.IResult;
 using RunMode = Discord.Interactions.RunMode;
@@ -50,16 +51,20 @@ public class DiscordService : IDiscordService
         _subscriptions          = subscriptions;
 
         _client         = client;
+        _discordLogger.LogInformation("Creating command service");
         _commandService = new CommandService(new CommandServiceConfig
         {
             DefaultRunMode = global::Discord.Commands.RunMode.Async
         });
         
+        _discordLogger.LogInformation("Creating interaction service");
         _interactionService = new InteractionService(_client, new InteractionServiceConfig
         {
             UseCompiledLambda = true,
             DefaultRunMode    = RunMode.Async,
         });
+        
+        _discordLogger.LogInformation("Creating message observable");
 
         MessageObservable = Observable.FromEvent<Func<SocketMessage, Task>, SocketMessage>(
          h => _client.MessageReceived += h,
@@ -94,8 +99,11 @@ public class DiscordService : IDiscordService
             return Task.CompletedTask;
         };
 
+        _discordLogger.LogInformation("Logging into Discord");
         await _client.LoginAsync(TokenType.Bot, _settings.Value.Token).ConfigureAwait(false);
+        _discordLogger.LogInformation("Logged into Discord");
         await _client.StartAsync().ConfigureAwait(false);
+        _discordLogger.LogInformation("Started Discord client");
         _client.Ready += () =>
         {
             eventAwaiter.SetResult(true);
@@ -164,6 +172,7 @@ public class DiscordService : IDiscordService
         _client.MessageReceived         += HandleCommandAsync;
         _commandService.CommandExecuted += CommandServiceOnCommandExecuted;
 
+        _commandLogger.LogInformation("Installing type readers");
         _commandService.AddTypeReader(typeof(TimeZoneInfo), new TimeZoneInfoTypeReader());
 
         // Here we discover all of the command modules in the entry 
@@ -174,6 +183,7 @@ public class DiscordService : IDiscordService
         //
         // If you do not use Dependency Injection, pass null.
         // See Dependency Injection guide for more information.
+        _commandLogger.LogInformation("Installing commands...");
         await _commandService.AddModulesAsync(
                                               assembly: Assembly.GetAssembly(typeof(CoreDiscordModule)),
                                               services: _services);

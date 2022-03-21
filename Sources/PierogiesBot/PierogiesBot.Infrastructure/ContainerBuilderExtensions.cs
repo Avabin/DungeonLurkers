@@ -18,8 +18,7 @@ public static class ContainerBuilderExtensions
 {
     public static ContainerBuilder AddInfrastructure(this ContainerBuilder builder, IConfiguration configuration)
     {
-        if(configuration["IsDiscordEnabled"] == bool.TrueString)
-            builder.AddDiscordServices<DiscordService>();
+        builder.AddDiscordServices<DiscordService>();
         builder.AddPersistenceCore();
         builder.AddPersistenceMongo();
         if (configuration["Rabbit:IsEnabled"] == bool.TrueString)

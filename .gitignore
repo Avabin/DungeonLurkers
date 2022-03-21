@@ -6,3 +6,6 @@ riderModule.iml
 TestResults/
 Tests.xml
 .ionide/.vs/
+
+template
+build
