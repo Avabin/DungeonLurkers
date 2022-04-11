@@ -269,7 +269,7 @@ public class BotMessageSubscriptionControllerIntegrationTests : AuthenticatedTes
     }
     
     [Test]
-    public async Task UpdateCharacter_NotFound()
+    public async Task UpdateBotMessageSubscription_NotFound()
     {
         // Arrange
         var id = ObjectId.GenerateNewId().ToString();
@@ -319,5 +319,19 @@ public class BotMessageSubscriptionControllerIntegrationTests : AuthenticatedTes
         // Assert
 
         await act.Should().ThrowAsync<ApiException>().Where(x => x.StatusCode == HttpStatusCode.BadRequest);
+    }
+    
+    [Test]
+    public async Task DeleteBotMessageSubscription_NotFound()
+    {
+        // Arrange
+        var id = ObjectId.GenerateNewId().ToString();
+
+        // Act
+        var act = async () => await _subscriptionApi.DeleteBotMessageSubscriptionAsync(id);
+
+        // Assert
+
+        await act.Should().ThrowAsync<ApiException>().Where(x => x.StatusCode == HttpStatusCode.NotFound);
     }
 }

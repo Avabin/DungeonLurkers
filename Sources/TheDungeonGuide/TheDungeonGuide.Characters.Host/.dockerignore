@@ -23,3 +23,6 @@
 **/values.dev.yaml
 LICENSE
 README.md
+Sources/Identity/
+Sources/PiergogiesBot/
+Sources/TheDungeonGuide/TheDungeonGuide.Sessions.Host/

@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <Configurations>Debug;Release;Debug TheDungeonGuide;Release TheDungeonGuide</Configurations>
+        <Platforms>AnyCPU</Platforms>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Autofac" Version="6.3.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Shared\Persistence\Shared.Persistence.Core\Shared.Persistence.Core.csproj" />
+      <ProjectReference Include="..\..\..\Shared\Persistence\Shared.Persistence.Mongo\Shared.Persistence.Mongo.csproj" />
+      <ProjectReference Include="..\..\Persistence\Modules\TheDungeonGuide.Persistence.Characters\TheDungeonGuide.Persistence.Characters.csproj" />
+    </ItemGroup>
+
+</Project>

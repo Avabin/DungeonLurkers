@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Security.Claims;
+using System.Text.Json.Serialization;
 using Autofac;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -12,6 +13,7 @@ using PierogiesBot.Persistence.BotCrontabRule.Features;
 using PierogiesBot.Persistence.BotMessageSubscription.Features;
 using PierogiesBot.Persistence.BotReactRules.Features;
 using PierogiesBot.Persistence.BotResponseRules.Features;
+using PierogiesBot.Persistence.Guild;
 using PierogiesBot.Persistence.GuildSettings.Features;
 using Shared.Infrastructure;
 using Shared.MessageBroker.RabbitMQ;
@@ -24,23 +26,25 @@ namespace PierogiesBot.Host;
 [SuppressMessage("Design", "CC0091", MessageId = "Use static method")]
 public class Startup : StartupBase
 {
-    private readonly string _validIssuer;
+    private readonly string _clientSecret;
 
     public Startup(IConfiguration configuration, IHostEnvironment environment) : base(configuration, environment)
     {
+        _clientSecret = Configuration["JWT:Secret"] ?? "secret";
     }
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
         var identityUrl = IdentityHttpClient is not null
-                              ? IdentityHttpClient.BaseAddress!.ToString()
-                              : Configuration.GetValue<string>("IdentityUrl");
-        services.AddControllers();
+            ? IdentityHttpClient.BaseAddress!.ToString()
+            : Configuration.GetValue<string>("IdentityUrl");
+        services.AddControllers()
+            .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
         services.AddOptions()
-                .Configure<MongoSettings>(Configuration.GetSection("MongoSettings"))
-                .ConfigureRabbit(Configuration.GetSection("Rabbit"));
-        
+            .Configure<MongoSettings>(Configuration.GetSection("MongoSettings"))
+            .ConfigureRabbit(Configuration.GetSection("Rabbit"));
+
         services.AddDiscord(Configuration.GetSection(DiscordSettings.SectionName));
 
         services.AddAutoMapper(expression =>
@@ -50,18 +54,19 @@ public class Startup : StartupBase
             expression.AddProfile<PersistenceBotMessageSubscriptionsMapperProfile>();
             expression.AddProfile<PersistenceBotResponseRulesMapperProfile>();
             expression.AddProfile<PersistenceGuildSettingsMapperProfile>();
+            expression.AddProfile<PersistenceGuildsMapperProfile>();
         });
 
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme    = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
         {
             options.Authority = identityUrl;
             if (Environment.IsDevelopment())
                 options.RequireHttpsMetadata = false;
-            options.Audience  = "pierogiesbot";
+            options.Audience = "pierogiesbot";
             options.SaveToken = true;
 
             options.TokenValidationParameters =
@@ -76,7 +81,7 @@ public class Startup : StartupBase
         {
             c.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title   = "PierogiesBot",
+                Title = "PierogiesBot",
                 Version = "v1",
             });
 
@@ -92,7 +97,7 @@ public class Startup : StartupBase
                     Password = new OpenApiOAuthFlow
                     {
                         AuthorizationUrl = new Uri($"{identityUrl}connect/authorize"),
-                        TokenUrl         = new Uri($"{identityUrl}connect/token"),
+                        TokenUrl = new Uri($"{identityUrl}connect/token"),
                         Scopes =
                         {
                             {
@@ -114,9 +119,18 @@ public class Startup : StartupBase
         {
             options.AddPolicy("AnyOrigin", o =>
             {
-                o.WithOrigins("https://identity.pierogiesbot.tk", "https://api.pierogiesbot.tk", "https://localhost:5001", "https://localhost:5003", "https://localhost:5005", "https://localhost:5007")
-                 .AllowAnyHeader()
-                 .AllowAnyMethod();
+                o.WithOrigins("https://avabin.github.io",
+                        "https://identity.pierogiesbot.tk",
+                        "https://avabin.tk",
+                        "https://api.pierogiesbot.tk",
+                        "https://localhost:5001",
+                        "https://localhost",
+                        "https://app.localhost",
+                        "https://localhost:5003",
+                        "https://localhost:5005",
+                        "https://localhost:5007")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
             });
         });
     }
@@ -130,15 +144,17 @@ public class Startup : StartupBase
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+        var pathBase = Configuration["PathBase"];
+        if (!string.IsNullOrWhiteSpace(pathBase)) app.UsePathBase(pathBase);
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "PierogiesBot v1");
-                c.OAuthClientId("pierogiesbot");
-                c.OAuthClientSecret("secret");
+                c.SwaggerEndpoint($"{pathBase ?? ""}/swagger/v1/swagger.json", "PierogiesBot v1");
+                c.OAuthClientId("default");
+                c.OAuthClientSecret(_clientSecret);
             });
         }
 

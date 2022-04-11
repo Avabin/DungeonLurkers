@@ -11,6 +11,7 @@
       <ProjectReference Include="..\..\Shared\MessageBroker\Shared.MessageBroker.RabbitMQ\Shared.MessageBroker.RabbitMQ.csproj" />
       <ProjectReference Include="..\..\Shared\Persistence\Shared.Persistence.Mongo\Shared.Persistence.Mongo.csproj" />
       <ProjectReference Include="..\Discord\Modules\PierogiesBot.Discord.Infrastructure\PierogiesBot.Discord.Infrastructure.csproj" />
+      <ProjectReference Include="..\Persistence\PierogiesBot.Persistence.Guild\PierogiesBot.Persistence.Guild.csproj" />
     </ItemGroup>
 
     <ItemGroup>

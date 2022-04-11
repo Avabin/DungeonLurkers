@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Text.Json.Serialization;
 using AspNetCore.Identity.Mongo;
 using Autofac;
 using Identity.Infrastructure.Features.DevUser;
@@ -23,25 +24,29 @@ namespace Identity.Host;
 public class Startup
 {
     private readonly string _validIssuer;
+    private readonly string _clientSecret;
 
     public Startup(IConfiguration configuration, IHostEnvironment environment)
     {
         Configuration = configuration;
-        Environment   = environment;
-        _validIssuer  = Configuration["JWT:ValidIssuer"] ?? "https://localhost";
+        Environment = environment;
+        _validIssuer = Configuration["JWT:ValidIssuer"] ?? "https://localhost";
+        _clientSecret = Configuration["JWT:Secret"] ?? "secret";
     }
 
-    public IConfiguration   Configuration { get; }
-    public IHostEnvironment Environment   { get; }
+    public IConfiguration Configuration { get; }
+    public IHostEnvironment Environment { get; }
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
         if (Environment.IsDevelopment()) services.AddHostedService<InsertDevUserBackgroundService>();
-        services.AddControllers();
+
+        services.AddControllers()
+            .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
         services.AddOptions()
-                .Configure<MongoSettings>(Configuration.GetSection("MongoSettings"))
-                .ConfigureRabbit(Configuration.GetSection("Rabbit"));
+            .Configure<MongoSettings>(Configuration.GetSection("MongoSettings"))
+            .ConfigureRabbit(Configuration.GetSection("Rabbit"));
         services.AddAutoMapper(
             expression =>
             {
@@ -50,38 +55,54 @@ public class Startup
             });
 
         services
-           .AddIdentityMongoDbProvider<UserDocument, RoleDocument, string>(
-                options =>
-                {
-                    options.Password.RequiredLength = 8;
-                },
+            .AddIdentityMongoDbProvider<UserDocument, RoleDocument, string>(
+                options => { options.Password.RequiredLength = 8; },
                 options =>
                 {
                     options.ConnectionString =
                         Configuration
-                           .GetConnectionString("MongoDb");
+                            .GetConnectionString("MongoDb");
                 })
-           .AddDefaultTokenProviders()
-           .AddMongoDbStores<UserDocument, RoleDocument, string>(
+            .AddDefaultTokenProviders()
+            .AddMongoDbStores<UserDocument, RoleDocument, string>(
                 options =>
                 {
                     options.ConnectionString =
                         Configuration
-                           .GetConnectionString("MongoDb");
+                            .GetConnectionString("MongoDb");
                 });
 
         services
-           .AddIdentityServer()
-           .AddAspNetIdentity<UserDocument>()
-           .AddDeveloperSigningCredential()
-           .AddInMemoryIdentityResources(new List<IdentityResource>
+            .AddIdentityServer()
+            .AddAspNetIdentity<UserDocument>()
+            .AddDeveloperSigningCredential()
+            .AddInMemoryIdentityResources(new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
                 new IdentityResources.Email(),
             })
-           .AddInMemoryApiResources(new List<ApiResource>
+            .AddInMemoryApiResources(new List<ApiResource>
             {
+                new()
+                {
+                    Name = "tdg", Scopes = new List<string>
+                    {
+                        IdentityServerConstants.LocalApi.ScopeName,
+                        "users.*", "users.read", "users.write",
+                        "sessions.read", "sessions.write", "sessions.*",
+                        "characters.read", "characters.write", "characters.*"
+                    },
+                },
+                new()
+                {
+                    Name = "pierogiesbot", Scopes = new List<string>
+                    {
+                        IdentityServerConstants.LocalApi.ScopeName,
+                        "users.*", "users.read", "users.write",
+                        "pierogiesbot.read", "pierogiesbot.write", "pierogiesbot.*"
+                    },
+                },
                 new()
                 {
                     Name = IdentityServerConstants.LocalApi.ScopeName, Scopes = new List<string>
@@ -95,14 +116,9 @@ public class Startup
                 {
                     Name = "characters",
                     Scopes = new List<string> { "characters.read", "characters.write", "characters.*" },
-                },
-                new()
-                {
-                    Name = "pierogiesbot",
-                    Scopes = new List<string> { "pierogiesbot.read", "pierogiesbot.write", "pierogiesbot.*" },
-                },
+                }
             })
-           .AddInMemoryApiScopes(new List<ApiScope>
+            .AddInMemoryApiScopes(new List<ApiScope>
             {
                 new(IdentityServerConstants.LocalApi.ScopeName,
                     new List<string> { "user", "player", "gm", "admin" }),
@@ -125,22 +141,29 @@ public class Startup
                 new() { Name = "pierogiesbot.write", UserClaims = new List<string> { "admin" } },
                 new() { Name = "pierogiesbot.*", UserClaims = new List<string> { "admin" } },
             })
-           .AddInMemoryClients(new List<Client>
+            .AddInMemoryClients(new List<Client>
             {
                 new()
                 {
-                    ClientId          = "default",
-                    ClientName        = "Default",
+                    ClientId = "default",
+                    ClientName = "Default",
                     AllowedGrantTypes = { GrantType.ResourceOwnerPassword },
-                    ClientSecrets     = { new Secret("secret".Sha256()) },
-                    AllowedScopes     = { IdentityServerConstants.LocalApi.ScopeName },
+                    ClientSecrets = { new Secret(_clientSecret.Sha256()) },
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.LocalApi.ScopeName,
+                        "users.*", "users.read", "users.write",
+                        "sessions.read", "sessions.write", "sessions.*",
+                        "characters.read", "characters.write", "characters.*",
+                        "pierogiesbot.read", "pierogiesbot.write", "pierogiesbot.*"
+                    },
                 },
                 new()
                 {
-                    ClientId   = "sessions",
+                    ClientId = "sessions",
                     ClientName = "Sessions client",
                     AllowedGrantTypes = { GrantType.ResourceOwnerPassword },
-                    ClientSecrets = { new Secret("secret".Sha256()) },
+                    ClientSecrets = { new Secret(_clientSecret.Sha256()) },
                     AllowedScopes =
                     {
                         "sessions.read", "sessions.write", "sessions.*", "user.read",
@@ -149,10 +172,10 @@ public class Startup
                 },
                 new()
                 {
-                    ClientId   = "characters",
+                    ClientId = "characters",
                     ClientName = "Characters client",
                     AllowedGrantTypes = { GrantType.ResourceOwnerPassword },
-                    ClientSecrets = { new Secret("secret".Sha256()) },
+                    ClientSecrets = { new Secret(_clientSecret.Sha256()) },
                     AllowedScopes =
                     {
                         "characters.read", "characters.write", "characters.*", "user.read",
@@ -161,10 +184,10 @@ public class Startup
                 },
                 new()
                 {
-                    ClientId   = "pierogiesbot",
+                    ClientId = "pierogiesbot",
                     ClientName = "PierogiesBot client",
                     AllowedGrantTypes = { GrantType.ResourceOwnerPassword },
-                    ClientSecrets = { new Secret("secret".Sha256()) },
+                    ClientSecrets = { new Secret(_clientSecret.Sha256()) },
                     AllowedScopes =
                     {
                         "pierogiesbot.read", "pierogiesbot.write", "pierogiesbot.*", "user.read",
@@ -172,8 +195,9 @@ public class Startup
                     },
                 },
             })
-           .AddPersistedGrantStore<MongoPersistedGrantStore>()
-           .AddProfileService<JwtProfileService>();
+            .AddPersistedGrantStore<MongoPersistedGrantStore>()
+            .AddProfileService<JwtProfileService>()
+            .AddDefaultEndpoints();
 
         services.AddLocalApiAuthentication();
         services.AddSwaggerGen(
@@ -181,7 +205,7 @@ public class Startup
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title   = "Identity",
+                    Title = "Identity",
                     Version = "v1",
                 });
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -197,7 +221,7 @@ public class Startup
                         Password = new OpenApiOAuthFlow
                         {
                             AuthorizationUrl = new Uri($"{_validIssuer}/connect/authorize"),
-                            TokenUrl         = new Uri($"{_validIssuer}/connect/token"),
+                            TokenUrl = new Uri($"{_validIssuer}/connect/token"),
                             Scopes =
                             {
                                 {
@@ -208,7 +232,7 @@ public class Startup
                     },
                 });
                 c.OperationFilter<AuthorizeCheckOperationFilter>(IdentityServerConstants.LocalApi
-                                                                    .ScopeName);
+                    .ScopeName);
             });
 
         services.AddCors(
@@ -218,20 +242,23 @@ public class Startup
                     "AnyOrigin",
                     o =>
                     {
-                        o.WithOrigins("https://identity.pierogiesbot.tk",
-                                      "https://identity.avabin.tk",
-                                      "https://portainer.avabin.tk",
-                                      "https://edge.avabin.tk",
-                                      "https://api.pierogiesbot.tk",
-                                      "https://pierogiesbot.avabin.tk",
-                                      "https://sessions.tdg.avabin.tk",
-                                      "https://characters.tdg.avabin.tk",
-                                      "https://localhost:5001", 
-                                      "https://localhost:5003", 
-                                      "https://localhost:5005",
-                                      "https://localhost:5007")
-                         .AllowAnyHeader()
-                         .AllowAnyMethod();
+                        o.WithOrigins("https://avabin.github.io",
+                                "https://identity.pierogiesbot.tk",
+                                "https://identity.avabin.tk",
+                                "https://portainer.avabin.tk",
+                                "https://edge.avabin.tk",
+                                "https://api.pierogiesbot.tk",
+                                "https://pierogiesbot.avabin.tk",
+                                "https://sessions.tdg.avabin.tk",
+                                "https://characters.tdg.avabin.tk",
+                                "https://localhost",
+                                "https://app.localhost",
+                                "https://localhost:5001",
+                                "https://localhost:5003",
+                                "https://localhost:5005",
+                                "https://localhost:5007")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
                     });
             });
     }
@@ -240,13 +267,16 @@ public class Startup
     {
         builder.AddPersistenceCore();
         builder.AddPersistenceMongo();
-        if(Configuration["Rabbit:IsEnabled"] == bool.TrueString)
+        if (Configuration["Rabbit:IsEnabled"] == bool.TrueString)
         {
             builder.AddRabbitMqMessageBroker();
-        } else
-        {
-            builder.AddInternalMessageBroker();
         }
+        else
+        {
+            builder.RegisterType<DocumentMessageBroker>().AsImplementedInterfaces().As<IMessageBroker>()
+                .SingleInstance();
+        }
+
         builder.AddIdentityMongoServices();
     }
 
@@ -254,6 +284,8 @@ public class Startup
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+        var pathBase = Configuration["PathBase"];
+        if (!string.IsNullOrWhiteSpace(pathBase)) app.UsePathBase(pathBase);
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
@@ -261,9 +293,10 @@ public class Startup
             app.UseSwaggerUI(
                 c =>
                 {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Identity v1");
+                    if (!string.IsNullOrWhiteSpace(pathBase)) c.RoutePrefix = pathBase;
+                    c.SwaggerEndpoint($"{pathBase ?? ""}/swagger/v1/swagger.json", "Identity v1");
                     c.OAuthClientId("default");
-                    c.OAuthClientSecret("secret");
+                    c.OAuthClientSecret(_clientSecret);
                 });
         }
 

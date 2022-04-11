@@ -98,9 +98,108 @@ public class BotCrontabRuleController : ControllerBase
     }
     
     /// <summary>
-    ///     Deletes existing BotCrontabRule
+    ///     Add response to scheduled message rule
     /// </summary>
-    /// <param name="id">Id of the BotCrontabRule</param>
+    /// <param name="id">ID of bot scheduled message rule</param>
+    /// <param name="response">Response value to add</param>
+    /// <returns>No content</returns>
+    /// <response code="204">Returns no content</response>
+    /// <response code="404">If the bot scheduled message rule is not found</response>
+    [HttpPost("{id}/responses")]
+    public async Task<IActionResult> AddResponseToRule(string id, string response)
+    {
+        if (!ObjectId.TryParse(id, out _))
+            return BadRequest();
+
+        try
+        {
+            await _botCrontabRuleFacade.AddResponseToRuleAsync(id, response);
+            return NoContent();
+        }
+        catch (DocumentNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+    }
+
+    /// <summary>
+    ///     Delete response from scheduled message rule
+    /// </summary>
+    /// <param name="id">ID of bot scheduled message rule</param>
+    /// <param name="response">Response value to delete</param>
+    /// <returns>No content</returns>
+    /// <response code="204">Returns no content</response>
+    /// <response code="404">If the bot scheduled message rule is not found</response>
+    [HttpDelete("{id}/responses")]
+    public async Task<IActionResult> RemoveResponseFromRule(string id, string response)
+    {
+        if (!ObjectId.TryParse(id, out _))
+            return BadRequest();
+
+        try
+        {
+            await _botCrontabRuleFacade.RemoveResponseFromRuleAsync(id, response);
+            return NoContent();
+        }
+        catch (DocumentNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+    }
+    /// <summary>
+    ///     Add emote to scheduled message rule
+    /// </summary>
+    /// <param name="id">ID of bot scheduled message rule</param>
+    /// <param name="emote">Emote value to add</param>
+    /// <returns>No content</returns>
+    /// <response code="204">Returns no content</response>
+    /// <response code="404">If the bot scheduled message rule is not found</response>
+    [HttpPost("{id}/emotes")]
+    public async Task<IActionResult> AddEmoteToRule(string id, string emote)
+    {
+        if (!ObjectId.TryParse(id, out _))
+            return BadRequest();
+
+        try
+        {
+            await _botCrontabRuleFacade.AddEmojiToRuleAsync(id, emote);
+            return NoContent();
+        }
+        catch (DocumentNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+    }
+
+    /// <summary>
+    ///     Delete emote from scheduled message rule
+    /// </summary>
+    /// <param name="id">ID of bot scheduled message rule</param>
+    /// <param name="emote">Emote value to delete</param>
+    /// <returns>No content</returns>
+    /// <response code="204">Returns no content</response>
+    /// <response code="404">If the bot scheduled message rule is not found</response>
+    [HttpDelete("{id}/emotes")]
+    public async Task<IActionResult> RemoveEmoteFromRule(string id, string emote)
+    {
+        if (!ObjectId.TryParse(id, out _))
+            return BadRequest();
+
+        try
+        {
+            await _botCrontabRuleFacade.RemoveEmojiFromRuleAsync(id, emote);
+            return NoContent();
+        }
+        catch (DocumentNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+    }
+    
+    /// <summary>
+    ///     Deletes existing scheduled message rule
+    /// </summary>
+    /// <param name="id">Id of the scheduled message rule</param>
     /// <returns>No content</returns>
     /// <response code="204">Delete successful</response>
     /// <response code="400">If ID is invalid</response>

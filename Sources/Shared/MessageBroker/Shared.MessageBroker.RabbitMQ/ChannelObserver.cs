@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Bson;
 using RabbitMQ.Client;
 
 namespace Shared.MessageBroker.RabbitMQ;
@@ -34,10 +35,11 @@ public class ChannelObserver<T> : IObserver<T>
 
     public virtual void OnNext(T value)
     {
-        Console.WriteLine($"Sending message to queue {QueueName}");
-        var serialized = JsonConvert.SerializeObject(value, _settings);
-        if (serialized is not null) 
-            Model.BasicPublish("", QueueName, Model.CreateBasicProperties(),
-                           Encoding.UTF8.GetBytes(serialized));
+        using var ms = new MemoryStream();
+        using var bsonWriter = new BsonDataWriter(ms);
+        var serializer = JsonSerializer.CreateDefault(_settings);
+        serializer.Serialize(bsonWriter, value);
+        var body = ms.ToArray();
+        Model.BasicPublish("", QueueName, Model.CreateBasicProperties(), body);
     }
 }

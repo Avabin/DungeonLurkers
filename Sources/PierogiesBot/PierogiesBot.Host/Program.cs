@@ -13,11 +13,10 @@ static IHostBuilder CreateDefaultHostBuilder(string[] args) =>
         .UseSerilog((context, c) =>
          {
              var serverUrl = context.Configuration["Seq:Url"];
-             var apiKey    = context.Configuration["Seq:ApiKey"];
              c.MinimumLevel.Verbose();
-             if (!string.IsNullOrEmpty(serverUrl) && !string.IsNullOrEmpty(apiKey))
+             if (!string.IsNullOrEmpty(serverUrl))
              {
-                 c.WriteTo.Seq(serverUrl, apiKey: apiKey).Enrich.FromLogContext().Enrich.WithProperty("Service", "PierogiesBot");
+                 c.WriteTo.Seq(serverUrl).Enrich.FromLogContext().Enrich.WithProperty("Service", "PierogiesBot").Enrich.WithProperty("Hostname", Environment.GetEnvironmentVariable("HOSTNAME"));
              }
              c.WriteTo.Console(outputTemplate: outputTemplate).Enrich.FromLogContext()
               .WriteTo.File("logs/pierogiesbot.log", outputTemplate: outputTemplate).Enrich.FromLogContext();

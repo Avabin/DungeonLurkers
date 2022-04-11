@@ -1,0 +1,98 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+        <AvaloniaVersion>0.10.12</AvaloniaVersion>
+    </PropertyGroup>
+    <ItemGroup>
+        <AvaloniaResource Include="Assets\**" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="0.10.13" />
+        <PackageReference Include="Avalonia.Controls.DataGrid" Version="0.10.13" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.13" />
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.13" />
+        <PackageReference Include="FluentAvaloniaUI" Version="1.3.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+        <PackageReference Include="Modalonia" Version="1.1.2" />
+        <PackageReference Include="Projektanker.Icons.Avalonia.MaterialDesign" Version="3.7.1" />
+        <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" Version="14.1.45" />
+        <PackageReference Include="Splat.Microsoft.Extensions.Logging" Version="14.1.45" />
+        <PackageReference Include="XamlNameReferenceGenerator" Version="1.3.4" />
+    </ItemGroup>
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Views\MainView.axaml" />
+      <UpToDateCheckInput Remove="Views\MainWindow.axaml" />
+      <UpToDateCheckInput Remove="Views\NavigationView\NavigationView.axaml" />
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Update="Views\LoginView.axaml.cs">
+        <DependentUpon>LoginView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainView.axaml.cs">
+        <DependentUpon>MainView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow.axaml.cs">
+        <DependentUpon>MainWindow.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ProfileView.axaml.cs">
+        <DependentUpon>ProfileView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\LoginView.axaml.cs">
+        <DependentUpon>LoginView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainView.axaml.cs">
+        <DependentUpon>MainView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow.axaml.cs">
+        <DependentUpon>MainWindow.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ProfileView.axaml.cs">
+        <DependentUpon>ProfileView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="App.axaml.cs">
+        <DependentUpon>App.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\CrontabRules\CrontabRulesView.axaml.cs">
+        <DependentUpon>CrontabRulesView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\EditableStringListView\EditableStringListView.axaml.cs">
+        <DependentUpon>EditableStringListView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Remove="Views\OneParamNav.axaml.cs" />
+      <Compile Remove="Views\NavigationTestView.axaml.cs" />
+      <Compile Remove="Views\DialogOverlay.axaml.cs" />
+    </ItemGroup>
+    <ItemGroup>
+      <AdditionalFiles Include="Views\LoginView.axaml" />
+      <AdditionalFiles Include="Views\MainView.axaml" />
+      <AdditionalFiles Include="Views\MainWindow.axaml" />
+      <AdditionalFiles Include="Views\ProfileView.axaml" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\..\Shared\PierogiesBot\PierogiesBot.Shared\PierogiesBot.Shared.csproj" />
+      <ProjectReference Include="..\..\..\..\Shared\UI\Shared.UI.Avalonia\Shared.UI.Avalonia.csproj" />
+      <ProjectReference Include="..\..\..\..\Shared\UI\Shared.UI.ViewModels\Shared.UI.ViewModels.csproj" />
+      <ProjectReference Include="..\..\..\..\Shared\UI\Shared.UI\Shared.UI.csproj" />
+      <ProjectReference Include="..\..\PierogiesBot.UI.ViewModels\PierogiesBot.UI.ViewModels.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Views\Home" />
+    </ItemGroup>
+    <ItemGroup>
+      <AvaloniaXaml Remove="Views\DialogOverlay.axaml" />
+    </ItemGroup>
+</Project>

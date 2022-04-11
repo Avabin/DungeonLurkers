@@ -5,24 +5,30 @@ namespace TheDungeonGuide.Shared.Features.Sessions;
 
 public interface ISessionsApi : IAuthenticatedApi
 {
-    [Get("/session")]
+    [Get("/sessions")]
     Task<IEnumerable<SessionDto>> GetSessionsAsync([Query] int? skip = null, [Query] int? limit = null);
-    [Get("/session/{id}")] Task<SessionDto> GetSessionByIdAsync([Path] string id);
-    [Get("session/gm/{gameMasterId}")]
+    [Get("/sessions/{id}")] Task<SessionDto> GetSessionByIdAsync([Path] string id);
+    [Get("/sessions/gm/{gameMasterId}")]
     Task<IEnumerable<SessionDto>> GetSessionsByGameMasterIdAsync(
         [Path] string gameMasterId,
-        [Query] int skip = 0,
-        [Query] int limit = 10);
-    [Get("session/characters/{characterId}")]
+        [Query] int? skip = 0,
+        [Query] int? limit = 10);
+    [Get("/sessions/characters/{characterId}")]
     Task<IEnumerable<SessionDto>> GetSessionsByCharacterIdAsync(
         [Path] string characterId,
-        [Query] int skip = 0,
-        [Query] int limit = 10);
-    [Delete("session/{id}/players/{playerId}")]
+        [Query] int? skip = 0,
+        [Query] int? limit = 10);
+    [Get("/sessions/members/{userId}")]
+    Task<IEnumerable<SessionDto>> GetSessionsByUserIdAsync(
+        [Path]  string userId
+        // [Query] int?    skip  = 0,
+        // [Query] int?    limit = 10
+        );
+    [Delete("/sessions/{id}/players/{playerId}")]
     Task RemovePlayerFromSessionAsync([Path] string id, [Path] string playerId);
-    [Delete("session/{id}/characters/{characterId}")]
+    [Delete("/sessions/{id}/characters/{characterId}")]
     Task RemoveCharacterFromSessionAsync([Path] string id, [Path] string characterId);
-    [Post("/session")] Task<SessionDto> CreateSessionAsync([Body] CreateSessionDto session);
-    [Put("/session/{id}")] Task<SessionDto> UpdateSessionAsync([Path] string id, [Body] UpdateSessionDto session);
-    [Delete("/session/{id}")] Task DeleteSessionAsync([Path] string id);
+    [Post("/sessions")] Task<SessionDto> CreateSessionAsync([Body] CreateSessionDto session);
+    [Put("/sessions/{id}")] Task<SessionDto> UpdateSessionAsync([Path] string id, [Body] UpdateSessionDto session);
+    [Delete("/sessions/{id}")] Task DeleteSessionAsync([Path] string id);
 }

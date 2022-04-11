@@ -5,19 +5,19 @@ namespace TheDungeonGuide.Shared.Features.Characters;
 
 public interface ICharactersApi : IAuthenticatedApi
 {
-    [Get("character")]
-    Task<IEnumerable<CharacterDto>> GetAllAsync([Query] int? skip = null, [Query] int? limit = null);
+    [Get("characters")]
+    Task<IEnumerable<CharacterDto>> GetAllCharactersAsync([Query] int? skip = null, [Query] int? limit = null);
 
-    [Get("character/{id}")] Task<CharacterDto> FindByIdAsync([Path] string id);
+    [Get("characters/{id}")] Task<CharacterDto> FindCharacterByIdAsync([Path] string id);
 
-    [Get("character/name/{name}")] Task<CharacterDto> FindCharacterByNameAsync([Path] string name);
+    [Get("characters/name/{name}")] Task<CharacterDto> FindCharacterByNameAsync([Path] string name);
 
-    [Get("character/owner/{ownerId}")] Task<IEnumerable<CharacterDto>> FindByOwnerIdAsync([Path] string ownerId, [Query] int? skip = null, [Query] int? limit = null);
+    [Get("characters/owner/{ownerId}")] Task<IEnumerable<CharacterDto>> FindCharactersByOwnerIdAsync([Path] string ownerId, [Query] int? skip = null, [Query] int? limit = null);
 
-    [Post("character")] Task<CharacterDto> CreateCharacterAsync([Body] CreateCharacterDto character);
+    [Post("characters")] Task<CharacterDto> CreateCharacterAsync([Body] CreateCharacterDto character);
 
-    [Put("character/{id}")]
+    [Put("characters/{id}")]
     Task UpdateCharacterAsync([Path] string id, [Body] UpdateCharacterDto character);
 
-    [Delete("character/{id}")] Task DeleteCharacterAsync([Path] string id);
+    [Delete("characters/{id}")] Task DeleteCharacterAsync([Path] string id);
 }

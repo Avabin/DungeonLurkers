@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>default</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Shared\PierogiesBot\PierogiesBot.Shared\PierogiesBot.Shared.csproj" />
+      <ProjectReference Include="..\..\..\Shared\UI\Shared.UI.ViewModels\Shared.UI.ViewModels.csproj" />
+      <ProjectReference Include="..\..\..\Shared\UI\Shared.UI\Shared.UI.csproj" />
+      <ProjectReference Include="..\PierogiesBot.UI.Shared\PierogiesBot.UI.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Dock.Model" Version="0.10.12" />
+      <PackageReference Include="ReactiveUI.Fody" Version="17.1.50" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Features\Dialogs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Features\Dialogs\DialogViewModel.cs" />
+    </ItemGroup>
+
+</Project>

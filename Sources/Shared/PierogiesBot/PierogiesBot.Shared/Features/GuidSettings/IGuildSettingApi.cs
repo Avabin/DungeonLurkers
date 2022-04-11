@@ -5,15 +5,15 @@ namespace PierogiesBot.Shared.Features.GuidSettings;
 
 public interface IGuildSettingApi : IAuthenticatedApi
 {
-    [Get("GuildSetting")]
+    [Get("{PathPrefix}/GuildSetting")]
     Task<IEnumerable<GuildSettingDto>> GetAllAsync([Query] int? skip = null, [Query] int? limit = null);
 
-    [Get("GuildSetting/{id}")] Task<GuildSettingDto> FindByIdAsync([Path] string id);
+    [Get("{PathPrefix}/GuildSetting/{id}")] Task<GuildSettingDto> FindByIdAsync([Path] string id);
 
-    [Get("GuildSetting/guild/{guildId}")] Task<GuildSettingDto> FindByGuildIdAsync([Path] ulong guildId);
-    [Post("GuildSetting")] Task<GuildSettingDto> CreateGuildSettingAsync([Body] CreateGuildSettingDto createDto);
+    [Get("{PathPrefix}/GuildSetting/guild/{guildId}")] Task<GuildSettingDto> FindByGuildIdAsync([Path] ulong guildId);
+    [Post("{PathPrefix}/GuildSetting")] Task<GuildSettingDto> CreateGuildSettingAsync([Body] CreateGuildSettingDto createDto);
 
-    [Put("GuildSetting/{id}")] Task UpdateGuildSettingAsync([Path] string id, [Body] UpdateGuildSettingDto updateDto);
+    [Put("{PathPrefix}/GuildSetting/{id}")] Task UpdateGuildSettingAsync([Path] string id, [Body] UpdateGuildSettingDto updateDto);
 
-    [Delete("GuildSetting/{id}")] Task DeleteGuildSettingAsync([Path] string id);
+    [Delete("{PathPrefix}/GuildSetting/{id}")] Task DeleteGuildSettingAsync([Path] string id);
 }

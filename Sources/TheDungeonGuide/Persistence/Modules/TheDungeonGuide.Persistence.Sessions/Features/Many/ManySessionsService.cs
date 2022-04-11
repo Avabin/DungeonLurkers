@@ -11,4 +11,12 @@ public class ManySessionsService : ManyDocumentsService<SessionDocument, string,
         mapper)
     {
     }
+
+    public async Task<IEnumerable<SessionDto>> GetAllByMemberIdAsync(string id, int? skip = null, int? limit = null)
+    {
+        var found = await Repository.GetAllByPredicateAsync(x => x.PlayersIds.Contains(id) || x.GameMasterId == id, skip, limit);
+        
+        var mapped = Mapper.Map<IEnumerable<SessionDto>>(found);
+        return mapped;
+    }
 }

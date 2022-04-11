@@ -15,14 +15,20 @@
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:5007;http://localhost:5006",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "PierogiesBot_IdentityUrl": "https://localhost:5001/",
+        "PierogiesBot_ConnectionStrings__MongoDb": "mongodb://localhost:27017/PierogiesBot",
+        "PierogiesBot_JWT__Secret": "P@ssw0rdS3cr3T"
       }
     },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "PierogiesBot_IdentityUrl": "https://localhost:5001/",
+        "PierogiesBot_ConnectionStrings__MongoDb": "mongodb://localhost:27017/PierogiesBot",
+        "PierogiesBot_JWT__Secret": "P@ssw0rdS3cr3T"
       }
     }
   }

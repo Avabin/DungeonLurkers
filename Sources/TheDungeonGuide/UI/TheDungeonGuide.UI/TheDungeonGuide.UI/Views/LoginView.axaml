@@ -1,0 +1,20 @@
+﻿<reactiveUi:ReactiveUserControl x:TypeArguments="loginView:LoginViewModel" xmlns="https://github.com/avaloniaui"
+                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                                xmlns:reactive="clr-namespace:System.Reactive;assembly=System.Reactive"
+                                xmlns:views="clr-namespace:TheDungeonGuide.UI.Views"
+                                xmlns:reactiveUi="http://reactiveui.net"
+                                xmlns:system="clr-namespace:System;assembly=netstandard"
+                                xmlns:states="clr-namespace:ReactiveUI.Validation.States;assembly=ReactiveUI.Validation"
+                                xmlns:loginView="clr-namespace:Shared.UI.ViewModels.LoginView;assembly=Shared.UI.ViewModels"
+                                mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                                x:Class="TheDungeonGuide.UI.Views.LoginView"
+                                d:DataContext="{x:Static views:DesignData.LoginViewModel}"
+                                x:DataType="loginView:LoginViewModel">
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" RowDefinitions="*,Auto,Auto,Auto,*" ColumnDefinitions="*,*,*,*">
+            <TextBox Name="UsernameTextBox" Grid.ColumnSpan="2" Grid.Row="1" Grid.Column="1" Watermark="Username" Text="{CompiledBinding Username,Mode=TwoWay}" Margin="5" />
+            <TextBox Name="PasswordTextBox" Grid.ColumnSpan="2" Grid.Row="2" Grid.Column="1" Watermark="Password" PasswordChar="*" Text="{CompiledBinding Password,Mode=TwoWay}" Margin="5" />
+            <Button Grid.ColumnSpan="2" Grid.Row="3" Grid.Column="1" Content="Login" Command="{CompiledBinding LoginCommand}" CommandParameter="{x:Static reactive:Unit.Default}" Margin="5" HorizontalAlignment="Right"/>
+    </Grid>
+</reactiveUi:ReactiveUserControl>

@@ -18,4 +18,7 @@ public class SingleBotResponseRuleService
     
     public async Task AddResponseToRuleAsync(string id, string response) => 
         await Repository.AddElementToArrayFieldAsync(id, x => x.Responses, response);
+
+    public async Task<IEnumerable<string>> GetResponsesForRuleAsync(string ruleId) => 
+        await Repository.GetArrayFieldAsync(ruleId, x => x.Responses);
 }

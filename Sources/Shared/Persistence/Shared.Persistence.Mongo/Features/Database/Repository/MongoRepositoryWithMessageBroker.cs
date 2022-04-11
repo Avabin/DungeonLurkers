@@ -1,4 +1,5 @@
 ﻿using System.Reactive.Linq;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
@@ -11,7 +12,7 @@ internal class MongoRepositoryWithMessageBroker<T> : MongoRepository<T>, IDispos
 {
     private readonly IDisposable    _sub;
 
-    public MongoRepositoryWithMessageBroker(IMongoClient client, ILogger<MongoRepositoryWithMessageBroker<T>> logger, IOptions<MongoSettings> options, IMessageBroker messageBroker) : base(client, logger, options)
+    public MongoRepositoryWithMessageBroker(IMongoClient client, ILogger<MongoRepositoryWithMessageBroker<T>> logger, IConfiguration configuration, IMessageBroker messageBroker) : base(client, logger, configuration)
     {
         var docChangesObserver = messageBroker.GetObserverForQueue<DocumentChangeBase<T, string>>(MessageBroker.Core.MessageBroker.GetQueueName<T>());
         

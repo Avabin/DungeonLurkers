@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <!--Temporal hack that fixes compilation in VS-->
+        <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <EmccTotalMemory>16MB</EmccTotalMemory>
+    </PropertyGroup>
+    <!-- In debug, make builds faster by reducing optimizations -->
+    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+        <WasmNativeStrip>false</WasmNativeStrip>
+        <EmccCompileOptimizationFlag>-O1</EmccCompileOptimizationFlag>
+        <RunAOTCompilation>false</RunAOTCompilation>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <Optimize>true</Optimize>
+        <WasmNativeStrip>true</WasmNativeStrip>
+        <EmccCompileOptimizationFlag>-O3</EmccCompileOptimizationFlag>
+        <EmccLinkOptimizationFlag>-O3</EmccLinkOptimizationFlag>
+        <RunAOTCompilation>true</RunAOTCompilation>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.2" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.2" PrivateAssets="all" />
+        <PackageReference Include="Avalonia.Web.Blazor" Version="0.10.13" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\..\Shared\UI\Shared.UI.Web\Shared.UI.Web.csproj" />
+        <ProjectReference Include="..\PierogiesBot.UI\PierogiesBot.UI.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Update="wwwroot\appsettings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- extends watching group to include *.js files -->
+        <Watch Include="**\*.axaml" Exclude="node_modules\**\*;**\*.g.axaml;obj\**\*;bin\**\*" />
+    </ItemGroup>
+
+</Project>

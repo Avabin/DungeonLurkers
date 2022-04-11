@@ -17,7 +17,6 @@ using RestEase;
 using Shared.Features;
 using Shared.Features.Authentication;
 using Shared.Features.Users;
-using Shared.Persistence.Core.Features.Documents;
 using Shared.Persistence.Identity.Features.Users;
 using Shared.Persistence.Mongo.Features.Database.Documents;
 
@@ -26,10 +25,10 @@ namespace Tests.Shared;
 [SuppressMessage("Style", "CC0061", MessageId = "Asynchronous method can be terminated with the \'Async\' keyword.")]
 public abstract class AuthenticatedTestsBase : IAuthenticatedControllerTests, IDisposable
 {
-    protected        Guid                            TestUserSuffix = Guid.NewGuid();
-    private readonly List<IDisposable>               _disposables   = new();
-    private readonly List<MongoDbRunner>             _mongos        = new();
+    private readonly List<IDisposable>               _disposables = new();
+    private readonly List<MongoDbRunner>             _mongos      = new();
     private          WebApplicationFactory<Startup>? _identityWaf;
+    protected        Guid                            TestUserSuffix = Guid.NewGuid();
 
     public abstract string       ClientId     { get; }
     public abstract string       ClientSecret { get; }
@@ -159,7 +158,10 @@ public abstract class AuthenticatedTestsBase : IAuthenticatedControllerTests, ID
         GC.SuppressFinalize(this);
     }
 
-    protected T GetIdentityHostService<T>() where T : notnull => _identityWaf!.Services.GetRequiredService<T>();
+    protected T GetIdentityHostService<T>() where T : notnull
+    {
+        return _identityWaf!.Services.GetRequiredService<T>();
+    }
 
     private async Task EnsureTestUserCreatedAsync()
     {
@@ -186,15 +188,9 @@ public abstract class AuthenticatedTestsBase : IAuthenticatedControllerTests, ID
             _identityWaf = null;
         }
 
-        foreach (var disposable in _disposables)
-        {
-            disposable.Dispose();
-        }
+        foreach (var disposable in _disposables) disposable.Dispose();
 
-        foreach (var mongoDbRunner in _mongos)
-        {
-            mongoDbRunner.Dispose();
-        }
+        foreach (var mongoDbRunner in _mongos) mongoDbRunner.Dispose();
     }
 
     protected virtual void Dispose(bool disposing)

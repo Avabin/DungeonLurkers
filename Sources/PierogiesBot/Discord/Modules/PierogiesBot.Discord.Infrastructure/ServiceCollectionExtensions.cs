@@ -3,11 +3,14 @@ using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using PierogiesBot.Discord.Infrastructure.Features.DiscordHost;
 using PierogiesBot.Discord.Infrastructure.Features.MessageSubscriptions;
 using PierogiesBot.Discord.Infrastructure.Features.MessageSubscriptions.Crontab;
 using PierogiesBot.Discord.Infrastructure.Features.MessageSubscriptions.Handlers;
+using PierogiesBot.Discord.Interactions.Features.Dices;
 using Quartz;
+using RestEase;
 
 namespace PierogiesBot.Discord.Infrastructure;
 
@@ -27,6 +30,8 @@ public static class ServiceCollectionExtensions
     public static ContainerBuilder AddDiscordServices<TService>(this ContainerBuilder services) where TService : IDiscordService
     {
         services.RegisterType<TService>().AsSelf().As<IDiscordService>().AsImplementedInterfaces().SingleInstance();
+        services.RegisterType<CrontabChangesReceiver>().As<IHostedService>().SingleInstance();
+        services.RegisterType<CrontabGuildService>().AsImplementedInterfaces();
         services.RegisterType<DiscordHostedService>().As<IHostedService>().SingleInstance();
         services.RegisterType<DiscordSocketClient>().AsSelf().AsImplementedInterfaces().SingleInstance();
         services.RegisterType<ChannelSubscribeService>().AsImplementedInterfaces().SingleInstance();
@@ -59,5 +64,10 @@ public static class ServiceCollectionExtensions
                 scheduler.JobFactory = new DependencyInjectionJobFactory(serviceProvider);
 
                 return scheduler;
+            }).AddTransient(serviceProvider =>
+            {
+                var settings = serviceProvider.GetRequiredService<IOptions<DiscordSettings>>();
+
+                return RestClient.For<IDicesApi>(settings.Value.DicesBaseUrl);
             });
 }

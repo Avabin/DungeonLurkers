@@ -49,11 +49,11 @@ public class SubscribeCommandModuleUnitTests
         // Arrange
         var guildChannels = Enumerable
                            .Range(1, 10)
-                           .Select(i => Substitute.For<IGuildChannel>())
+                           .Select(i => Substitute.For<ITextChannel>())
                            .ToList();
         _context.Guild.Returns(_guild);
         _context.Channel.Returns(_channel);
-        _guild.GetChannelsAsync().Returns(guildChannels);
+        _guild.GetTextChannelsAsync().Returns(guildChannels);
         
         ((IModuleBase)_subscribeResponsesCommandModule).SetContext(_context);
         // Act
@@ -109,11 +109,11 @@ public class SubscribeCommandModuleUnitTests
         // Arrange
         var guildChannels = Enumerable
                            .Range(1, 10)
-                           .Select(i => Substitute.For<IGuildChannel>())
+                           .Select(i => Substitute.For<ITextChannel>())
                            .ToList();
         _context.Guild.Returns(_guild);
         _context.Channel.Returns(_channel);
-        _guild.GetChannelsAsync().Returns(guildChannels);
+        _guild.GetTextChannelsAsync().Returns(guildChannels);
         
         ((IModuleBase)_subscribeResponsesCommandModule).SetContext(_context);
         // Act

@@ -5,4 +5,7 @@ riderModule.iml
 /_ReSharper.Caches/
 TestResults/
 Tests.xml
-.ionide/
+.ionide/.vs/
+
+template
+build

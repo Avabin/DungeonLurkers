@@ -5,7 +5,7 @@ using Shared.Persistence.Core.Features.Documents.Many;
 namespace PierogiesBot.Persistence.BotMessageSubscription.Features;
 
 public interface
-    IBotMessageSubscriptionFacade : IDocumentOperationFacade<BotMessageSubscriptionDocument, string,
+    IBotMessageSubscriptionFacade : IDocumentFacade<BotMessageSubscriptionDocument, string,
         BotMessageSubscriptionDto>
 {
     Task<BotMessageSubscriptionDto?> GetSubscriptionForChannelAsync(ulong            channelId, ulong guildId,

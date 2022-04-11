@@ -1,11 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <Configurations>Debug;Release;Debug PierogiesBot;Release PierogiesBot;Debug TheDungeonGuide;Release TheDungeonGuide;Debug Identity;Release Identity;Debug Parasyte;Release Parasyte</Configurations>
         <Platforms>AnyCPU</Platforms>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>

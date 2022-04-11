@@ -1,0 +1,25 @@
+<Window
+    Background="Transparent"
+    ExtendClientAreaTitleBarHeightHint="-1"
+    Icon="/Assets/avalonia-logo.ico"
+    TransparencyLevelHint="AcrylicBlur"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d"
+    x:Class="PierogiesBot.UI.Views.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views="clr-namespace:PierogiesBot.UI.Views"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ExperimentalAcrylicBorder IsHitTestVisible="True">
+        <ExperimentalAcrylicBorder.Material>
+            <ExperimentalAcrylicMaterial
+                BackgroundSource="Digger"
+                MaterialOpacity="0.65"
+                TintColor="Black"
+                TintOpacity="1" />
+        </ExperimentalAcrylicBorder.Material>
+        <views:MainView />
+    </ExperimentalAcrylicBorder>
+</Window>
